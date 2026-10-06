@@ -1,0 +1,391 @@
+rule_id,source_file,source_section,summary,new_file,anchor
+QA-0001,qa-agent.md,Frontmatter description,"Triggers: Blog Writer loop, In QA row, pasted doc link",SKILL.md,"a document link to audit, a schedule saying Mode: QA"
+QA-0002,qa-agent.md,What this agent is,QA is last automated check before human publish review,modes/qa.md,the last automated checkpoint before a human ever reviews a piece for
+QA-0003,qa-agent.md,What this agent is,Catch what a careful writer can miss on their own pass,modes/qa.md,"It exists to catch what a writer, even a careful one, can"
+QA-0004,qa-agent.md,What this agent is,Job is not fault-finding; nothing catchable reaches a human,modes/qa.md,Its job is not to find fault for its own sake.
+QA-0005,qa-agent.md,What this agent is,Audit the one coherent draft directly at the same standard,modes/qa.md,so QA audits that one draft directly
+QA-0006,qa-agent.md,What this agent is,Hardest rule: every failure specific enough to need no follow-up,shared/base-rules/qa.md,every failure you report must be specific enough that whoever fixes it
+QA-0007,qa-agent.md,What this agent is,Example of a vague versus a real finding,shared/base-rules/qa.md,"""Fix the CTA"" is not a finding."
+QA-0008,qa-agent.md,What this agent is,"Second rule: audit the saved document, not memory of the draft",modes/qa.md,"audit the saved document, not your memory of the draft."
+QA-0009,qa-agent.md,What this agent is,"Re-read the doc, measure with script, judge what reviewer opens",modes/qa.md,Re-read the document from its home (Google Drive or Notion)
+QA-0010,qa-agent.md,What this agent is,Assume problems exist; prove the draft clean before passing,modes/qa.md,prove the draft clean before passing it
+QA-0011,qa-agent.md,What this agent is,QA never writes or fixes the draft,modes/qa.md,QA never writes or fixes the draft.
+QA-0012,qa-agent.md,Where this agent gets its setup,Use same setup as Blog Writer; never keep own copy or ask,modes/qa.md,Settings never come from a person in chat.
+QA-0013,qa-agent.md,Where this agent gets its setup,In-session: use exactly what the Blog Writer hands over,modes/qa.md,"Use exactly what it hands over, and never ask for any of"
+QA-0014,qa-agent.md,Where this agent gets its setup,Handover includes Item ID and record ID,modes/qa.md,the Item ID and the record ID;
+QA-0015,qa-agent.md,Where this agent gets its setup,Handover includes Blog Doc Link and brief link or pasted brief,modes/qa.md,"the Blog Doc Link, and the Brief Doc Link or the pasted"
+QA-0016,qa-agent.md,Where this agent gets its setup,Handover includes reference files already loaded,modes/qa.md,the reference files and rules it already loaded
+QA-0017,qa-agent.md,Where this agent gets its setup,Handover includes Saved Setup values,DROPPED,"Saved Setup replaced by Settings, Team, Members tables (shared/airtable.md)"
+QA-0018,qa-agent.md,Where this agent gets its setup,"Handover includes special instructions: VERIFY tags, send-back above cap",modes/qa.md,any special instructions for this audit
+QA-0019,qa-agent.md,Where this agent gets its setup,Standalone: load Blog Writer skill for Saved Setup and Appendix,DROPPED,Replaced by run-start Loading the rules and Reference rows
+QA-0020,qa-agent.md,Where this agent gets its setup,Never follow Blog Writer steps; run stays a QA audit,shared/guards.md,A mode never does another mode's work as a workaround
+QA-0021,qa-agent.md,Where this agent gets its setup,Find Blog Writer skill from Config Pipeline setup line,DROPPED,Config table and Pipeline setup lines removed; product comes from the Product field
+QA-0022,qa-agent.md,Where this agent gets its setup,Use the product or skill the user names,DROPPED,One skill now; product comes from the row's Product field
+QA-0023,qa-agent.md,Where this agent gets its setup,"No Blog Writer skill: attended asks once, unattended stops",DROPPED,Replaced by run-start alert when a product has no reference files
+QA-0024,qa-agent.md,Where this agent gets its setup,Saved channel and reviewer mean Blog Writer's Saved Setup values,DROPPED,Replaced by Settings Slack Channel ID and Members approvers (shared/slack.md)
+QA-0025,qa-agent.md,Where this agent gets its setup,Reference file names map to Appendix files A to D,DROPPED,"Replaced by Reference rows of Type Brand guide, Style guide, Quality checks, Product knowledge"
+QA-0026,qa-agent.md,Where this agent gets its setup,Every post that asks a person to act tags all approvers,modes/qa.md,every approver for this product from Members tagged by Slack ID (G11)
+QA-0027,qa-agent.md,Where this agent gets its setup,Every report doc created in the pipeline folder,modes/qa.md,"a new native Google Doc for every round, in the product's Drive"
+QA-0028,qa-agent.md,Where this agent gets its setup,G19 access check before the report link goes anywhere,modes/qa.md,Run the access check (G19) before the link goes anywhere.
+QA-0029,qa-agent.md,Where this agent gets its setup,Post counts as sent only when response returns a message link,modes/qa.md,Confirm the tool's response returned a message link (G11).
+QA-0030,qa-agent.md,Airtable IDs,Default base and base ID,DROPPED,Company-specific base ID; IDs now come from Schema Map
+QA-0031,qa-agent.md,Airtable IDs,Never create a second base or use one found by search,shared/airtable.md,Never create a second base during a normal run
+QA-0032,qa-agent.md,Airtable IDs,"Table IDs for Content Items, Feedback Log, Config",DROPPED,Company-specific IDs; table IDs now come from Schema Map
+QA-0033,qa-agent.md,Airtable IDs,"Filter single-selects by choice ID, not name",shared/airtable.md,Filter single-select fields by choice ID
+QA-0034,qa-agent.md,Airtable IDs,Status and Feedback Log choice IDs,DROPPED,Company-specific choice IDs; now come from Schema Map choices
+QA-0035,qa-agent.md,Airtable IDs,Write single-select values by plain name,shared/airtable.md,Write single-select values by their plain name.
+QA-0036,qa-agent.md,Airtable IDs,Use Blog Writer's IDs if different,DROPPED,Saved Setup removed; Schema Map is the only ID source
+QA-0037,qa-agent.md,Airtable IDs,"Use Blog Writer field IDs, prefix filter, Draft row counting method",DROPPED,"Replaced by Schema Map field IDs, Product field filter (G4), and G6 count"
+QA-0038,qa-agent.md,Every output is a Google Doc,QA report for every verdict saved as a document,modes/qa.md,"Save the QA report as a document, for every verdict."
+QA-0039,qa-agent.md,Every output is a Google Doc,Never use Claude Docs or build a .docx,shared/storage-drive.md,"Never use Claude Docs, a `.docx` built by a script"
+QA-0040,qa-agent.md,Every output is a Google Doc,"Never leave the report only in chat, Notes, or Slack",modes/qa.md,Never write a verdict to Airtable without its report link.
+QA-0041,qa-agent.md,Reading a Doc link,Take file ID between /d/ and next slash,shared/storage-drive.md,Take the file ID from the link
+QA-0042,qa-agent.md,Reading a Doc link,Read text with includeComments true,modes/qa.md,"`read_file_content` with `includeComments: true`, then `download_file_content`"
+QA-0043,qa-agent.md,Reading a Doc link,"Export as text/plain and text/html, decode base64",modes/qa.md,"and once with `exportMimeType: ""text/html""`, and decode the base64."
+QA-0044,qa-agent.md,Reading a Doc link,Claude.ai link: never open with Claude Docs; stop and say so,modes/qa.md,"for example a claude.ai link, don't open it with Claude Docs"
+QA-0045,qa-agent.md,Reading a Doc link,Stop work on that item; say it needs copying first,modes/qa.md,"Stop work on that item, say in the run output that it"
+QA-0046,qa-agent.md,Run Guards,Guards apply on top of steps; guard wins on conflict,shared/guards.md,"Where a step and a guard disagree, the guard wins."
+QA-0047,qa-agent.md,G1 Connectors,Airtable and document tools required before real work,modes/qa.md,Airtable and the piece's document home (Drive or Notion) are required.
+QA-0048,qa-agent.md,G1 Connectors,Slack needed only on Approved or Escalated verdict,modes/qa.md,Slack is needed only on an Approved or Escalated verdict.
+QA-0049,qa-agent.md,G1 Connectors,Slack missing: write post into Notes and say so,modes/qa.md,and put the post you would have sent into the Agent Notes
+QA-0050,qa-agent.md,G1 Connectors,"Calendar optional: one notes line with recheck dates, no mention",modes/qa.md,"add one Agent Notes line with the recheck dates, and don't mention"
+QA-0051,qa-agent.md,G2 Never audit twice,In-session Notes marker on drafts audited by Blog Writer,shared/guards.md,"it keeps its claim, with Claimed By `Blog Writer (QA in-session)`"
+QA-0052,qa-agent.md,G2 Never audit twice,Standalone run skips In QA rows with fresh in-session marker,shared/guards.md,A standalone QA run skips any `In QA` row with a live
+QA-0053,qa-agent.md,G2 Never audit twice,Re-read row; skip if no longer In QA,modes/qa.md,"If its Status is no longer `In QA`, or another run holds"
+QA-0054,qa-agent.md,G2 Never audit twice,Skip if verdict already exists for current Blog Doc Link,modes/qa.md,"If a QA verdict already exists for its current draft (G17), don't"
+QA-0055,qa-agent.md,G3 Claim the row,Standalone run claims row before auditing,modes/qa.md,Otherwise claim it per shared/airtable.md (Claims)
+QA-0056,qa-agent.md,G3 Claim the row,Go ahead only if newest claim is this run's own,modes/qa.md,go ahead only if the Claim Token is this run's own
+QA-0057,qa-agent.md,G3 Claim the row,Back off if claim line erased; Notes overwrite risk,DROPPED,"Notes claim lines replaced by Claimed By, Claimed At, Claim Token (shared/airtable.md Claims)"
+QA-0058,qa-agent.md,G4 This product's rows only,Filter In QA scans to this product's rows,modes/qa.md,by the Product field (G4)
+QA-0059,qa-agent.md,G5 Add to Notes,"Every Notes write adds a block at the end, never overwrites",modes/qa.md,"add a block at the end (G8), never overwrite"
+QA-0060,qa-agent.md,G5 Add to Notes,Blog Writer reads Notes history,modes/qa.md,that Agent Notes block and the report are the entire handoff to
+QA-0061,qa-agent.md,G6 Attended or unattended,Unattended when started by a schedule or no human request,shared/run-start.md,when the message that started it is a schedule's prompt
+QA-0062,qa-agent.md,G6 Attended or unattended,Run called by Blog Writer inherits its setting,modes/qa.md,"whether the run is attended or unattended (QA inherits it, G2);"
+QA-0063,qa-agent.md,G6 Attended or unattended,"Unattended never asks; make reasonable call, say it plainly",shared/guards.md,"make the most reasonable call, state it plainly where a person will"
+QA-0064,qa-agent.md,G7 Blank values,Treat blank rework count as 0,shared/guards.md,A blank count means 0. Brief Rework Count counts
+QA-0065,qa-agent.md,G7 Blank values,Never write a Status that doesn't exist,shared/guards.md,never write a status that doesn't exist.
+QA-0066,qa-agent.md,Step 0,"Load setup, then read all reference files fully",modes/qa.md,Read all of the product's reference files fully
+QA-0067,qa-agent.md,Step 0,QA leans on quality checks file more than any agent,modes/qa.md,This mode leans on the quality checks more heavily than any other
+QA-0068,qa-agent.md,Step 0,Product quality-checks file is the senior authority,shared/base-rules/qa.md,treat that file as the senior authority
+QA-0069,qa-agent.md,Step 0,"Where they overlap, product rubric wins",shared/base-rules/qa.md,"Where the two overlap, the product's own rubric wins."
+QA-0070,qa-agent.md,Step 0,Uncovered product criteria become their own dimension,shared/base-rules/qa.md,add it as its own dimension in the audit rather than skipping
+QA-0071,qa-agent.md,Step 0,Reading level grade 5 to 6 applies over style guide,shared/base-rules/qa.md,The one exception is reading level: the Blog Writer's grade 5 to
+QA-0072,qa-agent.md,Step 0,Own score bands or retry limits don't override verdict rules,shared/base-rules/qa.md,"QA's verdict rules (modes/qa.md, Step 4) still decide the outcome"
+QA-0073,qa-agent.md,Step 0,Any Blocker or Standard means Needs Rework; cap stays three,shared/base-rules/qa.md,the retry cap stays at three passes
+QA-0074,qa-agent.md,Step 0,Reworker Agent means Blog Writer's rework step,shared/base-rules/qa.md,"""Reworker Agent"" means the Blog Writer's own rework step"
+QA-0075,qa-agent.md,Step 0.5,Read Active Feedback Log rules in one batch,modes/qa.md,load per shared/run-start.md (Loading the rules)
+QA-0076,qa-agent.md,Step 0.5,Narrow rules to this product or general guidance,modes/qa.md,Learned rules apply only to their own product (G4).
+QA-0077,qa-agent.md,Step 0.5,Standalone: scan this product's In QA rows,modes/qa.md,`In QA` rows with empty claim fields.
+QA-0078,qa-agent.md,Step 0.5,"Locate record by handed ID, Item ID, or Blog Doc Link",modes/qa.md,Use the record ID the Blog Writer handed over
+QA-0079,qa-agent.md,Step 0.5,Keep record ID for every later update,modes/qa.md,Keep the record ID; every later update reuses it.
+QA-0080,qa-agent.md,Step 0.5,"Confirm Status In QA, or set it for a pasted link",modes/qa.md,an attended run on a pasted link sets it here
+QA-0081,qa-agent.md,Step 0.5,Note the draft pass count for Step 4,modes/qa.md,Note the row's **draft pass count**; it matters in Step 4.
+QA-0082,qa-agent.md,Step 0.5,Use the pass count the Blog Writer hands over,modes/qa.md,Use the number the Blog Writer hands over.
+QA-0083,qa-agent.md,Step 0.5,Standalone: larger of Draft history rows and rework lines,modes/qa.md,the larger of Draft Rework Count and this item's Rework History rows
+QA-0084,qa-agent.md,Step 0.5,Never use combined Rework Count; brief reworks would mis-escalate,modes/qa.md,an item whose brief needed two rounds must not escalate after one
+QA-0085,qa-agent.md,Step 0.5,Read every Active rule before auditing anything,modes/qa.md,Read every Active product rule and learned rule for this product before
+QA-0086,qa-agent.md,Step 0.5,Rule bearing on a dimension is part of its standard,modes/qa.md,hold it as part of that dimension's standard for this audit
+QA-0087,qa-agent.md,Step 0.5,Violating a standing rule fails the matching dimension,modes/qa.md,A draft that violates a standing rule fails the matching dimension
+QA-0088,qa-agent.md,Step 1,Read everything in full before scoring any dimension,modes/qa.md,"Before scoring a single dimension, read, in full:"
+QA-0089,qa-agent.md,Step 1,"Read brief's target, keyword plan, skeleton, plans, Freshness Log",modes/qa.md,"its target word count, keyword plan, format skeleton, Spearhead Strategy"
+QA-0090,qa-agent.md,Step 1,Read brief's AI answer engine findings from Step 2d,modes/qa.md,specifically the AI answer engine findings from the brief's Step 2d
+QA-0091,qa-agent.md,Step 1,Engine not queried: judge Dimension 5 on existing findings,shared/base-rules/qa.md,If the brief says an AI engine couldn't be queried
+QA-0092,qa-agent.md,Step 1,Read draft from saved doc; link points to newest version,modes/qa.md,which always points to the newest version
+QA-0093,qa-agent.md,Step 1,Read with comments and export for Step 1.5,modes/qa.md,"Read it with its comments, and export it for Step 1.5"
+QA-0094,qa-agent.md,Step 1,Read Notes for writer notes and VERIFY research,modes/qa.md,"for the writer notes (word count reasoning, open `[VERIFY]` research"
+QA-0095,qa-agent.md,Step 1,"On rework, read previous QA Issues list to confirm fixes",modes/qa.md,"on a rework, the previous QA Issues list"
+QA-0096,qa-agent.md,Step 1,Read the four reference files,modes/qa.md,**The product's reference files and rules** (Step 0).
+QA-0097,qa-agent.md,Step 1,"Partial read gives vague findings; read first, judge second",modes/qa.md,An audit built from a partial read produces vague findings
+QA-0098,qa-agent.md,Step 1.5,"Several dimensions are counts, not opinions",modes/qa.md,"Several dimensions are counts, not opinions"
+QA-0099,qa-agent.md,Step 1.5,"Measure with a script whenever a shell exists, never by eye",modes/qa.md,Measure them with scripts/measure.py on the exported document
+QA-0100,qa-agent.md,Step 1.5,Looked fine on read-through isn't a check,shared/base-rules/qa.md,"""Looked fine on a read-through"" isn't a check."
+QA-0101,qa-agent.md,Step 1.5,No shell: measure by hand carefully and say so,modes/qa.md,measure by hand as carefully as possible and say so in the
+QA-0102,qa-agent.md,Step 1.5,Save exports as draft.txt and draft.html,modes/qa.md,save `draft.txt` (plain text) and `draft.html` (HTML)
+QA-0103,qa-agent.md,Step 1.5,Script output is evidence; every hit goes to its dimension,modes/qa.md,every hit it lists goes into the matching dimension with its location
+QA-0104,qa-agent.md,Step 1.5,Adapt the script as needed,modes/qa.md,Adapt as needed: if a dimension needs a count the script doesn't
+QA-0105,qa-agent.md,Step 1.5 script,Scan characters that must never appear,scripts/measure.py,# 1. Characters that must never appear (Dimensions 14 and 19)
+QA-0106,qa-agent.md,Step 1.5 script,"Flag em dash, en dash, ellipsis, zero-width space, BOM",modes/qa.md,"em dashes, en dashes, ellipsis characters, zero-width spaces, byte-order marks"
+QA-0107,qa-agent.md,Step 1.5 script,Flag double hyphen used as a dash,scripts/measure.py,double hyphen used as a dash
+QA-0108,qa-agent.md,Step 1.5 script,Flag emoji and garbled encoding characters,modes/qa.md,"double hyphens, emoji, garbled characters, each with its line and context"
+QA-0109,qa-agent.md,Step 1.5 script,Flag raw Markdown or HTML left in the doc,scripts/measure.py,# 2. Markdown or HTML left raw in the document (Dimension 19)
+QA-0110,qa-agent.md,Step 1.5 script,"Raw patterns: links, escapes, bold, headings, dividers, entities, quotes",modes/qa.md,"raw Markdown links, `**`, `#`, dividers, `>`, backslash escapes"
+QA-0111,qa-agent.md,Step 1.5 script,Flag paragraphs back to back with no empty paragraph,scripts/measure.py,exactly one empty paragraph between blocks (Drive)
+QA-0112,qa-agent.md,Step 1.5 script,"Count words, sentences, reading level",scripts/measure.py,"# 4. Words, sentences, reading level (Dimensions 17, 18)"
+QA-0113,qa-agent.md,Step 1.5 script,"Exclude SEO block, image callouts, tags before counting",scripts/measure.py,The SEO metadata block is not counted as body.
+QA-0114,qa-agent.md,Step 1.5 script,"Report average sentence, share over 20, spread, FK grade",modes/qa.md,"(words, sentences, average sentence, share over 20 words, spread"
+QA-0115,qa-agent.md,Step 1.5 script,Prefer textstat grade when installed,scripts/measure.py,"If the optional textstat package is installed, its"
+QA-0116,qa-agent.md,Step 1.5 script,Flag paragraphs over 3 sentences or too many words,modes/qa.md,"long paragraphs, FAQ questions and answer lengths"
+QA-0117,qa-agent.md,Step 1.5 script,Count VERIFY and FRESHNESS tags,modes/qa.md,"`[FRESHNESS_FLAG]` tags with locations, image suggestions)"
+QA-0118,qa-agent.md,Step 1.5 also count,Words per H2 section against outline,modes/qa.md,"words per H2 section and share, sections far shorter than the rest"
+QA-0119,qa-agent.md,Step 1.5 also count,Longest stretch with no visual; H2s with none,modes/qa.md,"the longest stretch with no list, table, bolded key line, or callout"
+QA-0120,qa-agent.md,Step 1.5 also count,Every Dimension 13 and 23 hit with its sentence,modes/qa.md,"every hit from the Dimension 13 and 23 lists, with its sentence"
+QA-0121,qa-agent.md,Step 1.5 also count,Date anchors for Dimension 16,modes/qa.md,"a month followed by a year, a bare year, version numbers"
+QA-0122,qa-agent.md,Step 1.5 also count,"Every link's URL and anchor, internal and external",modes/qa.md,"every link's URL and anchor text, internal or external"
+QA-0123,qa-agent.md,Step 1.5 also count,Check each link resolves; dead citation is a Blocker,modes/qa.md,A dead citation link is a Blocker.
+QA-0124,qa-agent.md,Step 2,Clear pass or fail per dimension; never mostly fine,shared/base-rules/qa.md,"Never mark something ""mostly fine"" or split the difference"
+QA-0125,qa-agent.md,Step 2,"Each failure: exact location, what's wrong, concrete fix",shared/base-rules/qa.md,a concrete fix the Blog Writer could implement without asking a follow-up
+QA-0126,qa-agent.md,Step 2,List repeated instances each on its own line,shared/base-rules/qa.md,list each instance on its own line under that dimension
+QA-0127,qa-agent.md,Step 2 severities,Every finding carries a severity,shared/base-rules/qa.md,Every finding carries a severity:
+QA-0128,qa-agent.md,Step 2 severities,"Blocker fails draft outright, only listed cases",shared/base-rules/qa.md,"Fails the draft outright, however well the rest scores."
+QA-0129,qa-agent.md,Step 2 severities,"Blocker: fabricated or untraceable number, claim, quote, review",shared/base-rules/qa.md,"a fabricated or untraceable number, claim, quote, or review;"
+QA-0130,qa-agent.md,Step 2 severities,Blocker: claim contradicting live pricing or features pages,shared/base-rules/qa.md,a claim that contradicts the product's live pricing or features pages;
+QA-0131,qa-agent.md,Step 2 severities,Blocker: claim the brand guidelines prohibit,shared/base-rules/qa.md,a claim the brand guidelines prohibit;
+QA-0132,qa-agent.md,Step 2 severities,Blocker: broken or dead citation link,shared/base-rules/qa.md,a broken or dead citation link;
+QA-0133,qa-agent.md,Step 2 severities,Blocker: keyword missing from H1 or first paragraph,shared/base-rules/qa.md,the primary keyword missing from the H1 or the first paragraph;
+QA-0134,qa-agent.md,Step 2 severities,Blocker: any em dash,shared/base-rules/qa.md,a single em dash is a Blocker on its own
+QA-0135,qa-agent.md,Step 2 severities,Blocker: word count over 10% under target without reason,shared/base-rules/qa.md,a total word count more than 10% under the brief's target
+QA-0136,qa-agent.md,Step 2 severities,Blocker: reading level above grade 7,shared/base-rules/qa.md,a measured reading level above grade 7;
+QA-0137,qa-agent.md,Step 2 severities,Blocker: saved doc renders broken,shared/base-rules/qa.md,"a saved document that renders broken (garbled characters, raw Markdown, missing spacing"
+QA-0138,qa-agent.md,Step 2 severities,Standard: real failure of a dimension's bar,shared/base-rules/qa.md,A real failure of a dimension's bar.
+QA-0139,qa-agent.md,Step 2 severities,Polish: one or two isolated minor slips,shared/base-rules/qa.md,"One or two isolated, minor slips that don't undermine the dimension"
+QA-0140,qa-agent.md,Step 2 severities,Polish doesn't fail; listed under Polish before publish,shared/base-rules/qa.md,Polish items don't fail a dimension on their own.
+QA-0141,qa-agent.md,Step 2 severities,Three or more Polish in one dimension equals Standard,shared/base-rules/qa.md,Three or more Polish items in the same dimension add up to
+QA-0142,qa-agent.md,Step 2,Add product-required dimensions; score out of larger total,shared/base-rules/qa.md,the score is then out of that larger total
+QA-0143,qa-agent.md,Dimension 1,"Keyword in H1, first 100 words, H2, body, conclusion",shared/base-rules/qa.md,"Does the primary keyword appear in the H1, the first 100 words"
+QA-0144,qa-agent.md,Dimension 1,Density between 0.5% and 3%,shared/base-rules/qa.md,Is density between 0.5% and 3%?
+QA-0145,qa-agent.md,Dimension 1,SEO title carries keyword in first four to five words,shared/base-rules/qa.md,does the SEO title tag carry the primary keyword in its first
+QA-0146,qa-agent.md,Dimension 1,Meta description references keyword naturally,shared/base-rules/qa.md,does the meta description reference it naturally
+QA-0147,qa-agent.md,Dimension 1,Slug carries keyword without stop words,shared/base-rules/qa.md,does the URL slug carry it without stop words?
+QA-0148,qa-agent.md,Dimension 1,Title 50 to 60 chars; meta 140 to 155,shared/base-rules/qa.md,Is the SEO title about 50 to 60 characters
+QA-0149,qa-agent.md,Dimension 1,Fail on weak placement or density over 3%,shared/base-rules/qa.md,"Fail if body placement is weak or absent, if density crosses 3%"
+QA-0150,qa-agent.md,Dimension 1,"Fail if title, meta, slug miss or bury keyword or length",shared/base-rules/qa.md,"buries it past where it does any good, or runs outside its"
+QA-0151,qa-agent.md,Dimension 2,Two to four relevant internal links,shared/base-rules/qa.md,Are there two to four internal links to genuinely relevant existing pages
+QA-0152,qa-agent.md,Dimension 2,Quality checks minimum applies if higher,shared/base-rules/qa.md,"or at least the quality checks' minimum, if it sets a higher"
+QA-0153,qa-agent.md,Dimension 2,"Descriptive anchor text, not click here",shared/base-rules/qa.md,"with descriptive anchor text, not ""click here"""
+QA-0154,qa-agent.md,Dimension 2,Include brief's Internal Link Plan targets where they fit,shared/base-rules/qa.md,Do they include the brief's Internal Link Plan targets where those fit?
+QA-0155,qa-agent.md,Dimension 2,"Fail on zero, under minimum, over five, or non-resolving",shared/base-rules/qa.md,"Fail on zero links, fewer than the quality checks' minimum, more than"
+QA-0156,qa-agent.md,Dimension 3,Free tool mentions earned and contextual,shared/base-rules/qa.md,do the mentions feel earned and contextual rather than forced or repeated?
+QA-0157,qa-agent.md,Dimension 3,"Fail irrelevant, four or more, or sales-pitch mentions",shared/base-rules/qa.md,"Fail on irrelevant mentions, four or more mentions where one to three"
+QA-0158,qa-agent.md,Dimension 3,Zero mentions fine if nothing relevant,shared/base-rules/qa.md,Zero mentions is fine if nothing in the knowledge base was actually
+QA-0159,qa-agent.md,Dimension 4,Cross-check against brief's Competitive Intelligence,shared/base-rules/qa.md,Cross-check the draft against the brief's own Competitive Intelligence section.
+QA-0160,qa-agent.md,Dimension 4,Deliver Spearhead Strategy and one original-value element,shared/base-rules/qa.md,contain at least one original-value element the leading pages don't have?
+QA-0161,qa-agent.md,Dimension 4,Fail me-too piece,shared/base-rules/qa.md,"Fail if the draft reads as a ""me-too"" piece"
+QA-0162,qa-agent.md,Dimension 5,Cross-check against brief's AI answer engine findings,shared/base-rules/qa.md,Cross-check the draft against the AI answer engine findings the brief captured
+QA-0163,qa-agent.md,Dimension 5,Address named gaps with real depth,shared/base-rules/qa.md,"Does the draft actually address those named gaps, with real depth"
+QA-0164,qa-agent.md,Dimension 5,Fail if a flagged gap got no meaningful treatment,shared/base-rules/qa.md,Fail if a gap the brief flagged as a real opportunity got
+QA-0165,qa-agent.md,Dimension 6,Fully answer primary and secondary intent,shared/base-rules/qa.md,Does the draft fully answer the primary and secondary intent behind the
+QA-0166,qa-agent.md,Dimension 6,Fail on a gap or surface-level coverage,shared/base-rules/qa.md,Fail if there's a real gap a reader would notice
+QA-0167,qa-agent.md,Dimension 7,At least three specific implementable takeaways,shared/base-rules/qa.md,"Are there at least three specific, implementable takeaways"
+QA-0168,qa-agent.md,Dimension 7,"Steps name what, how, why, mistake, decision rule",shared/base-rules/qa.md,"Every how-to or strategy step names what to do, how, why it"
+QA-0169,qa-agent.md,Dimension 7,Fail generic or theoretical takeaways,shared/base-rules/qa.md,Fail if takeaways are generic or purely theoretical.
+QA-0170,qa-agent.md,Dimension 8,"Exactly three specific, benefit-led CTAs",shared/base-rules/qa.md,"Exactly three CTAs, each specific and benefit-led"
+QA-0171,qa-agent.md,Dimension 8,Placement per brief's Step 4c intent map and order,shared/base-rules/qa.md,placed per the brief's Step 4c intent map
+QA-0172,qa-agent.md,Dimension 8,None in FAQ or consecutive sections; real offers,shared/base-rules/qa.md,"None inside the FAQ, none in two consecutive sections"
+QA-0173,qa-agent.md,Dimension 8,"Fail any count, copy, or placement violation",shared/base-rules/qa.md,"Fail on any violation of the count, the copy standard, or the"
+QA-0174,qa-agent.md,Dimension 9,Tables earn their place per Step 6 criteria,shared/base-rules/qa.md,two or more items compared across two or more attributes
+QA-0175,qa-agent.md,Dimension 9,"Fail decorative, thin, or vague tables",shared/base-rules/qa.md,"Fail if a table is decorative, thin, or has vague cells"
+QA-0176,qa-agent.md,Dimension 9,Fail prose comparison that needed a table,shared/base-rules/qa.md,or choice between options in prose that clearly needed a table
+QA-0177,qa-agent.md,Dimension 10,"Over 1,500 words: two to six image suggestions",shared/base-rules/qa.md,"For a piece over 1,500 words, are there two to six image"
+QA-0178,qa-agent.md,Dimension 10,"Specific description, correct dimensions, plain label format",shared/base-rules/qa.md,"the plain `[IMAGE SUGGESTED]` label format, no emoji and no blockquote"
+QA-0179,qa-agent.md,Dimension 10,Fail no visual plan or vague suggestions,shared/base-rules/qa.md,Fail if the piece has no visual plan
+QA-0180,qa-agent.md,Dimension 11,Tone and vocabulary match brand and style files,shared/base-rules/qa.md,"Does the tone, vocabulary, and framing match the brand guidelines"
+QA-0181,qa-agent.md,Dimension 11,Approved perspective and exact product terminology,shared/base-rules/qa.md,"you for advice, we only when the product speaks, third person for"
+QA-0182,qa-agent.md,Dimension 11,"Fail off-brand tone, competitor terms, contradicting claims",shared/base-rules/qa.md,"Fail on off-brand tone, competitor terminology, or a claim that contradicts"
+QA-0183,qa-agent.md,Dimension 12,"Skim test: headers, bold, first sentences convey argument",shared/base-rules/qa.md,Read the piece the way a skimmer actually would
+QA-0184,qa-agent.md,Dimension 12,"Paragraphs one to three sentences, 20 to 50 words",shared/base-rules/qa.md,Paragraphs are one to three sentences and roughly 20 to 50 words
+QA-0185,qa-agent.md,Dimension 12,Only direct answer and FAQ answers may reach 60 words,shared/base-rules/qa.md,only the direct answer and FAQ answers may run to 60 words
+QA-0186,qa-agent.md,Dimension 12,Visual element every 150 to 200 words and every H2,shared/base-rules/qa.md,"at least every 150 to 200 words, and at least one in"
+QA-0187,qa-agent.md,Dimension 12,No wall of text over four lines,shared/base-rules/qa.md,No wall of text longer than four lines.
+QA-0188,qa-agent.md,Dimension 12,Descriptive Title Case headers that stand alone,shared/base-rules/qa.md,"Headers describe what the section delivers, in Title Case"
+QA-0189,qa-agent.md,Dimension 12,Every H2 opens with a pull and ends with a bridge,shared/base-rules/qa.md,Every H2 opens with a line that pulls the reader in
+QA-0190,qa-agent.md,Dimension 12,No section opens by restating its heading,shared/base-rules/qa.md,No section opens by restating its heading.
+QA-0191,qa-agent.md,Dimension 12,Consequential sections follow narrative arc in order,shared/base-rules/qa.md,follows the narrative arc from the Blog Writer's Step 4.7 in the
+QA-0192,qa-agent.md,Dimension 12,Intro uses compressed arc; arc CTA only in three CTA sections,shared/base-rules/qa.md,an arc ends on a CTA only in the three planned CTA
+QA-0193,qa-agent.md,Dimension 12,FAQ is the true last section,shared/base-rules/qa.md,"The FAQ, when the format has one, is the true last section"
+QA-0194,qa-agent.md,Dimension 12,"Fail skim, rhythm, missing visuals, or arc out of order",shared/base-rules/qa.md,"Fail if the skim test fails, if paragraph or visual-rhythm rules are"
+QA-0195,qa-agent.md,Dimension 13,"Scan whole draft with the script, don't skim",shared/base-rules/qa.md,"Scan the whole draft against every list below, with the Step 1.5"
+QA-0196,qa-agent.md,Dimension 13,Evidence these words are overused in AI text,shared/base-rules/qa.md,"one large study of PubMed abstracts found ""delves"" used 28 times"
+QA-0197,qa-agent.md,Dimension 13,"Each hit is a flag to review, not automatic fail",shared/base-rules/qa.md,"Each hit is a flag to review, not an automatic fail"
+QA-0198,qa-agent.md,Dimension 13,"Check this list, Step 2b list, and style guide list together",shared/base-rules/qa.md,Check all three lists together
+QA-0199,qa-agent.md,Dimension 13,Outright-banned word fails on any use,shared/base-rules/qa.md,"is a failure on any use, not a flag"
+QA-0200,qa-agent.md,Dimension 13,Words and near-synonyms to flag list,shared/base-rules/qa.md,"Words and near-synonyms to flag: delve/delves/delving, boasts"
+QA-0201,qa-agent.md,Dimension 13,Phrases to flag outright list,shared/base-rules/qa.md,"Phrases to flag outright, since these almost never survive a real edit"
+QA-0202,qa-agent.md,Dimension 13,Flag chat-reply openers and closers,shared/base-rules/qa.md,"any opener or closer that thanks, reassures, or addresses the reader like"
+QA-0203,qa-agent.md,Dimension 13,Fail clusters in one section,shared/base-rules/qa.md,Fail if several unjustified hits cluster in one section
+QA-0204,qa-agent.md,Dimension 13,Fail over one hit per 300 words or empty banned phrase,shared/base-rules/qa.md,more than one hit per roughly 300 words overall
+QA-0205,qa-agent.md,Dimension 14,"Check agreement, tense, commas, apostrophes, run-ons",shared/base-rules/qa.md,"Read every sentence for subject-verb agreement, tense consistency"
+QA-0206,qa-agent.md,Dimension 14,Oxford comma,shared/base-rules/qa.md,"correct comma and apostrophe use, the Oxford comma"
+QA-0207,qa-agent.md,Dimension 14,US spelling (now per Settings Spelling),shared/base-rules/qa.md,the spelling the product's Settings row names (US spelling unless it says
+QA-0208,qa-agent.md,Dimension 14,Zero spelling errors; use character scan,shared/base-rules/qa.md,Zero spelling errors. Then use Step 1.5's character scan:
+QA-0209,qa-agent.md,Dimension 14,"Zero em dashes anywhere, including SEO block",shared/base-rules/qa.md,Zero em dashes anywhere in the piece
+QA-0210,qa-agent.md,Dimension 14,Em dash is the house rule; one is a Blocker,shared/base-rules/qa.md,This is the house rule the entire content system runs on
+QA-0211,qa-agent.md,Dimension 14,List every em dash location before passing,shared/base-rules/qa.md,List every instance found by its exact location before marking this dimension
+QA-0212,qa-agent.md,Dimension 14,No en dash or double hyphen as a dash,shared/base-rules/qa.md,No en dash or double hyphen used as a dash in a
+QA-0213,qa-agent.md,Dimension 14,"No ellipsis, dramatic dots, or semicolons in prose",shared/base-rules/qa.md,"no semicolons in explanatory prose, per the Blog Writer's Step 2b"
+QA-0214,qa-agent.md,Dimension 14,"Exclamation marks rare, at most one or two",shared/base-rules/qa.md,never more than one or two in a piece
+QA-0215,qa-agent.md,Dimension 14,Arrow only in an interface path,shared/base-rules/qa.md,"appears only in an interface path, per the Blog Writer's Step 2k"
+QA-0216,qa-agent.md,Dimension 14,"Fail any grammar, spelling, or punctuation rule",shared/base-rules/qa.md,"Fail on any grammar or spelling error, or any punctuation rule above."
+QA-0217,qa-agent.md,Dimension 14,Isolated slips can be Polish; em dashes never,shared/base-rules/qa.md,Isolated grammar slips can be Polish only if they don't change meaning
+QA-0218,qa-agent.md,Dimension 15,"Every claim traceable to brief, knowledge base, source, or tag",shared/base-rules/qa.md,"Can every specific claim, statistic, or outcome in the draft be traced"
+QA-0219,qa-agent.md,Dimension 15,Check both directions: unflagged claims and VERIFY shortcuts,shared/base-rules/qa.md,"Check both directions, not just one"
+QA-0220,qa-agent.md,Dimension 15,Every open VERIFY tag has a matching writer note line,shared/base-rules/qa.md,should have a matching line in the writer notes
+QA-0221,qa-agent.md,Dimension 15,Tag with no research or on checkable fact fails,shared/base-rules/qa.md,a tag on something checkable in a few minutes (a public price
+QA-0222,qa-agent.md,Dimension 15,Check quickly checkable tags yourself; note clean results,shared/base-rules/qa.md,check it directly rather than taking the tag's word for it
+QA-0223,qa-agent.md,Dimension 15,"Researched open tags are revision items, not failures",shared/base-rules/qa.md,Honestly researched open tags are revision items for the human publish review
+QA-0224,qa-agent.md,Dimension 15,Citations link the original source and resolve,shared/base-rules/qa.md,pointing at the original source (not a blog quoting it)
+QA-0225,qa-agent.md,Dimension 15,"Cite by linking the fact, not narrating",shared/base-rules/qa.md,"cited by linking the fact itself, not narrated"
+QA-0226,qa-agent.md,Dimension 15,No vague attribution in place of a named source,shared/base-rules/qa.md,standing in for a named source
+QA-0227,qa-agent.md,Dimension 15,Scenario labeled; real rates applied to it sourced,shared/base-rules/qa.md,a made-up scenario is labeled as a scenario
+QA-0228,qa-agent.md,Dimension 15,"Fail fabricated numbers, invented results, VERIFY as shortcut",shared/base-rules/qa.md,"Fail if anything reads as a fabricated number, an invented client result"
+QA-0229,qa-agent.md,Dimension 15,Fabricated or untraceable claim is a Blocker,shared/base-rules/qa.md,A fabricated or untraceable claim is a Blocker.
+QA-0230,qa-agent.md,Dimension 16,"No feature, price, capability anchored to date or version",shared/base-rules/qa.md,confirm it isn't anchored to a date or a version number
+QA-0231,qa-agent.md,Dimension 16,Freshness flags handle changing state,shared/base-rules/qa.md,The freshness-flag system already exists to handle the fact
+QA-0232,qa-agent.md,Dimension 16,Naming the gap a feature closes is fine,shared/base-rules/qa.md,Naming the gap a feature closes is fine
+QA-0233,qa-agent.md,Dimension 16,"Dates only when reader-useful, never as the news",shared/base-rules/qa.md,such as a compliance deadline or a migration timeline
+QA-0234,qa-agent.md,Dimension 16,Fail any date or version anchor without reason,shared/base-rules/qa.md,"Fail if the draft anchors a feature, price, or capability to a"
+QA-0235,qa-agent.md,Dimension 17,Total body plus FAQ within 10% of target,shared/base-rules/qa.md,within 10% of the brief's target word count?
+QA-0236,qa-agent.md,Dimension 17,Every H2 gets its share; later steps as developed,shared/base-rules/qa.md,with the later steps of a how-to and the later items of
+QA-0237,qa-agent.md,Dimension 17,Fail over 10% under (Blocker) or thin sections,shared/base-rules/qa.md,Fail if the total is more than 10% under the target
+QA-0238,qa-agent.md,Dimension 17,Name each thin section and what it's missing,shared/base-rules/qa.md,Name each thin section and what it's missing
+QA-0239,qa-agent.md,Dimension 18,"FK grade 5 to 6, hard ceiling 7",shared/base-rules/qa.md,"is the Flesch-Kincaid grade between 5 and 6, with 7 as the"
+QA-0240,qa-agent.md,Dimension 18,"Average sentence 10 to 14 words, few over 20",shared/base-rules/qa.md,"Is the average sentence 10 to 14 words, with almost no sentences"
+QA-0241,qa-agent.md,Dimension 18,Sentence length spread about 4 words or more,shared/base-rules/qa.md,"a spread, or standard deviation, of about 4 words or more"
+QA-0242,qa-agent.md,Dimension 18,Flag vague phrases where a specific could go,shared/base-rules/qa.md,flag every vague phrase where a specific could go
+QA-0243,qa-agent.md,Dimension 18,"Fail grade over 6, long sentences, flat rhythm, vague clusters",shared/base-rules/qa.md,Fail if the grade is above 6 (a Blocker above 7)
+QA-0244,qa-agent.md,Dimension 19,"Exactly one empty line between blocks, never two",shared/base-rules/qa.md,In Drive: exactly one empty line between blocks throughout
+QA-0245,qa-agent.md,Dimension 19,"No garbled characters, emoji, raw Markdown, escapes, entities",shared/base-rules/qa.md,"no backslash-escaped brackets, and no HTML entities shown as text"
+QA-0246,qa-agent.md,Dimension 19,"Real headings; every link clickable, in tables too",shared/base-rules/qa.md,"every link, including links in table cells, is clickable"
+QA-0247,qa-agent.md,Dimension 19,Tables have borders and header row,shared/base-rules/qa.md,tables have their borders and header row
+QA-0248,qa-agent.md,Dimension 19,SEO metadata in its own labeled block,shared/base-rules/qa.md,the SEO metadata sits in its own labeled block
+QA-0249,qa-agent.md,Dimension 19,Fail any; broken throughout is a Blocker,shared/base-rules/qa.md,a document that renders broken throughout is a Blocker
+QA-0250,qa-agent.md,Dimension 20,"Answer PAA, follow-ups, community questions",shared/base-rules/qa.md,"the brief's People Also Ask questions, their follow-up questions"
+QA-0251,qa-agent.md,Dimension 20,Every H2 answers at least one question plainly,shared/base-rules/qa.md,Does every H2 section answer at least one question in plain words
+QA-0252,qa-agent.md,Dimension 20,"FAQ five to eight real questions, 40 to 60 word answers",shared/base-rules/qa.md,each answered in 40 to 60 words that open with the answer
+QA-0253,qa-agent.md,Dimension 20,Search two or three main questions yourself,shared/base-rules/qa.md,Run two or three of the brief's main questions through a quick
+QA-0254,qa-agent.md,Dimension 20,Fail missing obvious question or invented FAQ,shared/base-rules/qa.md,Fail on any missing obvious question
+QA-0255,qa-agent.md,Dimension 21,Every H2 has a concrete strategic example,shared/base-rules/qa.md,"Every H2 section has at least one concrete, strategic example"
+QA-0256,qa-agent.md,Dimension 21,One labeled reader scenario runs through the piece,shared/base-rules/qa.md,One realistic reader scenario runs through the piece
+QA-0257,qa-agent.md,Dimension 21,"Data-led where real data exists, nothing forced",shared/base-rules/qa.md,The piece is data-led wherever real data exists
+QA-0258,qa-agent.md,Dimension 21,Clear stance with reasoning shown,shared/base-rules/qa.md,The piece takes a clear stance
+QA-0259,qa-agent.md,Dimension 21,Sections connect by cause and effect,shared/base-rules/qa.md,Sections connect by cause and effect
+QA-0260,qa-agent.md,Dimension 21,"Fail no example, no stance, topic hook, unused data",shared/base-rules/qa.md,"Fail if any H2 has no example, if there's no clear stance"
+QA-0261,qa-agent.md,Dimension 22,"Reviews quoted word for word, attributed, linked",shared/base-rules/qa.md,every quoted review is quoted word for word
+QA-0262,qa-agent.md,Dimension 22,Spot-check at least two quotes against sources,shared/base-rules/qa.md,spot-check at least two quotes against their source pages
+QA-0263,qa-agent.md,Dimension 22,"No invented, merged, paraphrased, or prohibited-claim reviews",shared/base-rules/qa.md,"No review is invented, merged, paraphrased as a quote"
+QA-0264,qa-agent.md,Dimension 22,"WordPress.org numbers match live page, exact, flagged (generalized)",shared/base-rules/qa.md,"match the live page, are quoted exactly as shown, carry a freshness"
+QA-0265,qa-agent.md,Dimension 22,Installations never called customers or merchants,shared/base-rules/qa.md,active installations are never described as customers or merchants
+QA-0266,qa-agent.md,Dimension 22,Fail mismatch; altered review is a Blocker,shared/base-rules/qa.md,Fail on any mismatch; an invented or altered review is a Blocker.
+QA-0267,qa-agent.md,Dimension 22,"Not applicable, passed when no reviews or platform data",shared/base-rules/qa.md,"Mark this dimension ""not applicable, passed"""
+QA-0268,qa-agent.md,Dimension 23,Machine text shows in its shape as well as words,shared/base-rules/qa.md,Machine-written text gives itself away in its shape
+QA-0269,qa-agent.md,Dimension 23,Reflexive rule-of-three lists,shared/base-rules/qa.md,where the three items aren't each doing work
+QA-0270,qa-agent.md,Dimension 23,Negative parallelism more than once or twice,shared/base-rules/qa.md,used more than once or twice in the piece
+QA-0271,qa-agent.md,Dimension 23,False ranges,shared/base-rules/qa.md,that don't describe a real spectrum
+QA-0272,qa-agent.md,Dimension 23,Hanging -ing tails,shared/base-rules/qa.md,that add fake analysis to a sentence
+QA-0273,qa-agent.md,Dimension 23,Empty significance claims,shared/base-rules/qa.md,"telling the reader something is important, crucial, or a key consideration"
+QA-0274,qa-agent.md,Dimension 23,Section-ending recaps; conclusion repeating intro,shared/base-rules/qa.md,a conclusion that only repeats the introduction
+QA-0275,qa-agent.md,Dimension 23,Synonym cycling,shared/base-rules/qa.md,calling the same thing by a different name each time
+QA-0276,qa-agent.md,Dimension 23,Repeated sentence openings,shared/base-rules/qa.md,three or more sentences in a row starting with the same word
+QA-0277,qa-agent.md,Dimension 23,Over-formatting,shared/base-rules/qa.md,"bold on whole sentences, more than one bold phrase in most sections"
+QA-0278,qa-agent.md,Dimension 23,Uniform rhythm,shared/base-rules/qa.md,every paragraph the same length and shape
+QA-0279,qa-agent.md,Dimension 23,Chat leftovers and placeholders,shared/base-rules/qa.md,any bracketed instruction meant for the writer
+QA-0280,qa-agent.md,Dimension 23,Hedging stacks,shared/base-rules/qa.md,where a direct claim is supported
+QA-0281,qa-agent.md,Dimension 23,"Fail generic output, clusters, or repeating patterns",shared/base-rules/qa.md,Fail if the draft reads like generic AI output on the whole
+QA-0282,qa-agent.md,Step 3,"Short readable report, not JSON",modes/qa.md,"Write a short, readable report, not a wall of JSON"
+QA-0283,qa-agent.md,Step 3,"Report title line with Item ID, title, round",modes/qa.md,# QA Report: [Item ID]: [Working Title] ([v1 or rework N])
+QA-0284,qa-agent.md,Step 3,Score section: passed over total,modes/qa.md,[Number of dimensions passed] / [total dimensions] passed
+QA-0285,qa-agent.md,Step 3,"Verdict section: Approved, Needs Rework, or Escalated",modes/qa.md,Escalated: needs a person's decision after three rework passes
+QA-0286,qa-agent.md,Step 3,Measurements line,modes/qa.md,Words: [count] of [brief target] ([percent])
+QA-0287,qa-agent.md,Step 3,"Issues per failed dimension, most severe first",modes/qa.md,"For each failed dimension, most severe first:"
+QA-0288,qa-agent.md,Step 3,"Issue format: location, problem, fix",modes/qa.md,"[Exact location]. [What's wrong, specifically]. [The concrete fix.]"
+QA-0289,qa-agent.md,Step 3,"Earlier issues marked fixed or not, on rework",modes/qa.md,"each issue from the previous QA report, marked fixed or not fixed."
+QA-0290,qa-agent.md,Step 3,Polish before publish section,modes/qa.md,"Minor items that don't fail the draft, each with its location and"
+QA-0291,qa-agent.md,Step 3,"What's working section, to avoid overcorrection",modes/qa.md,A rework pass that only sees failures tends to overcorrect
+QA-0292,qa-agent.md,Step 3,"QA Score is passed over total, not a percentage",shared/base-rules/qa.md,is the number of dimensions passed over the total
+QA-0293,qa-agent.md,Step 3,Score format is legible and consistent,shared/base-rules/qa.md,it's more legible at a glance and consistent run over run
+QA-0294,qa-agent.md,Step 3,"Report follows house rules: plain words, no em dashes",modes/qa.md,The report itself follows the house rules it checks
+QA-0295,qa-agent.md,Step 4,Approved only with no Blocker or Standard failure,modes/qa.md,Approved only when no dimension fails at Blocker or Standard severity
+QA-0296,qa-agent.md,Step 4,Polish never blocks approval,modes/qa.md,Polish items never block approval. Any Blocker
+QA-0297,qa-agent.md,Step 4,Escalation check before deciding Status,modes/qa.md,"Before deciding the next Status, check this item's draft pass count"
+QA-0298,qa-agent.md,Step 4,Fail at three or more passes: don't route to Needs Rework,modes/qa.md,do not route it to `Needs Rework` again
+QA-0299,qa-agent.md,Step 4,Rationale: time for a human decision,modes/qa.md,"it is time for a human decision, not another loop"
+QA-0300,qa-agent.md,Step 4,Escalated Status written only after the post,modes/qa.md,"written only after the 5c post, per 5b"
+QA-0301,qa-agent.md,Step 4,Say escalation plainly in Slack post and record,modes/qa.md,say so plainly in both the Slack post and the row's Agent
+QA-0302,qa-agent.md,Step 4,Send-back after approval: skip escalation check once,modes/qa.md,skip the escalation check for this one audit
+QA-0303,qa-agent.md,Step 4,"If that rework fails, escalate rather than loop",modes/qa.md,"If that rework still fails, escalate rather than loop again."
+QA-0304,qa-agent.md,Step 4,Otherwise route normally per Step 5,modes/qa.md,"Otherwise, route normally per Step 5."
+QA-0305,qa-agent.md,Step 5a,Save report as new doc for every verdict,modes/qa.md,"Save the QA report as a document, for every verdict."
+QA-0306,qa-agent.md,Step 5a,Create with create_file and HTML,shared/storage-drive.md,Create the Doc with one call:
+QA-0307,qa-agent.md,Step 5a,"Follow HTML rules: headings, p, lists, charset, entities, spacer",modes/qa.md,"one empty spacer paragraph between blocks, no Markdown, no emoji"
+QA-0308,qa-agent.md,Step 5a,Title QA Report v1 or rework N,modes/qa.md,`[Item ID]: QA Report (v1)` or `[Item ID]: QA Report (rework [N])`
+QA-0309,qa-agent.md,Step 5a,Create inside pipeline folder with parentId,shared/storage-drive.md,and `parentId` set to the Drive Folder's ID.
+QA-0310,qa-agent.md,Step 5a,Confirm returned mimeType is a Google Doc,shared/storage-drive.md,The returned `mimeType` must be `application/vnd.google-apps.document`.
+QA-0311,qa-agent.md,Step 5a,G19 access check before link goes anywhere,modes/qa.md,Run the access check (G19) before the link goes anywhere.
+QA-0312,qa-agent.md,Step 5a,At most three attempts,modes/qa.md,"the three-attempt budget, the ""say what's happening, never go quiet"" rule"
+QA-0313,qa-agent.md,Step 5a,"After failures, put full report in Notes and say so",modes/qa.md,"write the error, the time, and the full report into Agent Notes"
+QA-0314,qa-agent.md,Step 5b,Write QA Score as passed over total,modes/qa.md,"QA Score: the passed count over the total, as text, like `21/23`."
+QA-0315,qa-agent.md,Step 5b,Ignore stale field description; use real total,modes/qa.md,Use this audit's real total.
+QA-0316,qa-agent.md,Step 5b,Write QA Report Link,modes/qa.md,QA Report Link: the report's link.
+QA-0317,qa-agent.md,Step 5b,Status Needs Rework only for that verdict,modes/qa.md,"Status `Needs Rework`, only for a Needs Rework verdict."
+QA-0318,qa-agent.md,Step 5b,Set Last Updated At,shared/airtable.md,Every write sets Last Updated At to now.
+QA-0319,qa-agent.md,Step 5b,"Notes block QA v1 or rework N with score, verdict, link",modes/qa.md,"starting `QA [ISO time]:`, then `Round [n] ([v1 or rework N]).`"
+QA-0320,qa-agent.md,Step 5b,Needs Rework block holds complete Issues list,modes/qa.md,"the complete Issues list with every exact location, problem, and fix"
+QA-0321,qa-agent.md,Step 5b,Notes block and report are the whole handoff,modes/qa.md,that Agent Notes block and the report are the entire handoff to
+QA-0322,qa-agent.md,Step 5b,"No Slack post for Needs Rework, not even short",modes/qa.md,"There is no Slack post for this case, not even a short"
+QA-0323,qa-agent.md,Step 5b order,"Approved/Escalated: write fields first, Status later",modes/qa.md,"Write every field above now, leaving Status at `In QA`."
+QA-0324,qa-agent.md,Step 5b order,"Then Status, thread link, and post-sent line in one update",modes/qa.md,"Then write, in one update: Status"
+QA-0325,qa-agent.md,Step 5b order,Never a must-act status with no visible post,modes/qa.md,"A status that says a person must act, with no post that"
+QA-0326,qa-agent.md,Step 5b order,"Post fails twice: still write Status, log NOT sent",modes/qa.md,"If the post fails twice, still write the Status, leave Slack Thread"
+QA-0327,qa-agent.md,Step 5b order,Recovery or Step 14 finishes an unsent post,modes/qa.md,"or the Blog Writer's Step 14 in this same session, finishes it"
+QA-0328,qa-agent.md,Step 5c,Post only for Approved or Escalated,modes/qa.md,"Post to the product's Slack channel, only for Approved or Escalated."
+QA-0329,qa-agent.md,Step 5c,Never anything to Slack for Needs Rework,modes/qa.md,"do not send anything to Slack for it, under any circumstance, even"
+QA-0330,qa-agent.md,Step 5c,Check for existing escalation post on current doc,modes/qa.md,first check for an escalation post about the current Blog Doc Link
+QA-0331,qa-agent.md,Step 5c,Escalation about older draft doesn't count,modes/qa.md,One about an older draft doesn't count.
+QA-0332,qa-agent.md,Step 5c,Approved: tag everyone on the approver list,modes/qa.md,every approver for this product from Members tagged by Slack ID (G11)
+QA-0333,qa-agent.md,Step 5c,Approved: include score and key measurements,modes/qa.md,Add the key measurements to the same line
+QA-0334,qa-agent.md,Step 5c,Approved: include polish items and open VERIFY tags,modes/qa.md,"open `[VERIFY]` items, Polish items, or anything a person should check or"
+QA-0335,qa-agent.md,Step 5c,Approved: link draft and QA report,modes/qa.md,Link the draft's document and the QA report.
+QA-0336,qa-agent.md,Step 5c,"Ask for a tick, cross, or reply",modes/qa.md,the template's last line says what a tick or a reply does
+QA-0337,qa-agent.md,Step 5c,Say plainly the piece isn't live yet,modes/qa.md,It asks for the final human check without implying the piece is
+QA-0338,qa-agent.md,Step 5c,QA's job ends when the post goes out,modes/qa.md,This mode's job ends the moment that message posts
+QA-0339,qa-agent.md,Step 5c,Orchestrator reads the reply and writes Published or Needs Rework,modes/qa.md,The Orchestrator watches `QA Passed - Awaiting Publish Review`
+QA-0340,qa-agent.md,Step 5c,"Escalated: tag approvers, summary of what still fails, report link",modes/qa.md,up to 3 short lines on what still fails after three passes
+QA-0341,qa-agent.md,Step 5c,"Short, plain, summary and links, never whole report",modes/qa.md,"Keep the post short and plain: a summary and the links, never"
+QA-0342,qa-agent.md,Step 5c,Grade 5 words in the post,shared/slack.md,Write at a grade 5 reading level.
+QA-0343,qa-agent.md,Step 5c,Under about 120 words,shared/slack.md,Fill in the brackets. Keep the wording this short.
+QA-0344,qa-agent.md,Step 5c,Approval post shape,shared/slack.md,"Ready for your OK to publish: [Item ID], [title]"
+QA-0345,qa-agent.md,Step 5c,Escalation first line wording,shared/slack.md,"Stuck after 3 rounds of changes, needs your call: [Item ID], [title]"
+QA-0346,qa-agent.md,Step 5c,Leave out Before you publish when nothing to check,modes/qa.md,Leave it out when there's nothing to check.
+QA-0347,qa-agent.md,Step 5c,No pipeline words in the post,modes/qa.md,Don't use pipeline words (shared/slack.md lists them
+QA-0348,qa-agent.md,Step 5c,Don't mention missing tools or type Sent using,modes/qa.md,"don't mention missing tools, and don't type a ""Sent using"" line"
+QA-0349,qa-agent.md,Step 5c,Confirm response returned a message link,modes/qa.md,Confirm the tool's response returned a message link (G11).
+QA-0350,qa-agent.md,Step 5c,Write link into Slack Thread Link with Status,modes/qa.md,Then write that link into Slack Thread Link along with the Status
+QA-0351,qa-agent.md,Step 5c,"Post fails: retry once, then follow order rule",modes/qa.md,"If the post fails, read the error, fix what it names, and"
+QA-0352,qa-agent.md,Step 5c,Post agrees with Airtable record,modes/qa.md,The post must agree with the Airtable record: the same score and
+QA-0353,qa-agent.md,Step 5d,"Calendar missing: skip, notes line with dates",modes/qa.md,"If Calendar isn't connected, skip it"
+QA-0354,qa-agent.md,Step 5d,Only on approval and only with freshness flags,modes/qa.md,"Only when this draft is being approved, and only if it actually"
+QA-0355,qa-agent.md,Step 5d,"Cadence from Freshness Log, default quarterly or annually",modes/qa.md,by default quarterly for pricing and feature-availability claims
+QA-0356,qa-agent.md,Step 5d,Knowledge base cadence if stricter,modes/qa.md,or the knowledge base's rule if it's stricter
+QA-0357,qa-agent.md,Step 5d,Search for existing Recheck event; never duplicate,modes/qa.md,update nothing and don't create a duplicate
+QA-0358,qa-agent.md,Step 5d,Create 15-minute event on primary calendar,modes/qa.md,a 15-minute block dated that far out from today
+QA-0359,qa-agent.md,Step 5d,Event title format,modes/qa.md,titled `[Item ID]: Recheck [what] - [Working Title]`
+QA-0360,qa-agent.md,Step 5d,Doc reviewer added as attendee,modes/qa.md,"with every approver for this product (Members, by Email) added as an"
+QA-0361,qa-agent.md,Step 5d,"Description lists claims, sources, draft link",modes/qa.md,"the specific flagged claims, their sources, and the draft's document link"
+QA-0362,qa-agent.md,Step 5d,Skip when no flags or routing elsewhere,modes/qa.md,Skip this step entirely if the draft carries no freshness flags
+QA-0363,qa-agent.md,Step 5d,Freshness recheck works without Calendar,modes/qa.md,"to the soonest recheck date, in the 5b update"
+QA-0364,qa-agent.md,Step 6,User correction in chat: distill a reusable rule,modes/qa.md,"distill it into a general, reusable rule"
+QA-0365,qa-agent.md,Step 6,Kinds of correction to capture,modes/qa.md,"disputing a failed dimension, pointing out a check that missed something real"
+QA-0366,qa-agent.md,Step 6,Create Feedback Log row with Status Active,modes/qa.md,"Save it as Suggested only, with `create_records_for_table`, never an update"
+QA-0367,qa-agent.md,Step 6,"Feedback Log fields: Date, Stage QA, What Happened, Rule, Related Item",modes/qa.md,"A Feedback Log row: Date, Product, Stage `QA`, What Happened"
+QA-0368,qa-agent.md,Step 6,Log cross-item patterns without being asked,modes/qa.md,if the same dimension keeps failing across different drafts for this product
+QA-0369,qa-agent.md,Step 6,Note cross-item pattern in What Happened,modes/qa.md,"note in What Happened that it's a cross-item pattern, not a single"
+QA-0370,qa-agent.md,Self-check,Audit run on saved doc re-read and exported,modes/qa.md,"The audit was run on the saved document, re-read from its home"
+QA-0371,qa-agent.md,Self-check,Measurements taken with a script,modes/qa.md,The Step 1.5 measurements were taken with scripts/measure.py where a shell was
+QA-0372,qa-agent.md,Self-check,Every dimension checked with clear call and severity,modes/qa.md,"Every dimension was actually checked, not assumed"
+QA-0373,qa-agent.md,Self-check,"Every failure has location, problem, fix",modes/qa.md,"Every failure has a specific location, a specific problem, and a specific"
+QA-0374,qa-agent.md,Self-check,Every em dash listed; report has none,modes/qa.md,the QA report itself contains zero em dashes
+QA-0375,qa-agent.md,Self-check,"Word count, reading level, sentence length checked",modes/qa.md,"Word count, reading level, and sentence length were checked against the brief's"
+QA-0376,qa-agent.md,Self-check,"Doc checked for spacing, garbling, Markdown, emoji",modes/qa.md,"The saved document was checked for spacing, garbled characters, raw Markdown, and"
+QA-0377,qa-agent.md,Self-check,AI-tell hits judged in context,modes/qa.md,were judged for whether they're doing real work in context
+QA-0378,qa-agent.md,Self-check,No date-anchored claims without reason,modes/qa.md,"No claim about a feature, price, or capability is anchored to a"
+QA-0379,qa-agent.md,Self-check,Earlier issues checked on rework,modes/qa.md,"On a rework, every issue from the previous QA report was checked"
+QA-0380,qa-agent.md,Self-check,Escalation check ran before Status; exception only when told,modes/qa.md,The escalation check in Step 4 ran before Status was set
+QA-0381,qa-agent.md,Self-check,"Escalation used draft pass count, never Rework Count",modes/qa.md,The escalation check used the draft pass count (G6)
+QA-0382,qa-agent.md,Self-check,"Report saved, access-checked, linked; no Claude Docs",modes/qa.md,"passed the access check (G19), and is linked in QA Report Link"
+QA-0383,qa-agent.md,Self-check,"Notes added to, never overwritten",modes/qa.md,"Agent Notes was added to, never overwritten"
+QA-0384,qa-agent.md,Self-check,Slack post conditions all met,modes/qa.md,No Slack post happened for a Needs Rework verdict
+QA-0385,qa-agent.md,Self-check,Calendar reminder per cadence or notes line,modes/qa.md,a calendar reminder exists for each distinct cadence with no duplicate created
+QA-0386,qa-agent.md,Self-check,Every applicable Active Feedback Log rule applied,modes/qa.md,Every Active product rule and learned rule for this product was applied
+QA-0387,qa-agent.md,Self-check,No question unattended; no setup asked,modes/qa.md,No question was asked in an unattended run (G2)
+QA-0388,qa-agent.md,Self-check,User feedback distilled and logged,modes/qa.md,it was distilled into a Suggested rule and logged per Step 6
+QA-0389,qa-agent.md,Closing note,Standard template; reads all setup from elsewhere,modes/qa.md,"all come from the base: Settings, Team, Members, and Reference"
+QA-0390,qa-agent.md,Closing note,Defers to product's quality-checks rubric where it adds,shared/base-rules/qa.md,treat that file as the senior authority

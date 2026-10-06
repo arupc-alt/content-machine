@@ -1,0 +1,1193 @@
+{
+  "schemaVersion": 1,
+  "baseNamePattern": "[Company] Content Machine",
+  "notes": [
+    "This file is passed to create_base almost as is. Setup creates the 7 tables below in one call, then adds every field listed under addAfterCreate (link fields and formulas need the tables to exist first).",
+    "It holds no records and no IDs. After the base exists, setup reads it back and saves every table, field, and choice ID in the Team row's Schema Map field.",
+    "Field names are fixed. Agents use the saved IDs, so a person renaming a field in Airtable breaks nothing."
+  ],
+  "tables": [
+    {
+      "key": "content_items",
+      "name": "Content Items",
+      "description": "One row per piece of content moving through the pipeline. The live tracker every agent reads and writes.",
+      "fields": [
+        {
+          "name": "Item ID",
+          "type": "singleLineText",
+          "description": "Item ID Prefix plus Seq, zero-padded to 4 digits. Written by the agent that creates the row, right after it reads back Seq."
+        },
+        {
+          "name": "Seq",
+          "type": "autoNumber",
+          "description": "The number part of Item ID. Airtable assigns it, so two runs can never get the same number."
+        },
+        {
+          "name": "Product",
+          "type": "singleLineText",
+          "description": "Matches the Product field of one Settings row."
+        },
+        {
+          "name": "Trigger Type",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Topic"
+              },
+              {
+                "name": "Keyword"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Input",
+          "type": "multilineText",
+          "description": "The topic or keyword exactly as the person gave it, plus any context they added."
+        },
+        {
+          "name": "Working Title",
+          "type": "singleLineText",
+          "description": "The piece's working title. Written by the Brief Agent (or the Blog Writer for a pasted brief). Before a title exists, messages use Input."
+        },
+        {
+          "name": "Primary Keyword",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Secondary Keywords",
+          "type": "multilineText"
+        },
+        {
+          "name": "Format Skeleton",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Comparison/Alternatives"
+              },
+              {
+                "name": "Versus/Head-to-Head"
+              },
+              {
+                "name": "Listicle/Examples"
+              },
+              {
+                "name": "How-to/Guide"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Topic Requested",
+                "color": "grayLight2"
+              },
+              {
+                "name": "Brief In Progress",
+                "color": "blueLight2"
+              },
+              {
+                "name": "Awaiting Brief Approval",
+                "color": "yellowLight2"
+              },
+              {
+                "name": "Brief Approved",
+                "color": "greenLight1"
+              },
+              {
+                "name": "Writing In Progress",
+                "color": "blueLight1"
+              },
+              {
+                "name": "In QA",
+                "color": "purpleLight2"
+              },
+              {
+                "name": "QA Passed - Awaiting Publish Review",
+                "color": "tealLight2"
+              },
+              {
+                "name": "Needs Rework",
+                "color": "orangeLight2"
+              },
+              {
+                "name": "Rework In Progress",
+                "color": "orangeDark1"
+              },
+              {
+                "name": "Escalated - Needs Human Input",
+                "color": "redBright"
+              },
+              {
+                "name": "Published",
+                "color": "greenBright"
+              },
+              {
+                "name": "Rejected",
+                "color": "grayDark1"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Doc Home",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Drive"
+              },
+              {
+                "name": "Notion"
+              }
+            ]
+          },
+          "description": "Where this piece's documents live. Set once when the row is created and never changed."
+        },
+        {
+          "name": "Brief Doc Link",
+          "type": "url"
+        },
+        {
+          "name": "Blog Doc Link",
+          "type": "url"
+        },
+        {
+          "name": "QA Report Link",
+          "type": "url"
+        },
+        {
+          "name": "QA Score",
+          "type": "singleLineText",
+          "description": "Passed over total, like 21/23. Base dimensions only. Product rules go in Product Rules Result."
+        },
+        {
+          "name": "Product Rules Result",
+          "type": "singleLineText",
+          "description": "Like 11 of 12."
+        },
+        {
+          "name": "Brief Rework Count",
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "description": "Brief-stage rework passes. Blank means 0."
+        },
+        {
+          "name": "Draft Rework Count",
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "description": "Draft-stage rework passes. Blank means 0."
+        },
+        {
+          "name": "QA Round",
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "description": "The QA round the Blog Writer last saved. Used to resume a run that died."
+        },
+        {
+          "name": "Slack Thread Link",
+          "type": "url",
+          "description": "Link to the latest approval, verdict, or escalation post for this piece."
+        },
+        {
+          "name": "Assigned Reviewer",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Owner",
+          "type": "email",
+          "description": "Who owns the piece. Blank gets the host when an agent claims it."
+        },
+        {
+          "name": "Priority",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "High"
+              },
+              {
+                "name": "Normal"
+              },
+              {
+                "name": "Low"
+              }
+            ]
+          },
+          "description": "Set by people. High goes first within its queue step."
+        },
+        {
+          "name": "Claimed By",
+          "type": "singleLineText",
+          "description": "Which mode and run holds this row, like 'Brief Agent, scheduled', 'Blog Writer, [person]', or 'Blog Writer (QA in-session)'."
+        },
+        {
+          "name": "Claimed At",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "name": "Claim Token",
+          "type": "singleLineText",
+          "description": "A random token the claiming run writes and then re-reads. Only the run whose token is there goes ahead."
+        },
+        {
+          "name": "Last Saved Step",
+          "type": "singleLineText",
+          "description": "Where the claiming run got to. One of the values listed in shared/airtable.md (Last Saved Step). The next run resumes from here."
+        },
+        {
+          "name": "Stall Count",
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "description": "How many times this row stalled. At 2 it is escalated."
+        },
+        {
+          "name": "Human Feedback",
+          "type": "multilineText",
+          "description": "Written only by the Orchestrator: each reviewer's feedback in their own words, with its source link and time."
+        },
+        {
+          "name": "Agent Notes",
+          "type": "multilineText",
+          "description": "The pipeline's working notes for this piece: writer notes, QA issues lists, send-back notes, post history. Only the agent holding the claim adds to it, always at the end, never overwriting. Each block starts with '[agent] [ISO time]:'."
+        },
+        {
+          "name": "Duplicate Decision",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Pending"
+              },
+              {
+                "name": "Go"
+              },
+              {
+                "name": "Drop"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Overlap With",
+          "type": "multilineText",
+          "description": "Item IDs or live URLs this piece may duplicate."
+        },
+        {
+          "name": "Health Flag",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "OK"
+              },
+              {
+                "name": "Needs Fix"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Reference Version",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Rules Loaded",
+          "type": "singleLineText",
+          "description": "Like 'base 48, product 12, learned 3, version 4'."
+        },
+        {
+          "name": "Freshness Flags",
+          "type": "multilineText"
+        },
+        {
+          "name": "Recheck Due",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            }
+          },
+          "description": "When a flagged fact (a price, a limit) must be checked again."
+        },
+        {
+          "name": "Live URL",
+          "type": "url"
+        },
+        {
+          "name": "Published At",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "name": "Created At",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "name": "Last Updated At",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "name": "Notes",
+          "type": "multilineText",
+          "description": "For people. Agents may add one short run line here, but never read it back."
+        }
+      ]
+    },
+    {
+      "key": "settings",
+      "name": "Settings",
+      "description": "One row per product. Each setting has its own field.",
+      "fields": [
+        {
+          "name": "Product",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Company",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Website URL",
+          "type": "url"
+        },
+        {
+          "name": "Docs URL",
+          "type": "url"
+        },
+        {
+          "name": "Item ID Prefix",
+          "type": "singleLineText",
+          "description": "Like ACME-AR-. Ends with a hyphen."
+        },
+        {
+          "name": "Slack Channel Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Slack Channel ID",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Doc Home",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Drive"
+              },
+              {
+                "name": "Notion"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Drive Folder",
+          "type": "url"
+        },
+        {
+          "name": "Notion Home",
+          "type": "url"
+        },
+        {
+          "name": "Doc Sharing",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Notion web link"
+              },
+              {
+                "name": "Notion guests"
+              },
+              {
+                "name": "Drive commenters"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Language",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Spelling",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "US"
+              },
+              {
+                "name": "UK"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Set Up On",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            }
+          }
+        },
+        {
+          "name": "Notes",
+          "type": "multilineText",
+          "description": "History, for people only. Never read as setup."
+        }
+      ]
+    },
+    {
+      "key": "team",
+      "name": "Team",
+      "description": "Exactly one row. Values that are the same for the whole base.",
+      "fields": [
+        {
+          "name": "Company",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Base ID",
+          "type": "singleLineText",
+          "description": "This base's own ID. A run whose schedule names a different base stops."
+        },
+        {
+          "name": "Skill Name",
+          "type": "singleLineText",
+          "description": "content-machine, or the fallback name setup used."
+        },
+        {
+          "name": "Time Zone",
+          "type": "singleLineText",
+          "description": "IANA name, like America/New_York."
+        },
+        {
+          "name": "Schedule Host",
+          "type": "email"
+        },
+        {
+          "name": "Rounds Per Day",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "Days",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Every day"
+              },
+              {
+                "name": "Weekdays"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Paused",
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "redBright"
+          }
+        },
+        {
+          "name": "Last Run Orchestrator",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "name": "Last Run Brief",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "name": "Last Run Blog Writer",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "name": "Last Orchestrator Sweep",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "name": "Schema Map",
+          "type": "multilineText",
+          "description": "JSON. Every table, field, and choice ID, plus each product's Slack Channel ID. Written by setup and by 'repair the base'."
+        },
+        {
+          "name": "Schema Version",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "Min Skill Version",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Last Model Used",
+          "type": "singleLineText"
+        },
+        {
+          "name": "API Month",
+          "type": "singleLineText",
+          "description": "Like 2026-10. When it changes, API Calls This Month starts again at 0."
+        },
+        {
+          "name": "API Calls This Month",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "Limit Reached",
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "redBright"
+          }
+        },
+        {
+          "name": "Records Count",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "Reference Row Count",
+          "type": "multilineText",
+          "description": "JSON: product name to the number of Active Reference rows it should load."
+        },
+        {
+          "name": "Bot Status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "On"
+              },
+              {
+                "name": "Off"
+              },
+              {
+                "name": "Failed test"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Bot Automation ID",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Heartbeat Automation ID",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Last Full Check",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "name": "Setup Post Link",
+          "type": "url",
+          "description": "The setup post pinned in the team channel, so teammates can find the base."
+        },
+        {
+          "name": "Notes",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "key": "reference",
+      "name": "Reference",
+      "description": "The reference files (as rows by section) and every product and learned rule.",
+      "fields": [
+        {
+          "name": "Entry",
+          "type": "singleLineText",
+          "description": "A short name, like 'Style guide: Punctuation' or 'ACME-R07'."
+        },
+        {
+          "name": "Product",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Type",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Brand guide"
+              },
+              {
+                "name": "Style guide"
+              },
+              {
+                "name": "Product knowledge"
+              },
+              {
+                "name": "Quality checks"
+              },
+              {
+                "name": "Links and CTAs"
+              },
+              {
+                "name": "Competitors"
+              },
+              {
+                "name": "Best past posts"
+              },
+              {
+                "name": "Rule"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Layer",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "File"
+              },
+              {
+                "name": "Product rule"
+              },
+              {
+                "name": "Learned rule"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Section",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Content",
+          "type": "multilineText"
+        },
+        {
+          "name": "Rule ID",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Category",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Keywords and SEO"
+              },
+              {
+                "name": "Writing style"
+              },
+              {
+                "name": "Structure"
+              },
+              {
+                "name": "Product truth"
+              },
+              {
+                "name": "QA checks"
+              },
+              {
+                "name": "Links and CTAs"
+              },
+              {
+                "name": "Competitors"
+              },
+              {
+                "name": "Visuals"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Agents",
+          "type": "multipleSelects",
+          "options": {
+            "choices": [
+              {
+                "name": "Brief"
+              },
+              {
+                "name": "Blog Writer"
+              },
+              {
+                "name": "QA"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Level",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Must"
+              },
+              {
+                "name": "Should"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Check Method",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Script"
+              },
+              {
+                "name": "Judged"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Source Quote",
+          "type": "multilineText"
+        },
+        {
+          "name": "Source URL",
+          "type": "url",
+          "description": "For facts that change (prices, limits, plan names): the live page to read fresh."
+        },
+        {
+          "name": "Status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Suggested"
+              },
+              {
+                "name": "Active"
+              },
+              {
+                "name": "Retired"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Version",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "Approved By",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Approved At",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "members",
+      "name": "Members",
+      "description": "The only list of people. Approvers, runners, and the host.",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Slack ID",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Email",
+          "type": "email"
+        },
+        {
+          "name": "Time Zone",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Role",
+          "type": "multipleSelects",
+          "options": {
+            "choices": [
+              {
+                "name": "Host"
+              },
+              {
+                "name": "Runner"
+              },
+              {
+                "name": "Approver"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Products",
+          "type": "singleLineText",
+          "description": "Comma-separated product names this person approves. Blank means all."
+        },
+        {
+          "name": "Active",
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          }
+        },
+        {
+          "name": "Joined On",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "rework_history",
+      "name": "Rework History",
+      "description": "One row per rework pass. Copied as is from the working pipeline.",
+      "fields": [
+        {
+          "name": "Rework ID",
+          "type": "autoNumber"
+        },
+        {
+          "name": "Rework Pass #",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "Stage",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Brief"
+              },
+              {
+                "name": "Draft"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Triggered By",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "QA Fail"
+              },
+              {
+                "name": "Human Rejection"
+              },
+              {
+                "name": "Human Reply or Comment"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Feedback Received",
+          "type": "multilineText"
+        },
+        {
+          "name": "Refinement Mission",
+          "type": "multilineText"
+        },
+        {
+          "name": "Resolution Log",
+          "type": "multilineText"
+        },
+        {
+          "name": "Verify Tags Resolved",
+          "type": "multilineText"
+        },
+        {
+          "name": "Previous Doc Link",
+          "type": "url"
+        },
+        {
+          "name": "New Doc Link",
+          "type": "url"
+        },
+        {
+          "name": "Outcome Status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Resubmitted"
+              },
+              {
+                "name": "Escalated"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Date",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        }
+      ]
+    },
+    {
+      "key": "feedback_log",
+      "name": "Feedback Log",
+      "description": "The story of each piece of feedback. The rule it led to lives in Reference.",
+      "fields": [
+        {
+          "name": "Log ID",
+          "type": "autoNumber"
+        },
+        {
+          "name": "Date",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            }
+          }
+        },
+        {
+          "name": "Product",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Stage",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Brief"
+              },
+              {
+                "name": "Draft"
+              },
+              {
+                "name": "QA"
+              }
+            ]
+          }
+        },
+        {
+          "name": "What Happened",
+          "type": "multilineText"
+        },
+        {
+          "name": "The Rule",
+          "type": "multilineText"
+        },
+        {
+          "name": "Reference Rule ID",
+          "type": "singleLineText",
+          "description": "The Rule ID of the Suggested rule this feedback created in Reference."
+        },
+        {
+          "name": "Status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Suggested"
+              },
+              {
+                "name": "Active"
+              },
+              {
+                "name": "Retired"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "addAfterCreate": [
+    {
+      "table": "content_items",
+      "field": {
+        "name": "Rework History",
+        "type": "multipleRecordLinks",
+        "options": {
+          "linkedTableKey": "rework_history"
+        }
+      },
+      "renameInverseTo": "Item"
+    },
+    {
+      "table": "content_items",
+      "field": {
+        "name": "Feedback Log",
+        "type": "multipleRecordLinks",
+        "options": {
+          "linkedTableKey": "feedback_log"
+        }
+      },
+      "renameInverseTo": "Related Item"
+    },
+    {
+      "table": "team",
+      "field": {
+        "name": "Heartbeat Late",
+        "type": "formula",
+        "options": {
+          "formula": "IF(OR({Paused}, AND({Days}='Weekdays', OR(WEEKDAY(NOW())=0, WEEKDAY(NOW())=6))), 0, IF(OR(IF({Last Run Orchestrator}, DATETIME_DIFF(NOW(), {Last Run Orchestrator}, 'hours') > IF(AND({Days}='Weekdays', WEEKDAY(NOW())=1), 74, 26), 0), IF({Last Run Brief}, DATETIME_DIFF(NOW(), {Last Run Brief}, 'hours') > IF(AND({Days}='Weekdays', WEEKDAY(NOW())=1), 74, 26), 0), IF({Last Run Blog Writer}, DATETIME_DIFF(NOW(), {Last Run Blog Writer}, 'hours') > IF(AND({Days}='Weekdays', WEEKDAY(NOW())=1), 74, 26), 0)), 1, 0))"
+        }
+      },
+      "note": "1 means an agent has missed a full run day (26 hours; 74 hours over a weekend in Weekdays mode). Weekend days in Weekdays mode never count, and a blank Last Run never counts. Days are judged in UTC, which is close enough for a 26-hour window."
+    }
+  ],
+  "automations": [
+    {
+      "key": "heartbeat",
+      "name": "Content Machine: heartbeat alert",
+      "always": true,
+      "trigger": "Team row where Heartbeat Late = 1",
+      "actions": [
+        "sendEmail to the Schedule Host and every Active Approver in Members (email only; the heartbeat never posts in Slack)"
+      ]
+    },
+    {
+      "key": "bot",
+      "name": "Content Machine: notify reviewers",
+      "always": false,
+      "onlyIf": "Slack is connected inside Airtable (list_external_accounts shows a Slack account)",
+      "trigger": "Content Items row whose Status is any of Awaiting Brief Approval, QA Passed - Awaiting Publish Review, Escalated - Needs Human Input",
+      "actions": [
+        "sendToSlack, username 'Content Machine', to the channel plus up to 9 approvers by Slack ID, two branches per status, by whether Slack Thread Link is empty (see shared/slack.md, The optional Airtable bot)"
+      ]
+    }
+  ]
+}

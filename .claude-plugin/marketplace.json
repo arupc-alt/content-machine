@@ -1,0 +1,15 @@
+{
+  "name": "content-machine",
+  "description": "The Content Machine: a blog content pipeline with briefs, drafts, quality checks, Slack approvals, and an Airtable tracker.",
+  "owner": {
+    "name": "arupc-alt",
+    "url": "https://github.com/arupc-alt"
+  },
+  "plugins": [
+    {
+      "name": "content-machine",
+      "source": "./plugins/content-machine",
+      "description": "Researched SEO briefs, drafts with a built-in quality check and rework loop, Slack approvals, and an Airtable tracker, in your own accounts."
+    }
+  ]
+}

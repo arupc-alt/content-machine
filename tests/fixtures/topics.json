@@ -1,0 +1,22 @@
+[
+  {
+    "type": "Keyword",
+    "input": "best soy wax for candles",
+    "format": "Listicle/Examples"
+  },
+  {
+    "type": "Topic",
+    "input": "How to price handmade candles so you make a profit",
+    "format": "How-to/Guide"
+  },
+  {
+    "type": "Keyword",
+    "input": "soy wax vs beeswax",
+    "format": "Versus/Head-to-Head"
+  },
+  {
+    "type": "Keyword",
+    "input": "alternatives to paraffin wax",
+    "format": "Comparison/Alternatives"
+  }
+]

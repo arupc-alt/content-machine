@@ -1,0 +1,20 @@
+name: check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Repo checks
+        run: python3 scripts/check.py
+      - name: Measurement script self-test
+        run: python3 plugins/content-machine/skills/content-machine/scripts/measure.py --self-test
+      - name: Release check fixtures
+        run: python3 tests/run_fixture_checks.py

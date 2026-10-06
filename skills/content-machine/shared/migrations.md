@@ -1,0 +1,18 @@
+# Database migrations
+
+Each skill release that changes the database ships a numbered migration here. A migration only adds things: tables, fields, and choices. It never deletes, renames, or changes the type of anything, so a team with mixed skill versions keeps working (older copies ignore fields they don't know).
+
+## How a run applies them
+
+1. Read Schema Version from the Team row.
+2. For each migration below with a higher number, in order: check what already exists (`get_table_schema`), add only what's missing, then refresh Schema Map with the new IDs.
+3. Set Schema Version to the migration's number. If the migration says so, also raise Min Skill Version.
+4. "update the base" (setup mode) says what it's adding and waits for a yes. A normal agent run, attended or not, applies only migrations marked "safe unattended" and posts one line saying so; anything else waits for "update the base", and the run stops with one alert: "A database update is waiting. Type 'update the base'."
+
+If a step fails halfway, the next run starts the same migration again. Every step checks before it adds, so nothing is added twice.
+
+## Migrations
+
+### 1: the starting structure
+
+The structure in `templates/airtable-schema.json`, schema version 1. Setup builds it directly, so there's nothing to apply.

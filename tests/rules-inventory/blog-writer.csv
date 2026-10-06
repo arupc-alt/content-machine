@@ -1,0 +1,619 @@
+rule_id,source_file,source_section,summary,new_file,anchor
+BW-0001,blog-writer-agent-installer.md,What this agent is,Brief is a contract; build every element exactly as specified,modes/blog-writer.md,"The brief is a contract, not a suggestion."
+BW-0002,blog-writer-agent-installer.md,What this agent is,One agent does every writing job in order on one draft,modes/blog-writer.md,"one agent does all of it, in order, on the same draft"
+BW-0003,blog-writer-agent-installer.md,What this agent is,Rework held to the same standard as the first draft,modes/blog-writer.md,a rework pass is held to the exact standard the first pass
+BW-0004,blog-writer-agent-installer.md,What this agent is,A section anyone could research in an hour is unfinished,modes/blog-writer.md,"If a section reads like a competent summary, rewrite it"
+BW-0005,blog-writer-agent-installer.md,Run Guards,"G1: check Airtable, Drive, Slack tools before real work",shared/guards.md,"Before any real work, the run checks the tools it needs"
+BW-0006,blog-writer-agent-installer.md,Run Guards,G1: missing Slack uses Notes fallback for posts,DROPPED,Notes fallback replaced by empty Slack Thread Link; see G1 and shared/slack.md When Slack is down
+BW-0007,blog-writer-agent-installer.md,Run Guards,G2: unattended runs never pause for a question,shared/guards.md,A run started by a schedule has no one to answer
+BW-0008,blog-writer-agent-installer.md,Run Guards,G2: unattended brief gap routes back to Brief Agent,modes/blog-writer.md,"Link left empty, which routes it back to the Brief mode"
+BW-0009,blog-writer-agent-installer.md,Run Guards,"G2: smaller gaps get smallest assumption, noted in writer notes",modes/blog-writer.md,make the smallest reasonable assumption and say so plainly
+BW-0010,blog-writer-agent-installer.md,Run Guards,G3: re-read row; skip if status changed since scan,modes/blog-writer.md,"if its Status changed since the batched read, skip it."
+BW-0011,blog-writer-agent-installer.md,Run Guards,G3: claim via Notes line and read back,shared/airtable.md,"Read the row back. If Claim Token is your token, go ahead."
+BW-0012,blog-writer-agent-installer.md,Run Guards,"G3: at most three reworks, then one new brief per run",modes/blog-writer.md,At most three reworks per run in total
+BW-0013,blog-writer-agent-installer.md,Run Guards,G4: filter every scan to this product,shared/guards.md,limited to the product the row belongs to (its Product field)
+BW-0014,blog-writer-agent-installer.md,Run Guards,G4: Item ID prefix filter,DROPPED,Prefix filter replaced by the Product field; see shared/guards.md G4
+BW-0015,blog-writer-agent-installer.md,Run Guards,"G4: two products share a prefix, stop",shared/guards.md,"If two products share an Item ID prefix, stop"
+BW-0016,blog-writer-agent-installer.md,Run Guards,G4: never create or change table fields,shared/guards.md,Never create or change a table's fields during a normal run.
+BW-0017,blog-writer-agent-installer.md,Run Guards,G4: apply Feedback Log rules only for this product,shared/guards.md,Learned rules apply only to their own product.
+BW-0018,blog-writer-agent-installer.md,Run Guards,"G5: stalled rows over 6 hours listed, left for a person",modes/blog-writer.md,"Add 1 to Stall Count, take it over, and resume"
+BW-0019,blog-writer-agent-installer.md,Run Guards,G6: blank Rework Count means 0,shared/guards.md,A blank count means 0.
+BW-0020,blog-writer-agent-installer.md,Run Guards,G6: draft pass count is larger of two counts,modes/blog-writer.md,Never use Draft Rework Count alone here.
+BW-0021,blog-writer-agent-installer.md,Run Guards,G6: count Rework N Doc lines in Notes,DROPPED,Notes lines replaced by the Draft Rework Count field; see shared/guards.md G6
+BW-0022,blog-writer-agent-installer.md,Run Guards,G6: note Rework Count vs linked count mismatch,DROPPED,One shared Rework Count split into two per-stage counts (G6); no linked count field
+BW-0023,blog-writer-agent-installer.md,Run Guards,G6: never write a status that does not exist,shared/guards.md,never write a status that doesn't exist.
+BW-0024,blog-writer-agent-installer.md,Run Guards,G7: create record for a pasted brief with no match,modes/blog-writer.md,create one per G7 and shared/airtable.md (Creating a Content Items row)
+BW-0025,blog-writer-agent-installer.md,Run Guards,G7: Item ID is highest existing plus one,DROPPED,Replaced by the Seq auto number; see shared/airtable.md Creating a Content Items row
+BW-0026,blog-writer-agent-installer.md,Run Guards,G7: save pasted brief as its own document,modes/blog-writer.md,titled `[Item ID]: [Working Title] - Brief (pasted)`
+BW-0027,blog-writer-agent-installer.md,Run Guards,G8: writer notes go to Airtable under a labeled line,modes/blog-writer.md,a writer notes block added to the end of Agent Notes
+BW-0028,blog-writer-agent-installer.md,Run Guards,G8: never put writer notes inside the document,shared/guards.md,Never put writer notes or run notes inside a draft document
+BW-0029,blog-writer-agent-installer.md,Run Guards,"G8: only metadata, callouts, and tags allowed as non-article content",shared/guards.md,The only non-article content allowed in a draft is
+BW-0030,blog-writer-agent-installer.md,Run Guards,"G9: reference files over 90 days old, say so once",shared/guards.md,say once in the run output that they may be
+BW-0031,blog-writer-agent-installer.md,Run Guards,G9: quality checks review interval overrides 90 days,shared/guards.md,"set their own review interval, use that instead of 90 days"
+BW-0032,blog-writer-agent-installer.md,Run Guards,G10: missing QA skill means stop at In QA,DROPPED,Agents are now modes of one skill; QA always loads from modes/qa.md (G10)
+BW-0033,blog-writer-agent-installer.md,Run Guards,G10: follow this prompt where it defers to Brief Agent,DROPPED,Modes of one skill; format rules live in shared/base-rules/writing.md Step 5
+BW-0034,blog-writer-agent-installer.md,Run Guards,"G10: format skeleton from brief, else Format Skeleton field",modes/blog-writer.md,use the Format Skeleton field on the Content Items row
+BW-0035,blog-writer-agent-installer.md,Run Guards,G11: tag every approver on every action post,shared/guards.md,It tags every approver for that product
+BW-0036,blog-writer-agent-installer.md,Run Guards,G11: post counts only with a returned message link,shared/guards.md,A post counts as sent only when the send call returns
+BW-0037,blog-writer-agent-installer.md,Run Guards,G11: Approval post sent line in Notes,DROPPED,Notes line replaced by Slack Thread Link set with Status; see shared/slack.md Confirmed post
+BW-0038,blog-writer-agent-installer.md,Run Guards,"G11: retry a failed post once, then record it",shared/slack.md,"read the error, fix what it names, and retry once"
+BW-0039,blog-writer-agent-installer.md,Run Guards,G12: human send-back gets one pass above the cap,shared/guards.md,do one rework pass for their feedback even if
+BW-0040,blog-writer-agent-installer.md,Run Guards,G12: how to tell a human send-back,modes/blog-writer.md,newest Human Feedback entry is newer than its newest QA verdict
+BW-0041,blog-writer-agent-installer.md,Run Guards,G12: tell QA to skip escalation check for that audit,modes/blog-writer.md,G13's instruction to skip QA's escalation check for this one audit
+BW-0042,blog-writer-agent-installer.md,Run Guards,"G12: if QA does not approve, escalate",modes/blog-writer.md,"If that audit doesn't approve it, escalate rather than loop again"
+BW-0043,blog-writer-agent-installer.md,Run Guards,G13: never post a second escalation for the same draft,shared/guards.md,"If one exists, don't post again; just set the Status."
+BW-0044,blog-writer-agent-installer.md,Run Guards,G13: escalation about older draft does not count,shared/guards.md,An escalation about an older document doesn't count
+BW-0045,blog-writer-agent-installer.md,Run Guards,G14: size rejection counts toward three attempts,shared/guards.md,that counts toward the three-attempt budget
+BW-0046,blog-writer-agent-installer.md,Run Guards,G14: never split one draft across several Docs,shared/guards.md,never split one brief or draft across several Docs
+BW-0047,blog-writer-agent-installer.md,Run Guards,G15: in-session QA line marks the draft,modes/blog-writer.md,"the row keeps this run's claim, with Claimed By set to"
+BW-0048,blog-writer-agent-installer.md,Run Guards,G15: standalone QA skips in-session claimed rows,shared/guards.md,A standalone QA run skips any `In QA` row
+BW-0049,blog-writer-agent-installer.md,Run Guards,"G15: verdict already exists, act on it",modes/blog-writer.md,don't audit again; act on that verdict.
+BW-0050,blog-writer-agent-installer.md,Run Guards,G16: unattended when started by a schedule prompt,shared/run-start.md,when the message that started it is a schedule's prompt
+BW-0051,blog-writer-agent-installer.md,Run Guards,"G16: when unsure, act as unattended",shared/guards.md,"When unsure whether a run is attended, treat it as unattended."
+BW-0052,blog-writer-agent-installer.md,Run Guards,G17: failed save resets the row,modes/blog-writer.md,reset the row per G15 (`Brief Approved` for a fresh draft
+BW-0053,blog-writer-agent-installer.md,Run Guards,"G17: write error and time, clear the claim",modes/blog-writer.md,with the error and time in Agent Notes and the claim cleared
+BW-0054,blog-writer-agent-installer.md,Run Guards,G18: unsourced untagged claim is a hard blocker,shared/guards.md,A specific claim with no source and no tag
+BW-0055,blog-writer-agent-installer.md,Run Guards,G18: tagged VERIFY claim is not a save blocker,shared/guards.md,is not a blocker at save time: save the draft.
+BW-0056,blog-writer-agent-installer.md,Run Guards,G18: tell QA open VERIFY tags are revision requests,modes/blog-writer.md,they are revision requests to resolve before publish
+BW-0057,blog-writer-agent-installer.md,Run Guards,G19: create every Doc inside the pipeline folder,shared/guards.md,Create every document inside the product's document home
+BW-0058,blog-writer-agent-installer.md,Run Guards,G19: share missing reviewers as commenter,shared/storage-drive.md,Anyone missing gets `share_file` with role `commenter`
+BW-0059,blog-writer-agent-installer.md,Run Guards,"G19: folder fails, create without parent and share",shared/storage-drive.md,"create the Doc without `parentId`, share it with every one"
+BW-0060,blog-writer-agent-installer.md,Run Guards,G19: link goes out only after the access check,shared/guards.md,A document's link goes into Airtable or Slack only after this check.
+BW-0061,blog-writer-agent-installer.md,Run Guards,"G19: share fails, name the person",shared/guards.md,name that person in Agent Notes and in the Slack post
+BW-0062,blog-writer-agent-installer.md,Run Guards,G20: optional tools skipped quietly,shared/guards.md,skip the step that wants it and never mention it in Slack
+BW-0063,blog-writer-agent-installer.md,Run Guards,G20: Notes line with recheck dates when no calendar,DROPPED,Replaced by the Recheck Due field (G20)
+BW-0064,blog-writer-agent-installer.md,Run Guards,G21: find approval posts that never went out,modes/blog-writer.md,whose Slack Thread Link is empty: the post never went out
+BW-0065,blog-writer-agent-installer.md,Run Guards,G21: In QA verdict saved but not posted,modes/blog-writer.md,the run stopped between saving the verdict and acting on it
+BW-0066,blog-writer-agent-installer.md,Run Guards,G21: check for an existing post before posting,modes/blog-writer.md,Search the product's channel for a post naming the Item ID
+BW-0067,blog-writer-agent-installer.md,Run Guards,"G21: status, link, and sent line in one update",shared/slack.md,"the new Status, Slack Thread Link set to the post's link"
+BW-0068,blog-writer-agent-installer.md,Run Guards,G21: recovery rows do not count toward limits,modes/blog-writer.md,These don't count toward the limits below.
+BW-0069,blog-writer-agent-installer.md,Rule Hierarchy,Apply conflicting rules in a fixed order,shared/base-rules/writing.md,"apply them in this fixed order, never the reverse"
+BW-0070,blog-writer-agent-installer.md,Rule Hierarchy,"Order 1: accuracy, legal, product truth",shared/base-rules/writing.md,"1. Factual accuracy, legal requirements, and product truth."
+BW-0071,blog-writer-agent-installer.md,Rule Hierarchy,"Order 2: reader intent, audience, funnel stage",shared/base-rules/writing.md,"2. The reader's intent, audience, and funnel stage."
+BW-0072,blog-writer-agent-installer.md,Rule Hierarchy,Order 3: approved brief and channel requirements,shared/base-rules/writing.md,3. The approved brief and channel requirements.
+BW-0073,blog-writer-agent-installer.md,Rule Hierarchy,"Order 4 and 5: evidence quality, then structure and usefulness",shared/base-rules/writing.md,4. Evidence and source quality.
+BW-0074,blog-writer-agent-installer.md,Rule Hierarchy,"Order 6: voice, style, formatting",shared/base-rules/writing.md,"6. Voice, style, and formatting preferences."
+BW-0075,blog-writer-agent-installer.md,Rule Hierarchy,Grade 5 to 6 target beats a higher style guide grade,shared/base-rules/writing.md,applies even if the product's style guide names a higher grade level
+BW-0076,blog-writer-agent-installer.md,Rule Hierarchy,Other reference file rules still apply,shared/base-rules/writing.md,Every other rule in the reference files still applies as written.
+BW-0077,blog-writer-agent-installer.md,Rule Hierarchy,"Never sacrifice accuracy for copy, SEO, or style",shared/base-rules/writing.md,"Never sacrifice accuracy for persuasive copy, SEO, brevity, or brand style."
+BW-0078,blog-writer-agent-installer.md,Rule Hierarchy,Style rule loses when it forces inaccuracy,shared/base-rules/writing.md,the style rule loses; fix the sentence a different way
+BW-0079,blog-writer-agent-installer.md,Step 0,Never ask for saved setup values,modes/blog-writer.md,"Never ask a person for the product, the reference files"
+BW-0080,blog-writer-agent-installer.md,Step 0,Connector check first,shared/run-start.md,Check each tool this mode needs with its first real call
+BW-0081,blog-writer-agent-installer.md,Step 0,"Setup check, go to first-time setup",DROPPED,"Setup comes from the base; see shared/run-start.md steps 2, 3 and Loading the rules"
+BW-0082,blog-writer-agent-installer.md,Step 0,"Read all reference files, check dates per G9",modes/blog-writer.md,Read every reference file fully before writing a word
+BW-0083,blog-writer-agent-installer.md,Step 0,Decide attended or unattended,shared/run-start.md,An unattended run never asks a question and never enters setup
+BW-0084,blog-writer-agent-installer.md,Step 0,"Hold tone, claims, terms, audience, source rules",modes/blog-writer.md,"brand tone descriptors and hard prohibitions, approved and banned claims"
+BW-0085,blog-writer-agent-installer.md,Step 0,Write to clear the QA scoring categories,modes/blog-writer.md,since this draft is written to already clear them
+BW-0086,blog-writer-agent-installer.md,Step 0.5,Same Airtable mechanism as Brief Agent,DROPPED,Shared mechanism now lives in shared/airtable.md
+BW-0087,blog-writer-agent-installer.md,Step 0.5,"Always the saved base, never a second one",shared/airtable.md,Never create a second base during a normal run
+BW-0088,blog-writer-agent-installer.md,Step 0.5,"Slack is communication only, never the record",shared/slack.md,"No status, link, score, or history lives only in Slack"
+BW-0089,blog-writer-agent-installer.md,Step 0.5,No Sheet or Canvas as a data store,shared/airtable.md,Airtable: the one source of truth
+BW-0090,blog-writer-agent-installer.md,Step 0.5,"Use saved Slack target, never ask",shared/slack.md,never a channel named in a message
+BW-0091,blog-writer-agent-installer.md,Step 0.5,"Read Config for products, approvers, mismatches",DROPPED,"Config table replaced by Settings, Team, and Members tables (shared/airtable.md)"
+BW-0092,blog-writer-agent-installer.md,Step 0.5,Confirm status choice IDs still exist,shared/airtable.md,If an ID this run needs is missing from Schema Map
+BW-0093,blog-writer-agent-installer.md,Step 0.5,Read Active Feedback Log rows,modes/blog-writer.md,Then read every Active product rule and learned rule for this product
+BW-0094,blog-writer-agent-installer.md,Step 0.5,Apply Feedback Log rules as binding additions,modes/blog-writer.md,Treat each one as a binding addition to the writing rules
+BW-0095,blog-writer-agent-installer.md,Step 0.5,Skipping learned rules repeats mistakes,modes/blog-writer.md,skipping them is how the same mistake ends up
+BW-0096,blog-writer-agent-installer.md,Step 0.5,Locate record by Item ID,modes/blog-writer.md,find the row by Item ID
+BW-0097,blog-writer-agent-installer.md,Step 0.5,Pasted brief: match by Input or Primary Keyword,modes/blog-writer.md,look for a matching row by Input or Primary Keyword
+BW-0098,blog-writer-agent-installer.md,Step 0.5,"Next approved brief: oldest first, one per run",modes/blog-writer.md,"rows, oldest approval first. Take one per run."
+BW-0099,blog-writer-agent-installer.md,Step 0.5,Scheduled run with no Item ID writes next approved brief,modes/blog-writer.md,with no Item ID and no pasted brief always works the queue
+BW-0100,blog-writer-agent-installer.md,Step 0.5,Nothing qualifies: say so and end,modes/blog-writer.md,"and no approved brief waiting, say so plainly and end the run"
+BW-0101,blog-writer-agent-installer.md,Step 0.5,Keep the record ID for later updates,modes/blog-writer.md,Keep the record ID the lookup returns.
+BW-0102,blog-writer-agent-installer.md,Step 0.5,Read the brief per the Doc link rule,modes/blog-writer.md,"per the piece's storage file (Reading a document), with comments included"
+BW-0103,blog-writer-agent-installer.md,Step 0.5,"Claim only when work starts, after the rework scan",modes/blog-writer.md,Claim a row only when work on it actually starts
+BW-0104,blog-writer-agent-installer.md,Step 0.5,"Fresh draft Writing In Progress, rework Rework In Progress",modes/blog-writer.md,the working Status (`Writing In Progress` for a fresh draft
+BW-0105,blog-writer-agent-installer.md,Step 0.6,This agent also reworks; no separate Reworker,modes/blog-writer.md,There is no separate Reworker Agent: whoever the feedback comes from
+BW-0106,blog-writer-agent-installer.md,Step 0.6,Scan Needs Rework rows with Blog Doc Link,modes/blog-writer.md,Every other `Needs Rework` row with a Blog Doc Link.
+BW-0107,blog-writer-agent-installer.md,Step 0.6,Empty Blog Doc Link is Brief Agent work,modes/blog-writer.md,with an empty Blog Doc Link is a brief-stage rework
+BW-0108,blog-writer-agent-installer.md,Step 0.6,"Reworks first, then the next approved brief",modes/blog-writer.md,"first the reworks, then the next approved brief."
+BW-0109,blog-writer-agent-installer.md,Step 0.6,No rework found is never a reason to stop,modes/blog-writer.md,Finding no rework is never a reason to stop.
+BW-0110,blog-writer-agent-installer.md,Step 0.6,Reworks only when a person asked for that,modes/blog-writer.md,only if a person in this chat explicitly asked for reworks only
+BW-0111,blog-writer-agent-installer.md,Step 0.6a,Claim Rework In Progress; skip if status changed,modes/blog-writer.md,"if its Status already changed, another run has it, so skip it"
+BW-0112,blog-writer-agent-installer.md,Step 0.6a,Read the record fields in full,modes/blog-writer.md,Then read the flagged record's fields in full
+BW-0113,blog-writer-agent-installer.md,Step 0.6a,Open and read the current draft in full,modes/blog-writer.md,Open the current draft and read it in full
+BW-0114,blog-writer-agent-installer.md,Step 0.6a,Blog Doc Link points to the newest version,modes/blog-writer.md,Blog Doc Link always points to the newest version of the draft
+BW-0115,blog-writer-agent-installer.md,Step 0.6a,Reopen the brief; drifting from it is no fix,modes/blog-writer.md,a fix that quietly drifts from the brief is not a fix
+BW-0116,blog-writer-agent-installer.md,Step 0.6a,Pull QA Issues list from Notes,modes/blog-writer.md,written into this row's Agent Notes in QA's newest block
+BW-0117,blog-writer-agent-installer.md,Step 0.6a,Pull comments left inside the draft,modes/blog-writer.md,Any comments a person left inside the draft document itself.
+BW-0118,blog-writer-agent-installer.md,Step 0.6a,"Trust Orchestrator status, never read Slack for decision",modes/blog-writer.md,This mode never reads Slack for that decision (G10)
+BW-0119,blog-writer-agent-installer.md,Step 0.6a,Read the full reply for nuance,modes/blog-writer.md,read the thread for the nuance the entry doesn't carry
+BW-0120,blog-writer-agent-installer.md,Step 0.6a,Standing learned rules apply to the rework,modes/blog-writer.md,a standing rule from a past item holds even if nobody
+BW-0121,blog-writer-agent-installer.md,Step 0.6b,"Hold brief intent, draft audit, feedback checklist",modes/blog-writer.md,Hold three things side by side: the original strategic intent
+BW-0122,blog-writer-agent-installer.md,Step 0.6b,Honest audit of the current draft,modes/blog-writer.md,an honest audit of the draft as it currently stands
+BW-0123,blog-writer-agent-installer.md,Step 0.6b,"Tag each feedback item by type, target, action",modes/blog-writer.md,each one tagged with what kind of feedback it is
+BW-0124,blog-writer-agent-installer.md,Step 0.6b,No checklist item silently dropped,modes/blog-writer.md,Nothing on this checklist gets silently dropped later for seeming minor
+BW-0125,blog-writer-agent-installer.md,Step 0.6b,Write a one-sentence refinement mission,modes/blog-writer.md,Write the refinement mission in one sentence
+BW-0126,blog-writer-agent-installer.md,Step 0.6c,"Conflict order: brief, structural, then stylistic",modes/blog-writer.md,"The Content Brief's own strategy comes first, then structural or strategic feedback"
+BW-0127,blog-writer-agent-installer.md,Step 0.6c,Style never overrides a strategic brief requirement,modes/blog-writer.md,Never let a stylistic preference override a strategic requirement from the brief
+BW-0128,blog-writer-agent-installer.md,Step 0.6c,"Flag conflicts in notes, never pick silently",modes/blog-writer.md,flag the conflict in the writer notes in Agent Notes
+BW-0129,blog-writer-agent-installer.md,Step 0.6d,Work out the draft pass count first,modes/blog-writer.md,Work out this item's draft pass count (G6)
+BW-0130,blog-writer-agent-installer.md,Step 0.6d,"At 3 or more, no fourth automated pass",modes/blog-writer.md,do not run a fourth automated rework pass on this item
+BW-0131,blog-writer-agent-installer.md,Step 0.6d,Human send-back above cap follows G12,modes/blog-writer.md,this isn't a person's send-back above the cap
+BW-0132,blog-writer-agent-installer.md,Step 0.6d,Post escalation unless one exists for this draft,modes/blog-writer.md,Unless G14 shows an escalation post already exists
+BW-0133,blog-writer-agent-installer.md,Step 0.6d,Summary of unresolved issues into notes,modes/blog-writer.md,"Add a short, plain summary of what's still unresolved after three passes"
+BW-0134,blog-writer-agent-installer.md,Step 0.6d,"One update: Escalated, link, notes",modes/blog-writer.md,"Slack Thread Link set to the post's link, Last Saved Step `rework escalated`, Stall Count 0, the claim cleared"
+BW-0135,blog-writer-agent-installer.md,Step 0.6d,Post failed twice: still write the status,modes/blog-writer.md,"If the post failed twice, still set the Status"
+BW-0136,blog-writer-agent-installer.md,Step 0.6d,Move on to the next item,modes/blog-writer.md,Then move on to the next row in the queue.
+BW-0137,blog-writer-agent-installer.md,Step 0.6d,Three failed passes need a human,modes/blog-writer.md,the remaining issue needs a human's judgment call
+BW-0138,blog-writer-agent-installer.md,Step 0.6d,"Under 3, continue to 0.6e",modes/blog-writer.md,"If the draft pass count is under 3, continue to 0.6e."
+BW-0139,blog-writer-agent-installer.md,Step 0.6e,Try to close every VERIFY tag,modes/blog-writer.md,tag still in the document and actually try to close it
+BW-0140,blog-writer-agent-installer.md,Step 0.6e,"Only VERIFY tags, never FRESHNESS_FLAG",modes/blog-writer.md,"This step is only about `[VERIFY]` tags, never `[FRESHNESS_FLAG]` tags"
+BW-0141,blog-writer-agent-installer.md,Step 0.6e,Leave freshness flags where they are,modes/blog-writer.md,leave it exactly where it is
+BW-0142,blog-writer-agent-installer.md,Step 0.6e,Research cheapest and most reliable source first,modes/blog-writer.md,"Research in order, cheapest and most reliable source first"
+BW-0143,blog-writer-agent-installer.md,Step 0.6e,"Resolved: remove tag, state fact, log source",modes/blog-writer.md,remove the tag and write the actual fact into the sentence
+BW-0144,blog-writer-agent-installer.md,Step 0.6e,Unresolved: never fabricate to clear the tag,modes/blog-writer.md,don't fabricate a number to make the tag disappear
+BW-0145,blog-writer-agent-installer.md,Step 0.6e,"Log claim, what was checked, why unconfirmed",modes/blog-writer.md,"what the claim is, what was checked, and why it's still unconfirmed"
+BW-0146,blog-writer-agent-installer.md,Step 0.6e,Call out unresolved claims in the pass narration,modes/blog-writer.md,Call this out the same way in the run output at 0.6i
+BW-0147,blog-writer-agent-installer.md,Step 0.6f,Fix one feedback item at a time,modes/blog-writer.md,locate the exact part of the draft it targets
+BW-0148,blog-writer-agent-installer.md,Step 0.6f,Confirm each fix serves the strategy,modes/blog-writer.md,confirm the fix still serves the strategy held in 0.6b
+BW-0149,blog-writer-agent-installer.md,Step 0.6f,Revision must clear full Step 12,modes/blog-writer.md,still has to clear this mode's Step 12 self-check in full
+BW-0150,blog-writer-agent-installer.md,Step 0.6f,Preserve sections that already clear the bar,modes/blog-writer.md,leave any section that already clears the bar alone
+BW-0151,blog-writer-agent-installer.md,Step 0.6f,Reread the whole draft after each fix,modes/blog-writer.md,Reread the whole draft once after every fix lands
+BW-0152,blog-writer-agent-installer.md,Step 0.6g,"Assemble, never regenerate the whole draft",modes/blog-writer.md,Assemble the revised draft from what's preserved and what's fixed
+BW-0153,blog-writer-agent-installer.md,Step 0.6g,Carry passing sections over word for word,modes/blog-writer.md,already confirmed clears the bar over exactly as it stood
+BW-0154,blog-writer-agent-installer.md,Step 0.6g,Only touched sections get rewritten,modes/blog-writer.md,only the sections 0.6f actually touched get rewritten
+BW-0155,blog-writer-agent-installer.md,Step 0.6g,"Final reread is a check, not a rewrite",modes/blog-writer.md,"but that read is a check, not a rewrite"
+BW-0156,blog-writer-agent-installer.md,Step 0.6g,"Write a resolution log, one line per item",modes/blog-writer.md,write a short resolution log: one line per feedback item
+BW-0157,blog-writer-agent-installer.md,Step 0.6g,"Log goes to notes and Rework History, never the doc",modes/blog-writer.md,"and into Rework History (0.6i), never into the document itself (G8)"
+BW-0158,blog-writer-agent-installer.md,Step 0.6h,"Rework is a new Doc, never an edit",modes/blog-writer.md,"a new Google Doc, never an edit to the old one"
+BW-0159,blog-writer-agent-installer.md,Step 0.6h,Rework title uses draft pass number,modes/blog-writer.md,"N is this pass's draft pass number (G6), counting this pass."
+BW-0160,blog-writer-agent-installer.md,Step 0.6h,Leave every earlier Doc in place,modes/blog-writer.md,leave every earlier Doc exactly where it is
+BW-0161,blog-writer-agent-installer.md,Step 0.6h,Never Claude Docs or .docx for a rework,shared/storage-drive.md,"Never use Claude Docs, a `.docx` built by a script"
+BW-0162,blog-writer-agent-installer.md,Step 0.6i,Point Blog Doc Link at the new rework,modes/blog-writer.md,Blog Doc Link set to the rework's link from 0.6h
+BW-0163,blog-writer-agent-installer.md,Step 0.6i,Increment rework count by exactly 1,modes/blog-writer.md,"Draft Rework Count set to N (this pass's number, so a rerun never counts it twice)"
+BW-0164,blog-writer-agent-installer.md,Step 0.6i,"Status back to In QA, not publish review",modes/blog-writer.md,still needs to clear the same bar a first draft does
+BW-0165,blog-writer-agent-installer.md,Step 0.6i,Add version trail line,modes/blog-writer.md,so the full version trail stays visible in the record
+BW-0166,blog-writer-agent-installer.md,Step 0.6i,Add in-session QA marker,modes/blog-writer.md,"with the same Claim Token (G17), Last Saved Step"
+BW-0167,blog-writer-agent-installer.md,Step 0.6i,No Slack post for a rework pass,modes/blog-writer.md,this pipeline never uses Slack to route a rework
+BW-0168,blog-writer-agent-installer.md,Step 0.6i,Narrate fixed issues in chat,modes/blog-writer.md,pulled from the resolution log in 0.6g
+BW-0169,blog-writer-agent-installer.md,Step 0.6i,"Narrate mission, link, and open VERIFY callouts",modes/blog-writer.md,still need a person's eyes even though the rest
+BW-0170,blog-writer-agent-installer.md,Step 0.6i,Log repeatable feedback as rules,modes/blog-writer.md,for every feedback item that's a genuinely repeatable pattern
+BW-0171,blog-writer-agent-installer.md,Step 0.6i,Feedback Log rows created with Status Active,DROPPED,Agents now record Suggested only (Reference and Feedback Log); see modes/blog-writer.md Step 13d
+BW-0172,blog-writer-agent-installer.md,Step 0.6i,Zero or several rules are both fine,modes/blog-writer.md,Zero rules is fine if every item this pass was
+BW-0173,blog-writer-agent-installer.md,Step 0.6i,Create a Rework History row per pass,modes/blog-writer.md,Also create one row on Rework History for this pass
+BW-0174,blog-writer-agent-installer.md,Step 0.6i,Never skip the Rework History row,modes/blog-writer.md,G6 counts these rows to enforce the 3-pass cap
+BW-0175,blog-writer-agent-installer.md,Step 0.6i,Go straight back into QA,modes/blog-writer.md,Go straight to Step 14 and run QA's audit again
+BW-0176,blog-writer-agent-installer.md,Step 1,Confirm brief has the essentials,modes/blog-writer.md,"missing its topic or working title, its intended audience"
+BW-0177,blog-writer-agent-installer.md,Step 1,"Flag the gap and ask, send back, or assume",modes/blog-writer.md,flag the specific gap and either ask the person
+BW-0178,blog-writer-agent-installer.md,Step 1,Never invent a large missing piece,modes/blog-writer.md,don't draft around a gap this large by inventing the missing piece
+BW-0179,blog-writer-agent-installer.md,Step 1,Sanity-check the chosen format against intent,modes/blog-writer.md,"Sanity-check the format itself, don't execute a mismatched skeleton"
+BW-0180,blog-writer-agent-installer.md,Step 1,"Format follows intent: task means tutorial, etc.",modes/blog-writer.md,A specific task usually wants a tutorial.
+BW-0181,blog-writer-agent-installer.md,Step 1,Name a format mismatch in notes,modes/blog-writer.md,rather than silently forcing the piece into the wrong shape
+BW-0182,blog-writer-agent-installer.md,Step 1,"Read the full brief, never skim",modes/blog-writer.md,Do not skim it and start drafting from memory
+BW-0183,blog-writer-agent-installer.md,Step 1,Hold keywords and tagged secondaries,modes/blog-writer.md,which secondary keywords are tagged for this specific post
+BW-0184,blog-writer-agent-installer.md,Step 1,Hold word count and format skeleton,modes/blog-writer.md,The target word count and the format skeleton chosen
+BW-0185,blog-writer-agent-installer.md,Step 1,Hold Spearhead Strategy and Cornerstone Asset,modes/blog-writer.md,The Spearhead Strategy sentence and the Cornerstone Asset
+BW-0186,blog-writer-agent-installer.md,Step 1,Hold the full outline with angles and tags,modes/blog-writer.md,"with each section's assigned angle, keyword, planned answer opener, and CTA tag"
+BW-0187,blog-writer-agent-installer.md,Step 1,Hold the CTA plan,modes/blog-writer.md,"The CTA plan (three placements, matched to intent)"
+BW-0188,blog-writer-agent-installer.md,Step 1,Hold the AEO and schema plan,modes/blog-writer.md,including where FAQPage and Article schema apply
+BW-0189,blog-writer-agent-installer.md,Step 1,AI engine findings mark where sourcing must be strongest,modes/blog-writer.md,These are not background context; they name the exact spots
+BW-0190,blog-writer-agent-installer.md,Step 1,Hold link plan and freshness flags,modes/blog-writer.md,The internal link plan and the freshness flags
+BW-0191,blog-writer-agent-installer.md,Step 1,Missing brief item: never invent it,modes/blog-writer.md,"If any of this is missing from the brief, don't invent it."
+BW-0192,blog-writer-agent-installer.md,Step 1,Land within 10% of target word count,modes/blog-writer.md,Land within 10% of the brief's target.
+BW-0193,blog-writer-agent-installer.md,Step 1,"Words earned, never padded",modes/blog-writer.md,"The words have to be earned, never padded"
+BW-0194,blog-writer-agent-installer.md,Step 1,"Short draft: add substance, never filler",modes/blog-writer.md,"If the draft comes in short, the fix is never filler"
+BW-0195,blog-writer-agent-installer.md,Step 1,Cannot reach target: explain in notes,modes/blog-writer.md,"If the draft truly can't reach the target without padding, say so"
+BW-0196,blog-writer-agent-installer.md,Step 1.5,"Three research passes before drafting, in order",modes/blog-writer.md,"run three passes, in this order, not interleaved with drafting"
+BW-0197,blog-writer-agent-installer.md,Step 1.5,Pass one: build a data inventory first,modes/blog-writer.md,"building a running inventory of every number, stat, rating"
+BW-0198,blog-writer-agent-installer.md,Step 1.5,Find at least three hook number candidates,modes/blog-writer.md,"Find at least three real, sourced numbers that could open the piece"
+BW-0199,blog-writer-agent-installer.md,Step 1.5,Look for data for every H2,modes/blog-writer.md,look properly before deciding a section has none
+BW-0200,blog-writer-agent-installer.md,Step 1.5,Collect numbers for the reader scenario,modes/blog-writer.md,"so the scenario's math is built from sourced numbers, not invented ones"
+BW-0201,blog-writer-agent-installer.md,Step 1.5,"Search sources in order, strongest first",modes/blog-writer.md,"Search in this order, strongest first: the product's own live pages"
+BW-0202,blog-writer-agent-installer.md,Step 1.5,Never use content-farm stats; trace to original,modes/blog-writer.md,Never use a stat that only appears on content farms
+BW-0203,blog-writer-agent-installer.md,Step 1.5,"Record figure, measure, source URL, date",modes/blog-writer.md,Record every number in the inventory with its exact figure
+BW-0204,blog-writer-agent-installer.md,Step 1.5,WordPress plugin: check WordPress.org every run,modes/blog-writer.md,"is a WordPress plugin, check WordPress.org every run"
+BW-0205,blog-writer-agent-installer.md,Step 1.5,Use the WordPress.org public plugin API,modes/blog-writer.md,The same numbers are also available from WordPress.org's public plugin API
+BW-0206,blog-writer-agent-installer.md,Step 1.5,"Active installs quoted exactly, never called customers",modes/blog-writer.md,"describe it as active installations, not as customers or merchants"
+BW-0207,blog-writer-agent-installer.md,Step 1.5,Collect total downloads if shown,modes/blog-writer.md,if the page or API shows it
+BW-0208,blog-writer-agent-installer.md,Step 1.5,Collect star rating and rating count,modes/blog-writer.md,4.8 out of 5 from 312 ratings
+BW-0209,blog-writer-agent-installer.md,Step 1.5,Collect last updated date and tested version,modes/blog-writer.md,which show the plugin is actively maintained
+BW-0210,blog-writer-agent-installer.md,Step 1.5,Collect real reviews from the Reviews tab,modes/blog-writer.md,from the plugin's Reviews tab
+BW-0211,blog-writer-agent-installer.md,Step 1.5,Do the same for competitor plugins,modes/blog-writer.md,so a comparison stands on the same neutral source for both sides
+BW-0212,blog-writer-agent-installer.md,Step 1.5,Every WordPress.org number gets a freshness flag,modes/blog-writer.md,"All of these numbers change, so every one gets a"
+BW-0213,blog-writer-agent-installer.md,Step 1.5,Pass two: recheck competitive content after data,modes/blog-writer.md,"Only after the data inventory is built, revisit the brief's"
+BW-0214,blog-writer-agent-installer.md,Step 1.5,Point strongest data at the identified gap,modes/blog-writer.md,actually gets pointed at the specific competitive weakness and AI-engine gap
+BW-0215,blog-writer-agent-installer.md,Step 1.5,Tutorial: check video results if brief did not,modes/blog-writer.md,didn't check video results or transcripts for this query
+BW-0216,blog-writer-agent-installer.md,Step 1.5,Pass three: 12 to 20 real reader questions,modes/blog-writer.md,Build a list of 12 to 20 real questions for this topic
+BW-0217,blog-writer-agent-installer.md,Step 1.5,Question source: brief PAA and related searches,modes/blog-writer.md,The brief's People Also Ask questions and related searches.
+BW-0218,blog-writer-agent-installer.md,Step 1.5,Question source: next layer of PAA,modes/blog-writer.md,search two or three of those questions themselves
+BW-0219,blog-writer-agent-installer.md,Step 1.5,Question source: community threads and forums,modes/blog-writer.md,the product's own community or support forum
+BW-0220,blog-writer-agent-installer.md,Step 1.5,Note readers exact wording and worries,modes/blog-writer.md,"Note the exact wording people use, what confuses them"
+BW-0221,blog-writer-agent-installer.md,Step 1.5,Question source: top three pages FAQs,modes/blog-writer.md,The FAQ sections of the top three ranking pages
+BW-0222,blog-writer-agent-installer.md,Step 1.5,Question source: objections in reference files,modes/blog-writer.md,The audience objections and misunderstandings already listed in the reference files.
+BW-0223,blog-writer-agent-installer.md,Step 1.5,"Sort each question: section, FAQ, or out of scope",modes/blog-writer.md,Then sort every question into one place
+BW-0224,blog-writer-agent-installer.md,Step 1.5,Every body section answers a mapped question,modes/blog-writer.md,Every body section answers at least one question from the map
+BW-0225,blog-writer-agent-installer.md,Step 1.5,Unanswered mapped question is a gap,modes/blog-writer.md,that the draft never answers is a gap
+BW-0226,blog-writer-agent-installer.md,Step 1.5,No hunting for numbers mid-paragraph,modes/blog-writer.md,don't go hunting for a number mid-paragraph
+BW-0227,blog-writer-agent-installer.md,Step 2a,"Target grade 5 to 6, ceiling grade 7",shared/base-rules/writing.md,"Target Flesch-Kincaid grade 5 to 6, hard ceiling grade 7"
+BW-0228,blog-writer-agent-installer.md,Step 2a,Average sentence 10 to 14 words,shared/base-rules/writing.md,"Average sentence 10 to 14 words, and almost never more than 20."
+BW-0229,blog-writer-agent-installer.md,Step 2a,Mix in short sentences often,shared/base-rules/writing.md,Mix in a short sentence often
+BW-0230,blog-writer-agent-installer.md,Step 2a,Use the simplest accurate word,shared/base-rules/writing.md,Use the simplest accurate word
+BW-0231,blog-writer-agent-installer.md,Step 2a,Split tangled compound thoughts,shared/base-rules/writing.md,Split a tangled compound thought into two clean sentences.
+BW-0232,blog-writer-agent-installer.md,Step 2a,Explain technical terms on first use,shared/base-rules/writing.md,The first use of any technical term gets a plain-English explanation
+BW-0233,blog-writer-agent-installer.md,Step 2b,Banned transitions,shared/base-rules/writing.md,"Transitions: ""in conclusion,"" ""furthermore,"" ""moreover,"""
+BW-0234,blog-writer-agent-installer.md,Step 2b,Banned openers,shared/base-rules/writing.md,"Openers: ""as a [role],"" ""when it comes to,"""
+BW-0235,blog-writer-agent-installer.md,Step 2b,Banned filler words,shared/base-rules/writing.md,"Filler: ""game-changer,"" ""leverage,"" ""cutting-edge,"" ""robust,"""
+BW-0236,blog-writer-agent-installer.md,Step 2b,No unsupported superlatives,shared/base-rules/writing.md,stated without a source behind it
+BW-0237,blog-writer-agent-installer.md,Step 2b,No benefit claims without the mechanism,shared/base-rules/writing.md,without ever explaining the actual mechanism
+BW-0238,blog-writer-agent-installer.md,Step 2b,No vague attribution,shared/base-rules/writing.md,"Vague attribution, ""experts say,"" ""studies show,"""
+BW-0239,blog-writer-agent-installer.md,Step 2b,No minimizing words for hard steps,shared/base-rules/writing.md,"Minimizing words: ""just,"" ""simply,"" ""obviously,"" and ""clearly,"""
+BW-0240,blog-writer-agent-installer.md,Step 2b,Banned constructions like No X No Y Just Z,shared/base-rules/writing.md,"Constructions: ""No X. No Y. Just Z."""
+BW-0241,blog-writer-agent-installer.md,Step 2b,No padding rule-of-three lists,shared/base-rules/writing.md,A reflexive rule-of-three list used as padding
+BW-0242,blog-writer-agent-installer.md,Step 2b,No slogan headings,shared/base-rules/writing.md,A fragmented slogan used as a heading
+BW-0243,blog-writer-agent-installer.md,Step 2b,"No fear, guilt, shame, mockery, or blame",shared/base-rules/writing.md,"Tone: fear, guilt, shame, competitor mockery, or reader blame"
+BW-0244,blog-writer-agent-installer.md,Step 2b,No unexplained feature lists,shared/base-rules/writing.md,a feature list with no explanation of when or why
+BW-0245,blog-writer-agent-installer.md,Step 2b,No automatic rhetorical-question hooks,shared/base-rules/writing.md,No rhetorical question used as an automatic hook.
+BW-0246,blog-writer-agent-installer.md,Step 2b,No long bullet list without lead-in,shared/base-rules/writing.md,No bullet list longer than six items without a prose lead-in
+BW-0247,blog-writer-agent-installer.md,Step 2b,No three bullet lists in a row,shared/base-rules/writing.md,no three consecutive bullet lists with no paragraph text between them
+BW-0248,blog-writer-agent-installer.md,Step 2b,No three sentences starting with same word,shared/base-rules/writing.md,no three consecutive sentences starting with the same word
+BW-0249,blog-writer-agent-installer.md,Step 2b,No em dashes ever,shared/base-rules/writing.md,"Punctuation: no em dashes anywhere, ever"
+BW-0250,blog-writer-agent-installer.md,Step 2b,No semicolons in explanatory prose,shared/base-rules/writing.md,"No semicolons in explanatory prose, use two sentences instead."
+BW-0251,blog-writer-agent-installer.md,Step 2b,No dramatic ellipses,shared/base-rules/writing.md,No ellipses for dramatic effect.
+BW-0252,blog-writer-agent-installer.md,Step 2c,Talk to the reader as you,shared/base-rules/writing.md,"Talk to the reader as ""you."""
+BW-0253,blog-writer-agent-installer.md,Step 2c,"Direct claims, not hedged",shared/base-rules/writing.md,"Make direct claims, not hedged ones"
+BW-0254,blog-writer-agent-installer.md,Step 2c,Specific over vague,shared/base-rules/writing.md,"Be specific over vague: not ""many businesses"" but a concrete example"
+BW-0255,blog-writer-agent-installer.md,Step 2c,Experience signals only with real basis,shared/base-rules/writing.md,but only when there is a real basis for the claim
+BW-0256,blog-writer-agent-installer.md,Step 2c,Concede a real downside,shared/base-rules/writing.md,Concede a real downside somewhere
+BW-0257,blog-writer-agent-installer.md,Step 2c,Ground every abstract claim with an example,shared/base-rules/writing.md,Every abstract claim needs a concrete grounding example
+BW-0258,blog-writer-agent-installer.md,Step 2d,"Paragraphs one to three sentences, 20 to 50 words",shared/base-rules/writing.md,"one to three sentences, roughly 20 to 50 words, one idea each"
+BW-0259,blog-writer-agent-installer.md,Step 2d,Direct answer and FAQ may run to 60 words,shared/base-rules/writing.md,are the only exceptions; they can run to 60 words
+BW-0260,blog-writer-agent-installer.md,Step 2d,Never four sentences in one paragraph,shared/base-rules/writing.md,"Never four sentences in a row in one paragraph, in any section."
+BW-0261,blog-writer-agent-installer.md,Step 2d,Visual element every 150 to 200 words,shared/base-rules/writing.md,at least once every 150 to 200 words
+BW-0262,blog-writer-agent-installer.md,Step 2d,No wall of text over four lines,shared/base-rules/writing.md,No wall of text longer than four consecutive lines.
+BW-0263,blog-writer-agent-installer.md,Step 2d,Blank line around every paragraph,shared/base-rules/writing.md,Every paragraph gets its own blank line above and below it
+BW-0264,blog-writer-agent-installer.md,Step 2d,Lead each paragraph with its point,shared/base-rules/writing.md,"Lead each paragraph with its point, then the supporting detail"
+BW-0265,blog-writer-agent-installer.md,Step 2d,Bold at most once per section,shared/base-rules/writing.md,Bold a genuinely load-bearing number or phrase at most once per section
+BW-0266,blog-writer-agent-installer.md,Step 2d,Run the skim test,shared/base-rules/writing.md,Run the skim test before moving on
+BW-0267,blog-writer-agent-installer.md,Step 2e,Authority test for explanatory sections,shared/base-rules/writing.md,could this have been written by anyone who spent an hour
+BW-0268,blog-writer-agent-installer.md,Step 2e,"Define, why it matters, failure, example, rule of thumb",shared/base-rules/writing.md,must do all five of the following
+BW-0269,blog-writer-agent-installer.md,Step 2f,"Each step: what and how, specifically",shared/base-rules/writing.md,"what to do, stated specifically; how to do it"
+BW-0270,blog-writer-agent-installer.md,Step 2f,Each step: why it works,shared/base-rules/writing.md,"why it works, the actual mechanism"
+BW-0271,blog-writer-agent-installer.md,Step 2f,Each step: most common mistake,shared/base-rules/writing.md,"the most common mistake at this step, named precisely"
+BW-0272,blog-writer-agent-installer.md,Step 2f,Each step: a decision rule where judgment applies,shared/base-rules/writing.md,"where the step involves a judgment call, a concrete decision rule"
+BW-0273,blog-writer-agent-installer.md,Step 2f,Never trim depth to hit length,shared/base-rules/writing.md,don't trim them to hit a length target
+BW-0274,blog-writer-agent-installer.md,Step 2g,Use you for advice,shared/base-rules/writing.md,"Use ""you"" when giving advice or helping the reader complete a task"
+BW-0275,blog-writer-agent-installer.md,Step 2g,Use we only when the product speaks,shared/base-rules/writing.md,"Use ""we"" only when the product or company is genuinely speaking"
+BW-0276,blog-writer-agent-installer.md,Step 2g,Third person for neutral description and competitors,shared/base-rules/writing.md,Use third person for neutral descriptions and comparisons
+BW-0277,blog-writer-agent-installer.md,Step 2g,I only for a real named person,shared/base-rules/writing.md,"Use ""I"" only when a real, named person is describing something"
+BW-0278,blog-writer-agent-installer.md,Step 2g,Never fabricate first-person experience,shared/base-rules/writing.md,"Never fabricate first-person experience, and never invent a named person"
+BW-0279,blog-writer-agent-installer.md,Step 2h,Avoid announcement voice,shared/base-rules/writing.md,"The announcement-voice trap, and how to avoid it."
+BW-0280,blog-writer-agent-installer.md,Step 2h,Start from the reader problem,shared/base-rules/writing.md,"start from the reader's actual problem, and let the feature arrive"
+BW-0281,blog-writer-agent-installer.md,Step 2h,"Gap, then mechanism, then what reader can do",shared/base-rules/writing.md,name the gap or the cost of the current state first
+BW-0282,blog-writer-agent-installer.md,Step 2h,Date or version never leads,shared/base-rules/writing.md,it never leads the sentence and it is never the reason
+BW-0283,blog-writer-agent-installer.md,Step 2i,Hyperlink the fact itself,shared/base-rules/writing.md,"hyperlink the fact itself, the number, the feature name"
+BW-0284,blog-writer-agent-installer.md,Step 2i,Never narrate a citation,shared/base-rules/writing.md,Do not narrate the citation in prose.
+BW-0285,blog-writer-agent-installer.md,Step 2i,Link competitor limits to their own pages,shared/base-rules/writing.md,link the specific claim to that competitor's own documentation or pricing page
+BW-0286,blog-writer-agent-installer.md,Step 2i,The link is the citation,shared/base-rules/writing.md,The link is the citation.
+BW-0287,blog-writer-agent-installer.md,Step 2j,Proof in order of strength,shared/base-rules/writing.md,"Examples and proof, preferred over generic promises, in this order of strength."
+BW-0288,blog-writer-agent-installer.md,Step 2j,Specific example replaces generic promise,shared/base-rules/writing.md,A specific example replaces a generic promise wherever one is available
+BW-0289,blog-writer-agent-installer.md,Step 2k,Oxford comma always,shared/base-rules/writing.md,"Oxford comma, always. US English spelling and conventions"
+BW-0290,blog-writer-agent-installer.md,Step 2k,US spelling unless brief says otherwise,shared/base-rules/writing.md,unless the brief or the product's Settings row (Spelling) says otherwise
+BW-0291,blog-writer-agent-installer.md,Step 2k,Exclamation marks rarely,shared/base-rules/writing.md,"Exclamation marks rarely, and only where the excitement is real."
+BW-0292,blog-writer-agent-installer.md,Step 2k,Interface paths as arrow chains,shared/base-rules/writing.md,write the path as a chain joined by right arrows
+BW-0293,blog-writer-agent-installer.md,Step 2k,Bold only key terms and labels,shared/base-rules/writing.md,"Bold is for key terms, interface labels, and genuinely important distinctions"
+BW-0294,blog-writer-agent-installer.md,Step 2k,Never present AI mockups as real screenshots,shared/base-rules/writing.md,never suggest or describe an AI-generated mockup of an interface
+BW-0295,blog-writer-agent-installer.md,Step 2k,"Alt text specific, under 125 characters",shared/base-rules/writing.md,Alt text for every suggested image is specific and descriptive
+BW-0296,blog-writer-agent-installer.md,Step 2l,"Two density passes, at most three",shared/base-rules/writing.md,"run two density passes on it, and at most three"
+BW-0297,blog-writer-agent-installer.md,Step 2l,Find vague phrases,shared/base-rules/writing.md,Mark every phrase a reader can't act on or picture
+BW-0298,blog-writer-agent-installer.md,Step 2l,Swap each for a specific,shared/base-rules/writing.md,Swap each one for a specific.
+BW-0299,blog-writer-agent-installer.md,Step 2l,Keep length same or shorter,shared/base-rules/writing.md,Keep the length the same or shorter.
+BW-0300,blog-writer-agent-installer.md,Step 2l,Stop at pass three; split hard sentences,shared/base-rules/writing.md,"If a sentence now needs a second read, split it"
+BW-0301,blog-writer-agent-installer.md,Step 2l,Density never means jargon,shared/base-rules/writing.md,Every added specific still has to read at grade 5 to 6
+BW-0302,blog-writer-agent-installer.md,Step 2m,Bullets for three or more parallel items,shared/base-rules/writing.md,for three or more parallel items
+BW-0303,blog-writer-agent-installer.md,Step 2m,Numbered lists for ordered steps,shared/base-rules/writing.md,Numbered lists** for anything done in order.
+BW-0304,blog-writer-agent-installer.md,Step 2m,Tables for comparisons and breakdowns,shared/base-rules/writing.md,"for any comparison, cost breakdown, plan or tier breakdown"
+BW-0305,blog-writer-agent-installer.md,Step 2m,Bolded key line 12 words or fewer,shared/base-rules/writing.md,"a short phrase of 12 words or fewer, never a full paragraph"
+BW-0306,blog-writer-agent-installer.md,Step 2m,Short labeled blocks when they help,shared/base-rules/writing.md,"""Quick answer,"" ""What you'll need,"" ""Common mistake,"" or ""Pro tip,"""
+BW-0307,blog-writer-agent-installer.md,Step 2m,Every list gets a lead-in,shared/base-rules/writing.md,Every list gets a one-sentence lead-in
+BW-0308,blog-writer-agent-installer.md,Step 2m,Never three lists or tables in a row,shared/base-rules/writing.md,never three lists or tables in a row
+BW-0309,blog-writer-agent-installer.md,Step 2n,Each H2 opener pulls the reader in,shared/base-rules/writing.md,opens with a line that makes the reader want the second line
+BW-0310,blog-writer-agent-installer.md,Step 2n,Never open by restating the heading,shared/base-rules/writing.md,Never open a section by restating its heading.
+BW-0311,blog-writer-agent-installer.md,Step 2n,End each section with a forward bridge,shared/base-rules/writing.md,Each section ends by pointing forward
+BW-0312,blog-writer-agent-installer.md,Step 2n,Busy reader test per section,shared/base-rules/writing.md,would a busy reader who only read this section
+BW-0313,blog-writer-agent-installer.md,Step 2o,Every H2 has a strategic example,shared/base-rules/writing.md,"Every H2 section includes at least one concrete, strategic example"
+BW-0314,blog-writer-agent-installer.md,Step 2o,Example sits next to its idea,shared/base-rules/writing.md,Put the example before or right after the idea it explains
+BW-0315,blog-writer-agent-installer.md,Step 2o,Made-up scenario must be labeled as one,shared/base-rules/writing.md,A made-up scenario is fine as long as it's clearly a scenario
+BW-0316,blog-writer-agent-installer.md,Step 2o,Real rates in scenarios must be sourced,shared/base-rules/writing.md,"any real-world rate, fee, cost, or result applied to them"
+BW-0317,blog-writer-agent-installer.md,Step 3,Primary keyword placement spots,shared/base-rules/writing.md,"Primary keyword: H1, first 100 words of the intro"
+BW-0318,blog-writer-agent-installer.md,Step 3,Use at least 75% of tagged secondaries,shared/base-rules/writing.md,use at least 75% of the ones the brief tagged
+BW-0319,blog-writer-agent-installer.md,Step 3,Drop a forced keyword and note it,shared/base-rules/writing.md,"doesn't fit naturally anywhere in the piece, drop it"
+BW-0320,blog-writer-agent-installer.md,Step 3,One H1 matching the SEO title,shared/base-rules/writing.md,"One H1 only, matching the SEO title exactly."
+BW-0321,blog-writer-agent-installer.md,Step 3,H2s carry a keyword or variation,shared/base-rules/writing.md,"H2 per major section, carrying a keyword or a natural semantic variation."
+BW-0322,blog-writer-agent-installer.md,Step 3,H3 for three or more sub-concepts,shared/base-rules/writing.md,H3 for sub-points when a section has three or more distinct sub-concepts.
+BW-0323,blog-writer-agent-installer.md,Step 3,All headers in Title Case,shared/base-rules/writing.md,All headers in Title Case.
+BW-0324,blog-writer-agent-installer.md,Step 3,Headers describe what the section delivers,shared/base-rules/writing.md,"Headers describe what the section delivers, not just what it's about"
+BW-0325,blog-writer-agent-installer.md,Step 3,Headers make sense on their own,shared/base-rules/writing.md,Every header should make sense scanned on its own
+BW-0326,blog-writer-agent-installer.md,Step 3,No keyword density target,shared/base-rules/writing.md,Do not target a keyword density number.
+BW-0327,blog-writer-agent-installer.md,Step 3,Read aloud and cut repetition,shared/base-rules/writing.md,"if a phrase feels repetitive, cut an instance"
+BW-0328,blog-writer-agent-installer.md,Step 4,One signal from each E-E-A-T category,shared/base-rules/writing.md,Every article embeds at least one signal from each category
+BW-0329,blog-writer-agent-installer.md,Step 4,Experience: two real first-person signals,shared/base-rules/writing.md,minimum two first-person signals per piece
+BW-0330,blog-writer-agent-installer.md,Step 4,Never invent experience to meet the count,shared/base-rules/writing.md,never invent one to meet this count
+BW-0331,blog-writer-agent-installer.md,Step 4,Expertise: an analogy and a full breakdown,shared/base-rules/writing.md,at least one complex concept explained through a simple analogy
+BW-0332,blog-writer-agent-installer.md,Step 4,Authority: at least one sourced data point,shared/base-rules/writing.md,at least one specific data point or statistic
+BW-0333,blog-writer-agent-installer.md,Step 4,Trust: name a limitation before the workaround,shared/base-rules/writing.md,name a real limitation honestly before explaining the workaround
+BW-0334,blog-writer-agent-installer.md,Step 4,Trust: introduce tools by what they do,shared/base-rules/writing.md,introduce any tool or asset by what it does
+BW-0335,blog-writer-agent-installer.md,Step 4,"Trust: never fabricate stats, clients, outcomes",shared/base-rules/writing.md,"never fabricate a statistic, a client name, or an outcome"
+BW-0336,blog-writer-agent-installer.md,Step 4,No data: use stated reasoning,shared/base-rules/writing.md,make the point through our stated reasoning per Step 4.5
+BW-0337,blog-writer-agent-installer.md,Step 4,At least one original-value element,shared/base-rules/writing.md,must contribute at least one element the current leading pages
+BW-0338,blog-writer-agent-installer.md,Step 4,Acceptable kinds of original value,shared/base-rules/writing.md,Acceptable original value: first-hand testing language (2c)
+BW-0339,blog-writer-agent-installer.md,Step 4,A clearer rewrite is not original value,shared/base-rules/writing.md,A clearer rewrite of what's already ranking is not original value
+BW-0340,blog-writer-agent-installer.md,Step 4,"Name the specific differentiator, not more thorough",shared/base-rules/writing.md,name the actual specific thing this piece has that the others don't
+BW-0341,blog-writer-agent-installer.md,Step 4.5,Use data whenever it exists,shared/base-rules/writing.md,"Use data whenever it exists, which is most of the time."
+BW-0342,blog-writer-agent-installer.md,Step 4.5,Decorative numbers do not count,shared/base-rules/writing.md,A number that only decorates a paragraph
+BW-0343,blog-writer-agent-installer.md,Step 4.5,No data: build on a clear stance,shared/base-rules/writing.md,build the narrative on a clear stance instead
+BW-0344,blog-writer-agent-installer.md,Step 4.5,Every blog takes a clear stance,shared/base-rules/writing.md,"Every blog has a clear stance, with or without data."
+BW-0345,blog-writer-agent-installer.md,Step 4.5,Facts-only piece has no narrative,shared/base-rules/writing.md,A piece that only lists facts or options
+BW-0346,blog-writer-agent-installer.md,Step 4.5,4.5a lead with a direct number,shared/base-rules/writing.md,Lead with the number when a direct one exists.
+BW-0347,blog-writer-agent-installer.md,Step 4.5,4.5a flag unconfirmed numbers VERIFY,shared/base-rules/writing.md,flagged `[VERIFY]` if it can't be confirmed by publish time
+BW-0348,blog-writer-agent-installer.md,Step 4.5,4.5b chain adjacent data points,shared/base-rules/writing.md,chain real adjacent data points instead of inventing one
+BW-0349,blog-writer-agent-installer.md,Step 4.5,4.5b frame the synthesis as reasoning,shared/base-rules/writing.md,"Frame the synthesis explicitly as reasoning, not as a fourth citation"
+BW-0350,blog-writer-agent-installer.md,Step 4.5,4.5b tag an unverifiable link VERIFY,shared/base-rules/writing.md,"If even one link in the chain can't be verified, tag it"
+BW-0351,blog-writer-agent-installer.md,Step 4.5,4.5c open risk sections on real cost,shared/base-rules/writing.md,"Open a compliance, risk, or consequence-driven section on the real cost"
+BW-0352,blog-writer-agent-installer.md,Step 4.5,4.5c precedent must be verifiable,shared/base-rules/writing.md,"must be independently verifiable and sourced, never approximated or invented"
+BW-0353,blog-writer-agent-installer.md,Step 4.5,4.5c else use honest aggregate with VERIFY,shared/base-rules/writing.md,use the honest aggregate version instead
+BW-0354,blog-writer-agent-installer.md,Step 4.5,4.5d lead comparisons with strongest proof,shared/base-rules/writing.md,let the single strongest real proof point carry the positioning
+BW-0355,blog-writer-agent-installer.md,Step 4.5,4.5d no unconfirmed superlatives,shared/base-rules/writing.md,Never state a superlative like this without the number
+BW-0356,blog-writer-agent-installer.md,Step 4.5,4.5e walk costs across growth stages,shared/base-rules/writing.md,"walking them across real growth stages, not by naming one abstract number"
+BW-0357,blog-writer-agent-installer.md,Step 4.5,"4.5e stage rows, platform columns table",shared/base-rules/writing.md,"each growth stage is a row, each platform is a column"
+BW-0358,blog-writer-agent-installer.md,Step 4.5,4.5e close with an ownable line,shared/base-rules/writing.md,"Close this kind of section with one clear, ownable line"
+BW-0359,blog-writer-agent-installer.md,Step 4.5,4.5e state the line before and after,shared/base-rules/writing.md,State the line once before the numbers as the claim
+BW-0360,blog-writer-agent-installer.md,Step 4.5,4.5f back points with real reviews,shared/base-rules/writing.md,"back it with a short, real review, placed right after"
+BW-0361,blog-writer-agent-installer.md,Step 4.5,4.5f quote reviews exactly,shared/base-rules/writing.md,"Use the reviewer's own words, a complete sentence or two"
+BW-0362,blog-writer-agent-installer.md,Step 4.5,4.5f never paraphrase or merge reviews,shared/base-rules/writing.md,never merge two reviews into one
+BW-0363,blog-writer-agent-installer.md,Step 4.5,4.5f attribute and link each review,shared/base-rules/writing.md,Name the reviewer the way the review site shows them
+BW-0364,blog-writer-agent-installer.md,Step 4.5,4.5f pick reviews for relevance,shared/base-rules/writing.md,"Pick for relevance, not just praise."
+BW-0365,blog-writer-agent-installer.md,Step 4.5,4.5f prefer recent reviews,shared/base-rules/writing.md,Recent reviews beat old ones.
+BW-0366,blog-writer-agent-installer.md,Step 4.5,4.5f stay honest about ratings,shared/base-rules/writing.md,Don't imply every review is positive if the rating says otherwise.
+BW-0367,blog-writer-agent-installer.md,Step 4.5,4.5f no reviews claiming prohibited things,shared/base-rules/writing.md,Never use a review that claims something the brand guidelines prohibit
+BW-0368,blog-writer-agent-installer.md,Step 4.5,4.5f competitor reviews never mock,shared/base-rules/writing.md,never used to mock the competitor
+BW-0369,blog-writer-agent-installer.md,Step 4.5,4.5f never invent a review,shared/base-rules/writing.md,"If no real review fits a section, write the section without one."
+BW-0370,blog-writer-agent-installer.md,Step 4.5,4.5f aim for two to four reviews,shared/base-rules/writing.md,Aim for two to four real reviews in a typical piece
+BW-0371,blog-writer-agent-installer.md,Step 4.5,Techniques never license invention,shared/base-rules/writing.md,It is never license to invent one.
+BW-0372,blog-writer-agent-installer.md,Step 4.6,Hook names the reader situation first,shared/base-rules/writing.md,Name the reader's exact situation before saying anything about the product.
+BW-0373,blog-writer-agent-installer.md,Step 4.6,Generic hook is only a topic sentence,shared/base-rules/writing.md,If a hook could open any article on this topic
+BW-0374,blog-writer-agent-installer.md,Step 4.6,Hooks data-led when data exists,shared/base-rules/writing.md,Hooks are data-led whenever real data exists.
+BW-0375,blog-writer-agent-installer.md,Step 4.6,Never hook on weak or invented stats,shared/base-rules/writing.md,never on an invented or weakly sourced stat
+BW-0376,blog-writer-agent-installer.md,Step 4.6,4.6a default hook pattern,shared/base-rules/writing.md,"The default pattern: the number (when one exists), then empathy"
+BW-0377,blog-writer-agent-installer.md,Step 4.6,4.6a reframe the problem,shared/base-rules/writing.md,Reframe the problem in a way they probably hadn't thought
+BW-0378,blog-writer-agent-installer.md,Step 4.6,4.6a name what common approach gets wrong,shared/base-rules/writing.md,Name specifically what the common approach gets wrong
+BW-0379,blog-writer-agent-installer.md,Step 4.6,4.6a close on a thesis sentence,shared/base-rules/writing.md,close on one clear sentence stating what the reader will leave with
+BW-0380,blog-writer-agent-installer.md,Step 4.6,4.6b real number opens the piece,shared/base-rules/writing.md,"When a real number exists, let it open the piece."
+BW-0381,blog-writer-agent-installer.md,Step 4.6,4.6c risk pieces open on real cost,shared/base-rules/writing.md,"For risk, compliance, or consequence-driven pieces, open on the real cost"
+BW-0382,blog-writer-agent-installer.md,Step 4.6,4.6d comparison hook is one proof point,shared/base-rules/writing.md,"For a comparison, let one sharp proof point be the entire hook."
+BW-0383,blog-writer-agent-installer.md,Step 4.6,4.6e contrarian hook; follow proven pattern first,shared/base-rules/writing.md,If the knowledge base documents a hook pattern already proven
+BW-0384,blog-writer-agent-installer.md,Step 4.6,Banned openers never open a piece,shared/base-rules/writing.md,"What never opens a piece, in any format."
+BW-0385,blog-writer-agent-installer.md,Step 4.6,Deletable first sentence is throat-clearing,shared/base-rules/writing.md,"it wasn't a hook, it was throat-clearing"
+BW-0386,blog-writer-agent-installer.md,Step 4.7,Arc applies to intro and consequential sections,shared/base-rules/writing.md,Apply this arc to the introduction always
+BW-0387,blog-writer-agent-installer.md,Step 4.7,Every beat carries data where it can,shared/base-rules/writing.md,Every beat that can carry real data does.
+BW-0388,blog-writer-agent-installer.md,Step 4.7,Only Resolution talks about the product,shared/base-rules/writing.md,the only beat allowed to talk about the product directly
+BW-0389,blog-writer-agent-installer.md,Step 4.7,Reframe is exactly one sentence,shared/base-rules/writing.md,"stated once, exactly one sentence"
+BW-0390,blog-writer-agent-installer.md,Step 4.7,"Sharpen raises stakes, no new claim",shared/base-rules/writing.md,"raising the stakes of the hook, never a new claim"
+BW-0391,blog-writer-agent-installer.md,Step 4.7,Arc ends on CTA only in a CTA slot,shared/base-rules/writing.md,an arc ends on its CTA only when that section holds one
+BW-0392,blog-writer-agent-installer.md,Step 4.7,Intro carries a compressed arc,shared/base-rules/writing.md,so it carries a compressed arc
+BW-0393,blog-writer-agent-installer.md,Step 4.7,Reframe reads as the reader insight,shared/base-rules/writing.md,it has to read as an insight the reader arrives at
+BW-0394,blog-writer-agent-installer.md,Step 4.7,No early fix-it-now CTA before Resolution,shared/base-rules/writing.md,A risk-framed or fear-based Hook is especially tempting
+BW-0395,blog-writer-agent-installer.md,Step 4.7,Hook-Reframe-CTA self-check,shared/base-rules/writing.md,"Cover everything except the Hook, Reframe, and CTA sentences."
+BW-0396,blog-writer-agent-installer.md,Step 4.7,"Beats may compress, order never changes",shared/base-rules/writing.md,What can't be skipped is the order
+BW-0397,blog-writer-agent-installer.md,Step 4.7,Carry one reader story through the piece,shared/base-rules/writing.md,Carry one story through the whole piece.
+BW-0398,blog-writer-agent-installer.md,Step 4.7,Scenario math from sourced numbers,shared/base-rules/writing.md,build the scenario's math from those
+BW-0399,blog-writer-agent-installer.md,Step 4.7,Move the story with cause and effect,shared/base-rules/writing.md,move the story with cause and effect
+BW-0400,blog-writer-agent-installer.md,Step 5,Follow the brief format exactly,shared/base-rules/writing.md,Follow the format the brief selected in its own Step 3 exactly.
+BW-0401,blog-writer-agent-installer.md,Step 5,Split target words across sections,shared/base-rules/writing.md,split the brief's target word count across the outline's sections
+BW-0402,blog-writer-agent-installer.md,Step 5,Write one section at a time to budget,shared/base-rules/writing.md,Write one full section at a time to its budget
+BW-0403,blog-writer-agent-installer.md,Step 5,Later sections never shrink,shared/base-rules/writing.md,Don't let later sections shrink because earlier ones ran long
+BW-0404,blog-writer-agent-installer.md,Step 5,Keep the draft in a working file,shared/base-rules/writing.md,Keep the draft in a working file
+BW-0405,blog-writer-agent-installer.md,Step 5,Count words per section and total,shared/base-rules/writing.md,count the words per section and in total against the budget
+BW-0406,blog-writer-agent-installer.md,Step 5,Total counts body and FAQ only,shared/base-rules/writing.md,The total counts the body and the FAQ
+BW-0407,blog-writer-agent-installer.md,Step 5,Script the word count and grade check,shared/base-rules/writing.md,check the Flesch-Kincaid grade (Step 2a) with a short script
+BW-0408,blog-writer-agent-installer.md,Step 5,Intro 150 to 200 words with hook and thesis,shared/base-rules/writing.md,"Introduction, 150 to 200 words: build the hook per Step 4.6"
+BW-0409,blog-writer-agent-installer.md,Step 5,40 to 60 word direct answer after intro,shared/base-rules/writing.md,write a direct 40-to-60-word answer to the primary keyword's core question
+BW-0410,blog-writer-agent-installer.md,Step 5,Fixed opening order,shared/base-rules/writing.md,"The opening order is fixed: the introduction, then the direct answer"
+BW-0411,blog-writer-agent-installer.md,Step 5,Overview before deep dive,shared/base-rules/writing.md,"Give the reader the most important answer early, overview before deep dive."
+BW-0412,blog-writer-agent-installer.md,Step 5,Deliver the promise before the midpoint,shared/base-rules/writing.md,before the article's real midpoint
+BW-0413,blog-writer-agent-installer.md,Step 5,Cut thin keyword-only sections,shared/base-rules/writing.md,"Cut or fold in any thin, repetitive section"
+BW-0414,blog-writer-agent-installer.md,Step 5,Listicles comparing options get an overview,shared/base-rules/writing.md,add a short overview anyway
+BW-0415,blog-writer-agent-installer.md,Step 5,"Conclusion 100 to 150 words, the true close",shared/base-rules/writing.md,"Conclusion, 100 to 150 words, is the true close"
+BW-0416,blog-writer-agent-installer.md,Step 5,Conclusion content and one CTA,shared/base-rules/writing.md,Recap two to three genuinely actionable takeaways
+BW-0417,blog-writer-agent-installer.md,Step 5,FAQ comes after the Conclusion,shared/base-rules/writing.md,"comes after the Conclusion, as the true last section in the piece"
+BW-0418,blog-writer-agent-installer.md,Step 5,Listicle item structure,shared/base-rules/writing.md,Each numbered item gets: a one-sentence positioning statement
+BW-0419,blog-writer-agent-installer.md,Step 5,Listicle minimum 10 items,shared/base-rules/writing.md,Minimum 10 items for a competitive listicle keyword
+BW-0420,blog-writer-agent-installer.md,Step 5,Listicle uses outside data,shared/base-rules/writing.md,pull real supporting data points from credible outside sources
+BW-0421,blog-writer-agent-installer.md,Step 5,Listicle: no FAQ or body table by default,shared/base-rules/writing.md,No FAQ and no comparison table in the body unless the brief
+BW-0422,blog-writer-agent-installer.md,Step 5,Listicle: questions answered inside items,shared/base-rules/writing.md,"are answered inside the relevant items instead, or marked out of scope"
+BW-0423,blog-writer-agent-installer.md,Step 5,Comparison: never say the product is better,shared/base-rules/writing.md,never state directly that this product is better
+BW-0424,blog-writer-agent-installer.md,Step 5,Comparison: define criteria first,shared/base-rules/writing.md,Define the evaluation criteria before the comparison starts
+BW-0425,blog-writer-agent-installer.md,Step 5,Comparison: fair description of competitors first,shared/base-rules/writing.md,"Give competitors a fair, even generous, description first"
+BW-0426,blog-writer-agent-installer.md,Step 5,Comparison: steer by use case,shared/base-rules/writing.md,let competitors win the genuine edge cases
+BW-0427,blog-writer-agent-installer.md,Step 5,Comparison: proof right after the comparison,shared/base-rules/writing.md,Place the strongest proof point or case study immediately after
+BW-0428,blog-writer-agent-installer.md,Step 5,How-to structure,shared/base-rules/writing.md,"Open on the concrete problem, list what the reader needs before starting"
+BW-0429,blog-writer-agent-installer.md,Step 5,How-to close,shared/base-rules/writing.md,Close with common mistakes or troubleshooting
+BW-0430,blog-writer-agent-installer.md,Step 6,Table only when items share attributes,shared/base-rules/writing.md,two or more items share two or more attributes
+BW-0431,blog-writer-agent-installer.md,Step 6,Single list uses bullets instead,shared/base-rules/writing.md,If the information is really a single list with no second attribute
+BW-0432,blog-writer-agent-installer.md,Step 6,No tables with vague or empty cells,shared/base-rules/writing.md,Never add a table with vague or empty cells
+BW-0433,blog-writer-agent-installer.md,Step 6,No bare yes cells,shared/base-rules/writing.md,"never a bare ""yes"" without context"
+BW-0434,blog-writer-agent-installer.md,Step 6,Column headers stand alone,shared/base-rules/writing.md,Column headers must be understandable on their own
+BW-0435,blog-writer-agent-installer.md,Step 6,Rows consistent in format,shared/base-rules/writing.md,Rows stay consistent in format
+BW-0436,blog-writer-agent-installer.md,Step 6,Best For column when choosing,shared/base-rules/writing.md,"Add a ""Best For"" or ""When to Use This"" column"
+BW-0437,blog-writer-agent-installer.md,Step 6,Editorial note under each table,shared/base-rules/writing.md,Write a one-to-two sentence editorial note directly under the table
+BW-0438,blog-writer-agent-installer.md,Step 6,Flag unverifiable and pricing cells,shared/base-rules/writing.md,Flag any cell built from an unverifiable figure with `[VERIFY]`
+BW-0439,blog-writer-agent-installer.md,Step 7,Exactly three CTAs from the brief plan,shared/base-rules/writing.md,Build exactly the three CTAs the brief's Step 4c already planned
+BW-0440,blog-writer-agent-installer.md,Step 7,"CTA headline 4 to 8 words, action verb",shared/base-rules/writing.md,a 4-to-8-word headline opening with an action verb
+BW-0441,blog-writer-agent-installer.md,Step 7,First person where natural,shared/base-rules/writing.md,written in first person where it reads naturally
+BW-0442,blog-writer-agent-installer.md,Step 7,"Never Click Here, Learn More, Submit",shared/base-rules/writing.md,"never ""Click Here,"" ""Learn More,"" or ""Submit."""
+BW-0443,blog-writer-agent-installer.md,Step 7,Real urgency only,shared/base-rules/writing.md,"Real urgency only (""Join 5,000+ Teams Already Using This"""
+BW-0444,blog-writer-agent-installer.md,Step 7,"Early CTA: relief, low pressure",shared/base-rules/writing.md,"Early CTA: offer relief, low pressure, right after the intro."
+BW-0445,blog-writer-agent-installer.md,Step 7,Mid CTA: theory to proof,shared/base-rules/writing.md,Mid CTA: bridge from theory to proof
+BW-0446,blog-writer-agent-installer.md,Step 7,Closing CTA: strongest ask,shared/base-rules/writing.md,"Closing CTA: the strongest, most direct ask in the piece"
+BW-0447,blog-writer-agent-installer.md,Step 7,No CTA inside FAQ,shared/base-rules/writing.md,No CTA inside the FAQ.
+BW-0448,blog-writer-agent-installer.md,Step 7,No CTA in consecutive sections,shared/base-rules/writing.md,No CTA in two consecutive sections.
+BW-0449,blog-writer-agent-installer.md,Step 7,Unconfirmed destination gets VERIFY tag,shared/base-rules/writing.md,use `[VERIFY: destination link needed]` rather than inventing one
+BW-0450,blog-writer-agent-installer.md,Step 7.5,Internal links only when helpful,shared/base-rules/writing.md,Add an internal link only when it helps the reader
+BW-0451,blog-writer-agent-installer.md,Step 7.5,Descriptive anchor text,shared/base-rules/writing.md,"Use descriptive anchor text, never ""click here"" or a bare URL."
+BW-0452,blog-writer-agent-installer.md,Step 7.5,External links to primary sources,shared/base-rules/writing.md,Link externally to primary or authoritative sources for any claim
+BW-0453,blog-writer-agent-installer.md,Step 7.5,Competitor limitation links to their own page,shared/base-rules/writing.md,link it to that competitor's own current documentation or pricing page
+BW-0454,blog-writer-agent-installer.md,Step 7.5,No tracking parameters on editorial links,shared/base-rules/writing.md,Never attach campaign tracking parameters to an ordinary editorial internal link
+BW-0455,blog-writer-agent-installer.md,Step 7.5,Every link resolves,shared/base-rules/writing.md,"Every link in the draft should resolve to a real, working page"
+BW-0456,blog-writer-agent-installer.md,Step 7.5,Note unconfirmed links in notes,shared/base-rules/writing.md,any link this run couldn't confirm resolves
+BW-0457,blog-writer-agent-installer.md,Step 8,"Suggest images, never generate them",shared/base-rules/writing.md,You don't generate images. You identify where one would do something
+BW-0458,blog-writer-agent-installer.md,Step 8,Legitimate reasons for an image,shared/base-rules/writing.md,Legitimate reasons to suggest one: a process that would read faster
+BW-0459,blog-writer-agent-installer.md,Step 8,Skip images where tables or lists cover it,shared/base-rules/writing.md,Skip it when a table or list already handles the same information
+BW-0460,blog-writer-agent-installer.md,Step 8,Real current screenshots only,shared/base-rules/writing.md,Every suggestion describes a real screenshot of the actual current interface
+BW-0461,blog-writer-agent-installer.md,Step 8,Use the placement dimensions table,shared/base-rules/writing.md,"First image, above the H1"
+BW-0462,blog-writer-agent-installer.md,Step 8,Callout inline in the draft,shared/base-rules/writing.md,Insert each suggestion inline in the draft as a clearly marked callout
+BW-0463,blog-writer-agent-installer.md,Step 8,Callout right after its heading,shared/base-rules/writing.md,immediately after the heading it belongs to
+BW-0464,blog-writer-agent-installer.md,Step 8,"Callout describes subject, style, mood, avoid",shared/base-rules/writing.md,"subject, context, visual style, mood, and anything to avoid"
+BW-0465,blog-writer-agent-installer.md,Step 8,"Callout is a bold-label paragraph, not blockquote",shared/base-rules/writing.md,"starts with the bold label, per Step 13a and the storage file"
+BW-0466,blog-writer-agent-installer.md,Step 8,Two to six suggestions total,shared/base-rules/writing.md,Total suggestions: 2 to 6.
+BW-0467,blog-writer-agent-installer.md,Step 9,SEO title 50 to 60 characters,shared/base-rules/writing.md,SEO title: approximately 50 to 60 characters
+BW-0468,blog-writer-agent-installer.md,Step 9,Meta description 140 to 155 characters,shared/base-rules/writing.md,Meta description: approximately 140 to 155 characters
+BW-0469,blog-writer-agent-installer.md,Step 9,Meta description structure,shared/base-rules/writing.md,opens on the reader's pain point in the first four
+BW-0470,blog-writer-agent-installer.md,Step 9,Slug rules,shared/base-rules/writing.md,"URL slug: short, descriptive, lowercase, hyphenated, keyword-forward, no stop words."
+BW-0471,blog-writer-agent-installer.md,Step 9,No clickbait titles,shared/base-rules/writing.md,Titles match the intent and state the value clearly; never clickbait.
+BW-0472,blog-writer-agent-installer.md,Step 9,Never change a published slug,shared/base-rules/writing.md,Never change the slug of an already-published page
+BW-0473,blog-writer-agent-installer.md,Step 9,Live piece rework: flag slug in notes,shared/base-rules/writing.md,If this run is a rework of a piece that's already live
+BW-0474,blog-writer-agent-installer.md,Step 10,"FAQ last, unless skeleton skips it",shared/base-rules/writing.md,Include an FAQ section as the true last section of the piece
+BW-0475,blog-writer-agent-installer.md,Step 10,No mechanical FAQ,shared/base-rules/writing.md,don't add one mechanically just because the format generally allows it
+BW-0476,blog-writer-agent-installer.md,Step 10,FAQ questions from the question map,shared/base-rules/writing.md,Pull the questions from the Step 1.5 reader question map
+BW-0477,blog-writer-agent-installer.md,Step 10,"Five to eight questions, 40 to 60 words",shared/base-rules/writing.md,Five to eight questions. Each answer 40 to 60 words
+BW-0478,blog-writer-agent-installer.md,Step 10,"Answer first, never restate question",shared/base-rules/writing.md,opens with the answer itself (never restates the question first)
+BW-0479,blog-writer-agent-installer.md,Step 10,Never open with it depends,shared/base-rules/writing.md,"never opens with ""it depends"""
+BW-0480,blog-writer-agent-installer.md,Step 11,"Never invent stats, names, outcomes, prices",shared/base-rules/writing.md,"Never invent a statistic, a client name, an outcome, a pricing figure"
+BW-0481,blog-writer-agent-installer.md,Step 11,Every claim traces to a source,shared/base-rules/writing.md,"Every specific claim traces to the brief, the knowledge base"
+BW-0482,blog-writer-agent-installer.md,Step 11,Untraceable claims get VERIFY,shared/base-rules/writing.md,flag it inline with `[VERIFY]` rather than deleting the point
+BW-0483,blog-writer-agent-installer.md,Step 11,Time-sensitive data gets FRESHNESS_FLAG,shared/base-rules/writing.md,"Time-sensitive data (pricing, plan structure, feature availability) gets `[FRESHNESS_FLAG]`."
+BW-0484,blog-writer-agent-installer.md,Step 11,Accuracy matters more than polish,shared/base-rules/writing.md,This rule matters more than sounding polished
+BW-0485,blog-writer-agent-installer.md,Step 12,Hard blockers are a full stop,modes/blog-writer.md,Treat any of the following as a full stop
+BW-0486,blog-writer-agent-installer.md,Step 12,"Fix the problem, never soften the language",modes/blog-writer.md,never soften the language around it instead
+BW-0487,blog-writer-agent-installer.md,Step 12,Request-revision issues fixed like failures,modes/blog-writer.md,"Request-revision-level issues, fixed the same way as any other failure below"
+BW-0488,blog-writer-agent-installer.md,Step 12,Confirm every self-check line before saving,modes/blog-writer.md,Confirm every line below before moving to Step 13.
+BW-0489,blog-writer-agent-installer.md,Step 12 checklist,Self-check: Every banned phrase and pattern from Step 2b is absent,modes/blog-writer.md,Every banned phrase and pattern from Step 2b is
+BW-0490,blog-writer-agent-installer.md,Step 12 checklist,Self-check: Zero em dashes anywhere in the piece,modes/blog-writer.md,Zero em dashes anywhere in the piece
+BW-0491,blog-writer-agent-installer.md,Step 12 checklist,"Self-check: Target keyword, pillar keyword, and secondary keywords are placed per",modes/blog-writer.md,"Target keyword, pillar keyword, and secondary keywords are placed"
+BW-0492,blog-writer-agent-installer.md,Step 12 checklist,Self-check: All four E-E-A-T categories from Step 4 are present with,modes/blog-writer.md,All four E-E-A-T categories from Step 4 are present
+BW-0493,blog-writer-agent-installer.md,Step 12 checklist,"Self-check: Every strategy, process, or how-to section meets the full depth",modes/blog-writer.md,"Every strategy, process, or how-to section meets the full"
+BW-0494,blog-writer-agent-installer.md,Step 12 checklist,"Self-check: Exactly three CTAs, correctly placed, none in the FAQ, none",modes/blog-writer.md,"Exactly three CTAs, correctly placed, none in the FAQ"
+BW-0495,blog-writer-agent-installer.md,Step 12 checklist,"Self-check: Every table, if any, passes the earns-its-place filter from Step",modes/blog-writer.md,"Every table, if any, passes the earns-its-place filter from"
+BW-0496,blog-writer-agent-installer.md,Step 12 checklist,"Self-check: 2 to 6 image suggestions, each with a specific, actionable",modes/blog-writer.md,"2 to 6 image suggestions, each with a specific"
+BW-0497,blog-writer-agent-installer.md,Step 12 checklist,Self-check: FAQ has 5 to 8 questions (or is correctly omitted,modes/blog-writer.md,FAQ has 5 to 8 questions (or is correctly
+BW-0498,blog-writer-agent-installer.md,Step 12 checklist,Self-check: SEO title and meta description are within their character limits,modes/blog-writer.md,SEO title and meta description are within their character
+BW-0499,blog-writer-agent-installer.md,Step 12 checklist,Self-check: Every specific claim traces to a real source or carries,modes/blog-writer.md,Every specific claim traces to a real source or
+BW-0500,blog-writer-agent-installer.md,Step 12 checklist,Self-check: Every fact traced to a specific page is cited by,modes/blog-writer.md,Every fact traced to a specific page is cited
+BW-0501,blog-writer-agent-installer.md,Step 12 checklist,"Self-check: No section opens on a changelog-style announcement, a date or",modes/blog-writer.md,"No section opens on a changelog-style announcement, a date"
+BW-0502,blog-writer-agent-installer.md,Step 12 checklist,"Self-check: Perspective is used correctly throughout per Step 2g: ""you"" for",modes/blog-writer.md,"Perspective is used correctly throughout per Step 2g: ""you"""
+BW-0503,blog-writer-agent-installer.md,Step 12 checklist,"Self-check: The FAQ, if present, comes after the Conclusion as the",modes/blog-writer.md,"The FAQ, if present, comes after the Conclusion as"
+BW-0504,blog-writer-agent-installer.md,Step 12 checklist,"Self-check: If the format compares three or more options, an overview",modes/blog-writer.md,"If the format compares three or more options, an"
+BW-0505,blog-writer-agent-installer.md,Step 12 checklist,"Self-check: At least one, and ideally two, genuine original-value elements from",modes/blog-writer.md,"At least one, and ideally two, genuine original-value elements"
+BW-0506,blog-writer-agent-installer.md,Step 12 checklist,Self-check: No prohibited style pattern from Step 2b appears anywhere: no,modes/blog-writer.md,No prohibited style pattern from Step 2b appears anywhere
+BW-0507,blog-writer-agent-installer.md,Step 12 checklist,Self-check: The sections addressing gaps the AI answer engines named in,modes/blog-writer.md,The sections addressing gaps the AI answer engines named
+BW-0508,blog-writer-agent-installer.md,Step 12 checklist,Self-check: Every narrative built on data follows Step 4.5: direct numbers,modes/blog-writer.md,Every narrative built on data follows Step 4.5: direct
+BW-0509,blog-writer-agent-installer.md,Step 12 checklist,Self-check: All three research passes from Step 1.5 ran before drafting,modes/blog-writer.md,All three research passes from Step 1.5 ran before
+BW-0510,blog-writer-agent-installer.md,Step 12 checklist,Self-check: The hook follows one of the patterns in Step 4.6,modes/blog-writer.md,The hook follows one of the patterns in Step
+BW-0511,blog-writer-agent-installer.md,Step 12 checklist,Self-check: Every section built around a consequential claim follows the narrative,modes/blog-writer.md,Every section built around a consequential claim follows the
+BW-0512,blog-writer-agent-installer.md,Step 12 checklist,Self-check: Reading level sits at grade 5 to 6 (ceiling 7),modes/blog-writer.md,Reading level sits at grade 5 to 6 (ceiling
+BW-0513,blog-writer-agent-installer.md,Step 12 checklist,"Self-check: Every paragraph is one to three sentences, and every H2",modes/blog-writer.md,"Every paragraph is one to three sentences, and every"
+BW-0514,blog-writer-agent-installer.md,Step 12 checklist,Self-check: The chain-of-density pass (2l) ran on every section: no vague,modes/blog-writer.md,The chain-of-density pass (2l) ran on every section: no
+BW-0515,blog-writer-agent-installer.md,Step 12 checklist,Self-check: Every H2 opens with a line that pulls the reader,modes/blog-writer.md,Every H2 opens with a line that pulls the
+BW-0516,blog-writer-agent-installer.md,Step 12 checklist,"Self-check: Every H2 has at least one concrete, strategic example, clearly",modes/blog-writer.md,"Every H2 has at least one concrete, strategic example"
+BW-0517,blog-writer-agent-installer.md,Step 12 checklist,Self-check: One reader scenario runs through the piece from the introduction,modes/blog-writer.md,One reader scenario runs through the piece from the
+BW-0518,blog-writer-agent-installer.md,Step 12 checklist,"Self-check: Data was used wherever real data exists, per Step 4.5",modes/blog-writer.md,"Data was used wherever real data exists, per Step"
+BW-0519,blog-writer-agent-installer.md,Step 12 checklist,Self-check: If the product or a compared competitor is a WordPress,modes/blog-writer.md,If the product or a compared competitor is a
+BW-0520,blog-writer-agent-installer.md,Step 12 checklist,Self-check: Real reviews were used wherever one fits a section's point,modes/blog-writer.md,Real reviews were used wherever one fits a section's
+BW-0521,blog-writer-agent-installer.md,Step 12 checklist,"Self-check: The piece takes a clear stance, per Step 4.5: it",modes/blog-writer.md,"The piece takes a clear stance, per Step 4.5"
+BW-0522,blog-writer-agent-installer.md,Step 12 checklist,Self-check: The Step 1.5 reader question map was built from all,modes/blog-writer.md,The Step 1.5 reader question map was built from
+BW-0523,blog-writer-agent-installer.md,Step 12 checklist,Self-check: The total word count is within 10% of the brief's,modes/blog-writer.md,The total word count is within 10% of the
+BW-0524,blog-writer-agent-installer.md,Step 12 checklist,Self-check: The saved Doc has a spacer paragraph between every block,modes/blog-writer.md,The saved document shows a clear gap between every
+BW-0525,blog-writer-agent-installer.md,Step 12 checklist,"Self-check: Paragraphs are visually spaced and skimmable throughout, per Step 2d",modes/blog-writer.md,"Paragraphs are visually spaced and skimmable throughout, per Step"
+BW-0526,blog-writer-agent-installer.md,Step 12 checklist,Self-check: If this run handled a draft-stage rework (Step 0.6): every,modes/blog-writer.md,If this run handled a draft-stage rework (Step 0.6)
+BW-0527,blog-writer-agent-installer.md,Step 12 checklist,"Self-check: If this run handled a draft-stage rework, every section was",modes/blog-writer.md,"If this run handled a draft-stage rework, every section"
+BW-0528,blog-writer-agent-installer.md,Step 12 checklist,Self-check: No step in this run asked the user for the,modes/blog-writer.md,No step in this run asked the user for
+BW-0529,blog-writer-agent-installer.md,Step 12 checklist,Self-check: Every Run Guard that applied was followed: the row was,modes/blog-writer.md,Every run guard that applied was followed: the row
+BW-0530,blog-writer-agent-installer.md,Step 12 checklist,Self-check: The QA skill was called automatically right after every save,modes/blog-writer.md,QA ran automatically in this session right after every
+BW-0531,blog-writer-agent-installer.md,Step 12 checklist,Self-check: Only one QA audit ran on each draft (G15); a,modes/blog-writer.md,Only one QA audit ran on each draft (G17)
+BW-0532,blog-writer-agent-installer.md,Step 12 checklist,Self-check: Every approval or escalation post tagged everyone on the approver,modes/blog-writer.md,"Every approval or escalation post tagged every approver, came"
+BW-0533,blog-writer-agent-installer.md,Step 12 checklist,"Self-check: The 3-pass cap used the draft pass count (G6), never",modes/blog-writer.md,The 3-pass cap used the draft pass count (G6)
+BW-0534,blog-writer-agent-installer.md,Step 12 checklist,Self-check: The draft was saved as a new native Google Doc,modes/blog-writer.md,The draft was saved per the piece's storage file
+BW-0535,blog-writer-agent-installer.md,Step 12 checklist,"Self-check: Step 13a stayed within its three-attempt budget, narrated what it",modes/blog-writer.md,"The save stayed within its three-attempt budget, narrated what"
+BW-0536,blog-writer-agent-installer.md,Step 12 checklist,Self-check: No step in this run posted to Slack for a,modes/blog-writer.md,No step in this run posted to Slack for
+BW-0537,blog-writer-agent-installer.md,Step 12 checklist,"Self-check: If Step 14 ran, it actually looped until Approved or",modes/blog-writer.md,"If Step 14 ran, it actually looped until Approved"
+BW-0538,blog-writer-agent-installer.md,Step 13a,"Save in one call, no files built on disk",shared/storage-drive.md,"Save in one call, with no files built on disk."
+BW-0539,blog-writer-agent-installer.md,Step 13a,Working file is only the scratchpad,modes/blog-writer.md,The plain working file from Step 5 is fine
+BW-0540,blog-writer-agent-installer.md,Step 13a,Draft goes where reviewer opens it from Slack,modes/blog-writer.md,where the reviewer opens it straight from the Slack post
+BW-0541,blog-writer-agent-installer.md,Step 13a,Never Claude Docs or a .docx build,shared/storage-drive.md,"Never use Claude Docs, a `.docx` built by a script"
+BW-0542,blog-writer-agent-installer.md,Step 13a,Build one clean HTML string in memory,shared/storage-drive.md,"one clean HTML string, in memory"
+BW-0543,blog-writer-agent-installer.md,Step 13a,"Include everything, SEO metadata too",modes/blog-writer.md,the Step 9 SEO metadata included
+BW-0544,blog-writer-agent-installer.md,Step 13a,"Real headings, never sized-up bold",modes/blog-writer.md,never bold text sized up to look like one
+BW-0545,blog-writer-agent-installer.md,Step 13a,"Real lists, never typed bullets",modes/blog-writer.md,"Lists are real bulleted or numbered lists, never a typed bullet character."
+BW-0546,blog-writer-agent-installer.md,Step 13a,Bordered tables,modes/blog-writer.md,"Every table is a real table, with visible borders in Drive."
+BW-0547,blog-writer-agent-installer.md,Step 13a,Every link a live hyperlink,modes/blog-writer.md,so every Step 2i citation stays a live hyperlink
+BW-0548,blog-writer-agent-installer.md,Step 13a,Callouts and CTAs as bold-label paragraphs,modes/blog-writer.md,is its own paragraph that starts with a bold label
+BW-0549,blog-writer-agent-installer.md,Step 13a,No emoji in the Doc,modes/blog-writer.md,No emoji anywhere** in the document.
+BW-0550,blog-writer-agent-installer.md,Step 13a,One spacer paragraph between blocks,modes/blog-writer.md,exactly one spacer paragraph between any two blocks
+BW-0551,blog-writer-agent-installer.md,Step 13a,Never two spacers in a row,shared/storage-drive.md,Never two spacers in a row.
+BW-0552,blog-writer-agent-installer.md,Step 13a,No Markdown links or escaped brackets,modes/blog-writer.md,"No visible `[text](url)`, no backslash before a bracket"
+BW-0553,blog-writer-agent-installer.md,Step 13a,No --- or *** dividers,modes/blog-writer.md,no `---` or `***` used as a divider (use a heading instead)
+BW-0554,blog-writer-agent-installer.md,Step 13a,Escape ampersand and angle brackets,shared/storage-drive.md,"Escape `&`, `<`, and `>` inside text."
+BW-0555,blog-writer-agent-installer.md,Step 13a,Wrap HTML with utf-8 head,shared/storage-drive.md,"Wrap it all as `<html><head><meta charset=""utf-8""></head><body>...</body></html>`"
+BW-0556,blog-writer-agent-installer.md,Step 13a,Non-ASCII as numeric HTML entities,shared/storage-drive.md,write every non-ASCII character as a numeric HTML entity
+BW-0557,blog-writer-agent-installer.md,Step 13a,"No style blocks, scripts, or images",shared/storage-drive.md,"No `<style>` blocks, no scripts, no embedded images."
+BW-0558,blog-writer-agent-installer.md,Step 13a,create_file with HTML mime type,shared/storage-drive.md,"`create_file` with `title`, `textContent` set to the HTML"
+BW-0559,blog-writer-agent-installer.md,Step 13a,Leave conversion on; use the folder parent,shared/storage-drive.md,set to the Drive Folder's ID. Leave `disableConversionToGoogleType` unset
+BW-0560,blog-writer-agent-installer.md,Step 13a,Confirm Google Doc mime type,shared/storage-drive.md,The returned `mimeType` must be `application/vnd.google-apps.document`.
+BW-0561,blog-writer-agent-installer.md,Step 13a,Wrong file type is a failed attempt,shared/storage-drive.md,Anything else counts as a failed attempt.
+BW-0562,blog-writer-agent-installer.md,Step 13a,Access check before the link goes anywhere,modes/blog-writer.md,"finish the access check, and move straight to 13b"
+BW-0563,blog-writer-agent-installer.md,Step 13a,v1 and rework titles,modes/blog-writer.md,"v1 is `[Item ID]: [Working Title]`, and a rework"
+BW-0564,blog-writer-agent-installer.md,Step 13a,Every rework is a new Doc,shared/storage-drive.md,"Every rework is a new Doc, and the older Docs stay"
+BW-0565,blog-writer-agent-installer.md,Step 13a,Get the draft right before saving,modes/blog-writer.md,So get this draft right before saving it.
+BW-0566,blog-writer-agent-installer.md,Step 13a,Narrate the save as it happens,modes/blog-writer.md,when the save is about to fire
+BW-0567,blog-writer-agent-installer.md,Step 13a,Past 45-minute stall anecdote,DROPPED,Historical anecdote only; the narrate rule it supported is kept (modes/blog-writer.md Step 13a)
+BW-0568,blog-writer-agent-installer.md,Step 13a,At most three save attempts,modes/blog-writer.md,"within the storage file's three-attempt budget, never past it"
+BW-0569,blog-writer-agent-installer.md,Step 13a,"After three failures, say so plainly",modes/blog-writer.md,the draft is fully written but couldn't be saved
+BW-0570,blog-writer-agent-installer.md,Step 13a,"Ask for a person, not a fourth attempt",modes/blog-writer.md,rather than a fourth automated attempt
+BW-0571,blog-writer-agent-installer.md,Step 13a,Never fall back to another doc type,modes/blog-writer.md,Never fall back to another document type.
+BW-0572,blog-writer-agent-installer.md,Step 13a,Long silent step: stop and report,modes/blog-writer.md,that's not a sign to keep waiting quietly
+BW-0573,blog-writer-agent-installer.md,Step 13a,Done once confirmed; no reread,modes/blog-writer.md,Don't read the document back to double check
+BW-0574,blog-writer-agent-installer.md,Step 13a,Running past success is a stuck state,modes/blog-writer.md,is its own kind of stuck state
+BW-0575,blog-writer-agent-installer.md,Step 13b,13b only for v1; rework update in 0.6i,modes/blog-writer.md,For v1 only (a rework's Airtable update is 0.6i's job)
+BW-0576,blog-writer-agent-installer.md,Step 13b,Set Blog Doc Link and In QA,modes/blog-writer.md,"Blog Doc Link set to the new document's link, Status `In QA`"
+BW-0577,blog-writer-agent-installer.md,Step 13b,Add in-session QA marker on v1,modes/blog-writer.md,Claimed By `Blog Writer (QA in-session)` with the same Claim Token (G17)
+BW-0578,blog-writer-agent-installer.md,Step 13b,Leave QA-owned fields alone,modes/blog-writer.md,"Leave QA Score, Product Rules Result, QA Report Link"
+BW-0579,blog-writer-agent-installer.md,Step 13b,Airtable update before chat notice,modes/blog-writer.md,Airtable is the actual record of what happened
+BW-0580,blog-writer-agent-installer.md,Step 13c,"v1 saved notice in chat, never Slack",modes/blog-writer.md,v1 has no Slack footprint at all in this pipeline
+BW-0581,blog-writer-agent-installer.md,Step 13c,"Notice gives Item ID, title, link",modes/blog-writer.md,"the Item ID, the working title, and the document link"
+BW-0582,blog-writer-agent-installer.md,Step 13d,Distill chat corrections into reusable rules,modes/blog-writer.md,"distill it into a general, reusable rule"
+BW-0583,blog-writer-agent-installer.md,Step 13d,Log rule to Feedback Log as Active,modes/blog-writer.md,Agents never make a rule Active; only a person's yes does
+BW-0584,blog-writer-agent-installer.md,Step 13d,Never skip capture after saving,modes/blog-writer.md,an uncaptured correction repeats on the next draft
+BW-0585,blog-writer-agent-installer.md,Step 13d,Go straight to Step 14,modes/blog-writer.md,"hand this exact draft to QA's audit, in this same session"
+BW-0586,blog-writer-agent-installer.md,Step 14,Write-then-QA is one silent loop,modes/blog-writer.md,"a tight, silent loop instead of two separately triggered runs"
+BW-0587,blog-writer-agent-installer.md,Step 14,Only QA approved and escalated posts go to Slack,modes/blog-writer.md,Nothing in this loop goes to Slack except the two posts
+BW-0588,blog-writer-agent-installer.md,Step 14,Loop is bounded by the 3-pass cap,modes/blog-writer.md,"This loop is bounded, not open-ended"
+BW-0589,blog-writer-agent-installer.md,Step 14,Slow loop: check over-regeneration first,modes/blog-writer.md,regenerating far more than the QA report actually flagged
+BW-0590,blog-writer-agent-installer.md,Step 14a,Invoke QA in the same session right away,modes/blog-writer.md,load modes/qa.md and follow its steps against this exact draft
+BW-0591,blog-writer-agent-installer.md,Step 14a,Never wait for a separate QA run,modes/blog-writer.md,don't wait for a separate QA run to pick up
+BW-0592,blog-writer-agent-installer.md,Step 14a,QA is the sole authority on the audit,modes/blog-writer.md,Treat modes/qa.md and shared/base-rules/qa.md as the sole authority
+BW-0593,blog-writer-agent-installer.md,Step 14a,"Hand QA item, record, doc and brief links",modes/blog-writer.md,"The Item ID and Content Items record ID, the Blog Doc Link"
+BW-0594,blog-writer-agent-installer.md,Step 14a,Hand QA files and setup; skip its asks,modes/blog-writer.md,skips any part of its steps that asks the person for files
+BW-0595,blog-writer-agent-installer.md,Step 14a,QA posts tag approvers and include the link,modes/blog-writer.md,"Its posts go to the product's channel, tag every approver (G11)"
+BW-0596,blog-writer-agent-installer.md,Step 14a,Hand QA the draft pass count,modes/blog-writer.md,"QA uses this number, never Draft Rework Count alone."
+BW-0597,blog-writer-agent-installer.md,Step 14a,QA report saved as a document,modes/blog-writer.md,QA saves its report per the piece's storage file
+BW-0598,blog-writer-agent-installer.md,Step 14a,QA report titles,modes/blog-writer.md,`[Item ID]: QA Report (rework N)` in Drive
+BW-0599,blog-writer-agent-installer.md,Step 14a,Report never only in chat or notes,modes/blog-writer.md,never leaves the report only in the run output
+BW-0600,blog-writer-agent-installer.md,Step 14a,"Callouts, metadata, tags expected in review doc",modes/blog-writer.md,"are expected in the review document, per G8"
+BW-0601,blog-writer-agent-installer.md,Step 14a,No calendar step without calendar,modes/blog-writer.md,no calendar connection means no calendar step
+BW-0602,blog-writer-agent-installer.md,Step 14a,Check G15 before starting,modes/blog-writer.md,so the same draft is never audited twice
+BW-0603,blog-writer-agent-installer.md,Step 14a,QA skill missing follows G10,DROPPED,QA is a mode of the same skill and always available (G10)
+BW-0604,blog-writer-agent-installer.md,Step 14b,Approved: QA already posted and set status,modes/blog-writer.md,QA's own close-out has already posted the single
+BW-0605,blog-writer-agent-installer.md,Step 14b,Verify the approval post went out,modes/blog-writer.md,Check that the post really went out before closing out.
+BW-0606,blog-writer-agent-installer.md,Step 14b,Post exists: write missing status and link only,modes/blog-writer.md,If the post exists but the Status or the link is missing
+BW-0607,blog-writer-agent-installer.md,Step 14b,No post: post it yourself in QA format,modes/blog-writer.md,"post it now yourself, in the ""Blog passed its checks"" format"
+BW-0608,blog-writer-agent-installer.md,Step 14b,Never leave approval status without a post,modes/blog-writer.md,is the one outcome this pipeline must never leave behind
+BW-0609,blog-writer-agent-installer.md,Step 14b,Tell user approved with score and link,modes/blog-writer.md,with its final QA score and the document link
+BW-0610,blog-writer-agent-installer.md,Step 14b,Move to the next row within limits,modes/blog-writer.md,Go back to the next row in the queue
+BW-0611,blog-writer-agent-installer.md,Step 14c,Needs Rework: rework immediately like 0.6,modes/blog-writer.md,treat this exactly like a Step 0.6 rework
+BW-0612,blog-writer-agent-installer.md,Step 14c,Use QA Issues list as feedback,modes/blog-writer.md,using QA's newest Issues list as the feedback source
+BW-0613,blog-writer-agent-installer.md,Step 14c,Loop back to 14a after 0.6i,modes/blog-writer.md,that loop is this step.
+BW-0614,blog-writer-agent-installer.md,Step 14d,Escalated: stop the loop and tell the user,modes/blog-writer.md,"Stop the loop for this item, and tell the user plainly"
+BW-0615,blog-writer-agent-installer.md,Step 14d,"Escalation needs a person, not another pass",modes/blog-writer.md,"now needs a person's decision, not another automated pass"
+BW-0616,blog-writer-agent-installer.md,Step 14e,No separate loop limit,modes/blog-writer.md,Don't invent a separate loop limit here
+BW-0617,blog-writer-agent-installer.md,Step 14e,Cap fires in whichever catches it first,modes/blog-writer.md,it already fires inside whichever of the two catches
+BW-0618,blog-writer-agent-installer.md,Closing note,Template setup note for new teams,DROPPED,Installer and template setup removed; setup lives in modes/setup.md and the base

@@ -1,0 +1,18 @@
+{
+  "good.txt": {
+    "em_dashes": 0,
+    "raw_markup": 0
+  },
+  "bad-em-dash.txt": {
+    "em_dashes_min": 1
+  },
+  "bad-raw-markdown.txt": {
+    "raw_markup_min": 1
+  },
+  "bad-uk-spelling.txt": {
+    "other_spelling_min": 1
+  },
+  "bad-ai-tells.txt": {
+    "ai_tells_min": 2
+  }
+}

@@ -1,0 +1,560 @@
+rule_id,source_file,source_section,summary,new_file,anchor
+BR-0001,brief-agent-installer.md,Frontmatter,Turns a topic or keyword into a researched brief,modes/brief.md,"turns one input, a topic or a keyword, into a complete content"
+BR-0002,brief-agent-installer.md,Frontmatter,"Not for writing, QA, or drafts with a Blog Doc Link",modes/brief.md,"It never writes, scores, or reworks a draft that has a Blog"
+BR-0003,brief-agent-installer.md,Frontmatter,Not for reading Slack approvals; that is the Orchestrator,modes/brief.md,"it never reads Slack approvals (that's the Orchestrator, per G10)"
+BR-0004,brief-agent-installer.md,Frontmatter,"Each team saves reference files, channel, reviewer in the skill",DROPPED,"Company setup now lives in the base (Settings, Members, Reference); see shared/run-start.md"
+BR-0005,brief-agent-installer.md,Frontmatter,"Triggered by a topic or keyword in chat, or a schedule",SKILL.md,A topic or keyword to brief
+BR-0006,brief-agent-installer.md,What this agent is,Brief aims to outrank top of Google and get cited,modes/brief.md,engineered to outrank whatever currently holds the top of Google
+BR-0007,brief-agent-installer.md,What this agent is,Brief is the Blog Writer's contract and QA's plan,modes/brief.md,"the Blog Writer treats it as a contract, and QA scores"
+BR-0008,brief-agent-installer.md,What this agent is,A vague brief produces a vague post,modes/brief.md,A vague or generic brief produces a vague or generic post
+BR-0009,brief-agent-installer.md,What this agent is,"Research first, name weakness and reason to win, never invent data",modes/brief.md,"research before writing, name a specific competitive weakness"
+BR-0010,brief-agent-installer.md,What this agent is,Reads reference files and does live research every run,modes/brief.md,does its own live research on the open web and on the
+BR-0011,brief-agent-installer.md,What this agent is,Reference files come from the Appendix,DROPPED,Appendix replaced by Reference rows loaded per shared/run-start.md (Loading the rules)
+BR-0012,brief-agent-installer.md,What this agent is,"Knowledge base is a starting compass, not a ceiling",modes/brief.md,"is a starting compass, not a ceiling."
+BR-0013,brief-agent-installer.md,What this agent is,"Always check live ranking, docs, and competitor pricing",modes/brief.md,It is not a substitute for checking what's actually ranking today
+BR-0014,brief-agent-installer.md,What this agent is,A brief built only from the knowledge base is unacceptable,modes/brief.md,A brief built only from the product knowledge file is not acceptable
+BR-0015,brief-agent-installer.md,G1,"Check Airtable, Drive, Slack tools before real work",shared/guards.md,"Before any real work, the run checks the tools it needs"
+BR-0016,brief-agent-installer.md,G1,Missing Airtable or Drive: stop and name it,shared/guards.md,"without them, stop and say which one is missing"
+BR-0017,brief-agent-installer.md,G1,"Missing Slack: carry on, save docs and Airtable",shared/guards.md,"if it's missing, still save documents and update Airtable"
+BR-0018,brief-agent-installer.md,G1,Chrome optional; skip Step 2d and note in Open Questions,modes/brief.md,skip this step quietly and say so plainly in Open Questions
+BR-0019,brief-agent-installer.md,G2,Unattended runs never pause for a question,shared/guards.md,"Never pause to wait for one, and never enter setup."
+BR-0020,brief-agent-installer.md,G2,"Make the reasonable call, state it where a person sees it",shared/guards.md,"make the most reasonable call, state it plainly where a person will"
+BR-0021,brief-agent-installer.md,G2,"Ambiguous topic or keyword: pick what search results support, note it",modes/brief.md,"treat it as whichever the search results support better, and name the"
+BR-0022,brief-agent-installer.md,G2,Never create the recurring status check unattended,modes/brief.md,Scheduled tasks are not this mode's job
+BR-0023,brief-agent-installer.md,G3,"Re-read the row; if Status changed, skip it",shared/guards.md,"If its Status changed since the batched read, someone else has it:"
+BR-0024,brief-agent-installer.md,G3,Claim with status and a Notes claim line,shared/airtable.md,"Make a token: the mode name, the current UTC time to the"
+BR-0025,brief-agent-installer.md,G3,Re-read the claim; a losing run backs off,shared/airtable.md,"If Claim Token is your token, go ahead."
+BR-0026,brief-agent-installer.md,G3,"At most three reworks, then one new topic per run",shared/guards.md,"the Brief Agent handles at most three brief reworks, then at most"
+BR-0027,brief-agent-installer.md,G3,Leftover rows wait for the next run,shared/guards.md,Anything left waits for the next round.
+BR-0028,brief-agent-installer.md,G4,Filter every scan to this product,shared/guards.md,Every read and every write is limited to the product the row
+BR-0029,brief-agent-installer.md,G4,Item ID prefix filter,DROPPED,"Prefix filter replaced by the Product field (G4, shared/run-start.md step 6)"
+BR-0030,brief-agent-installer.md,G4,"Two products share a prefix: stop, never guess",shared/guards.md,"If two products share an Item ID prefix, stop and post one"
+BR-0031,brief-agent-installer.md,G4,Never create or change table fields,shared/guards.md,Never create or change a table's fields during a normal run.
+BR-0032,brief-agent-installer.md,G4,Apply only this product's Feedback Log rules,shared/guards.md,Learned rules apply only to their own product.
+BR-0033,brief-agent-installer.md,G4,Read Config each run to see which products share the base,DROPPED,Config table removed; Settings has one row per product (shared/airtable.md)
+BR-0034,brief-agent-installer.md,G5,Find stalled Brief In Progress and Rework In Progress rows,modes/brief.md,"add 1 to Stall Count, take it over, and resume from its"
+BR-0035,brief-agent-installer.md,G5,Stalled means untouched for 6 hours,DROPPED,"Replaced by the stale claim rule (shared/airtable.md, Claims)"
+BR-0036,brief-agent-installer.md,G5,Don't take over stalled rows; note and leave for a person,DROPPED,"Replaced: stalled rows resume and escalate at Stall Count 2 (G5, run-start step 4)"
+BR-0037,brief-agent-installer.md,G6,Blank Rework Count means 0,shared/guards.md,A blank count means 0.
+BR-0038,brief-agent-installer.md,G6,Missing status: stop and name it,shared/guards.md,never write a status that doesn't exist
+BR-0039,brief-agent-installer.md,G7,"Item ID is highest existing plus 1, zero-padded",DROPPED,"Replaced by the Seq auto number (shared/airtable.md, Creating a Content Items row; G7)"
+BR-0040,brief-agent-installer.md,G7,Re-read highest ID right before creating,DROPPED,Replaced by the same-moment duplicate check (shared/run-start.md step 5)
+BR-0041,brief-agent-installer.md,G8,Brief-related human calls go in Open Questions,shared/guards.md,goes in the brief's Open Questions section
+BR-0042,brief-agent-installer.md,G8,"Run notes go in Notes and chat, never the Doc",shared/guards.md,"Anything about the run (a stall, a save failure, a setup mismatch,"
+BR-0043,brief-agent-installer.md,G8,"Always add to Notes, never clear it",shared/guards.md,"Agent Notes is only ever added to, never cleared."
+BR-0044,brief-agent-installer.md,G9,Reference file over 90 days old: say so once,shared/guards.md,say once in the run output that they may be out of
+BR-0045,brief-agent-installer.md,G9,Use the quality checks' own review interval if set,shared/guards.md,If the product's quality checks set their own review interval
+BR-0046,brief-agent-installer.md,G10,Never check whether the Orchestrator is installed,shared/guards.md,and never ask the person about other skills
+BR-0047,brief-agent-installer.md,G10,Never read Slack approvals as a workaround,shared/guards.md,the Brief Agent and Blog Writer never read Slack approvals
+BR-0048,brief-agent-installer.md,G10,Trust the Status you find,modes/brief.md,just trust the Status you find.
+BR-0049,brief-agent-installer.md,G11,"Approver list is reviewer, backup, and Config names",shared/slack.md,every Active member of Members with Role Approver
+BR-0050,brief-agent-installer.md,G11,Tag every approver on every post that asks for action,shared/guards.md,It tags every approver for that product
+BR-0051,brief-agent-installer.md,G11,Slack never notifies a person about their own post,shared/guards.md,Slack never notifies a person about their own post
+BR-0052,brief-agent-installer.md,G11,A post counts only with a returned message link,shared/guards.md,A post counts as sent only when the send call returns a
+BR-0053,brief-agent-installer.md,G11,Retry a failed post once,shared/guards.md,"If the post fails or returns no link, retry once"
+BR-0054,brief-agent-installer.md,G11,Still failing: write Approval post NOT sent in Notes,shared/slack.md,"leave Slack Thread Link empty, and say so in the run's output"
+BR-0055,brief-agent-installer.md,G12,"Feedback comes from Slack, Doc comments, chat, Blog Writer",shared/guards.md,Feedback arrives from more than one place.
+BR-0056,brief-agent-installer.md,G12,Step 0.6a reads all feedback sources,modes/brief.md,"Pull every piece of feedback, from all the sources in G12"
+BR-0057,brief-agent-installer.md,G12,Blog Writer send-back is the newest Blog Writer note,modes/brief.md,the newest Agent Notes block starting `Blog Writer [time]: Brief send-back:`
+BR-0058,brief-agent-installer.md,G13,Check for an existing escalation post first,shared/guards.md,"Before posting an escalation, check Slack Thread Link and the channel"
+BR-0059,brief-agent-installer.md,G13,"If one exists, just set the Status",shared/guards.md,"If one exists, don't post again; just set the Status."
+BR-0060,brief-agent-installer.md,G14,Out of save attempts: put the row back,shared/guards.md,put the row back where it was
+BR-0061,brief-agent-installer.md,G14,"New item stays Brief In Progress, rework goes to Needs Rework",shared/guards.md,`Brief In Progress` for a new brief
+BR-0062,brief-agent-installer.md,G14,"Write error and time to Notes, clear the claim",shared/guards.md,"write the error and time into Agent Notes, clear the claim"
+BR-0063,brief-agent-installer.md,G14,Show the full brief in chat so research isn't lost,shared/guards.md,give the full text in the run output so the work isn't
+BR-0064,brief-agent-installer.md,G14,Say plainly it still needs saving,shared/guards.md,Say plainly that it still needs saving.
+BR-0065,brief-agent-installer.md,G15,Size rejection counts toward the three attempts,shared/guards.md,If the document tool rejects a brief or draft for size
+BR-0066,brief-agent-installer.md,G15,Never split one brief across several Docs,shared/guards.md,never split one brief or draft across several Docs
+BR-0067,brief-agent-installer.md,G16,Scheduled prompt or no person's request means unattended,shared/run-start.md,when the message that started it is a schedule's prompt
+BR-0068,brief-agent-installer.md,G16,"When unsure, act as unattended",shared/guards.md,"When unsure whether a run is attended, treat it as unattended."
+BR-0069,brief-agent-installer.md,G17,Create every brief Doc inside the pipeline folder,shared/guards.md,Create every document inside the product's document home
+BR-0070,brief-agent-installer.md,G17,Share missing people as commenter,shared/storage-drive.md,Anyone missing gets `share_file` with role `commenter`
+BR-0071,brief-agent-installer.md,G17,Everyone on the reviewer lists must open the Doc,shared/storage-drive.md,every Active member of Members (approvers and runners)
+BR-0072,brief-agent-installer.md,G17,Skip the account that owns the Doc,shared/storage-drive.md,Skip the account that owns the Doc.
+BR-0073,brief-agent-installer.md,G17,"Folder fails: create without parent, share, note it",shared/storage-drive.md,"create the Doc without `parentId`, share it with every one of those"
+BR-0074,brief-agent-installer.md,G17,Link goes to Airtable or Slack only after the access check,shared/guards.md,A document's link goes into Airtable or Slack only after this check.
+BR-0075,brief-agent-installer.md,G17,Share fails after retry: name the person in notes and post,shared/guards.md,name that person in Agent Notes and in the Slack post
+BR-0076,brief-agent-installer.md,G18,Repost approval posts that never went out,modes/brief.md,search the channel for a post naming the Item ID
+BR-0077,brief-agent-installer.md,G18,Reposts don't count toward per-run limits,modes/brief.md,These rows don't count toward G3's limits.
+BR-0078,brief-agent-installer.md,G18,Track sent and NOT sent lines in Notes,DROPPED,"Notes post lines replaced by empty Slack Thread Link plus Recovery (shared/slack.md, Confirmed post)"
+BR-0079,brief-agent-installer.md,Step 0,Run start checks happen before anything else,modes/brief.md,Do shared/run-start.md steps 1 to 6.
+BR-0080,brief-agent-installer.md,Step 0,Never ask the person for setup values,modes/brief.md,"all of it came from the base (Settings, Members, Reference)"
+BR-0081,brief-agent-installer.md,Step 0,Check connectors first,shared/run-start.md,Check each tool this mode needs with its first real call
+BR-0082,brief-agent-installer.md,Step 0,Setup check sends a run to First-time setup,DROPPED,First-time setup removed; setup lives in modes/setup.md and run-start steps 2 and 3
+BR-0083,brief-agent-installer.md,Step 0,"Read the reference files fully, checking dates",modes/brief.md,Read every reference file fully before moving on.
+BR-0084,brief-agent-installer.md,Step 0,Decide attended or unattended,shared/run-start.md,An attended run may ask the person in chat
+BR-0085,brief-agent-installer.md,Step 0,Fire one batch of Airtable reads,shared/airtable.md,Every run starts with as few reads as possible
+BR-0086,brief-agent-installer.md,Step 0,Read Config for approvers and doc access,DROPPED,"Config removed; approvers and access come from Members (shared/slack.md, shared/storage-drive.md)"
+BR-0087,brief-agent-installer.md,Step 0,Read Active Feedback Log rules for this product,shared/run-start.md,"this product's Active Reference rows (files, product rules, learned rules)"
+BR-0088,brief-agent-installer.md,Step 0,Confirm saved choice IDs still exist,shared/airtable.md,"Filter single-select fields by choice ID (`choices`), never by name"
+BR-0089,brief-agent-installer.md,Step 0,"Hold the file contents internally, not shown",modes/brief.md,"Hold, internally, not shown to the person:"
+BR-0090,brief-agent-installer.md,Step 0,Hold tone descriptors and prohibited words,modes/brief.md,"Brand tone descriptors, and the specific words, phrases, and claims that are"
+BR-0091,brief-agent-installer.md,Step 0,Hold approved and prohibited claims and resolver,modes/brief.md,"Approved and prohibited claims, and who resolves a disputed one"
+BR-0092,brief-agent-installer.md,Step 0,Hold exact terminology,modes/brief.md,"Terminology: exact product names, feature names, capitalization"
+BR-0093,brief-agent-installer.md,Step 0,"Hold audience segments, objections, misunderstandings",modes/brief.md,"Audience segments, their objections, and what they commonly misunderstand"
+BR-0094,brief-agent-installer.md,Step 0,Hold source rules and freshness rule,modes/brief.md,"Preferred and banned sources of evidence, and the freshness rule"
+BR-0095,brief-agent-installer.md,Step 0,Hold QA categories so the brief clears them,modes/brief.md,"so the brief can be built to already clear them, not to"
+BR-0096,brief-agent-installer.md,Step 0,Apply Active Feedback Log rules as standing instructions,modes/brief.md,"as a standing instruction for this run, the same weight as the"
+BR-0097,brief-agent-installer.md,Step 0,Live instruction wins this run only; flag conflict,modes/brief.md,the live instruction wins for this run only
+BR-0098,brief-agent-installer.md,Step 0,An empty Feedback Log is normal,modes/brief.md,No learned rules yet is a normal state on an early run
+BR-0099,brief-agent-installer.md,Step 0.5,One base only; never a second or searched base,shared/airtable.md,"Never create a second base during a normal run, never use a"
+BR-0100,brief-agent-installer.md,Step 0.5,Slack is communication only,shared/slack.md,Slack is for talking to people.
+BR-0101,brief-agent-installer.md,Step 0.5,"No status or history lives only in Slack, Sheets, or Canvas",shared/slack.md,"No status, link, score, or history lives only in Slack"
+BR-0102,brief-agent-installer.md,Step 0.5,Table list and IDs,DROPPED,Tables and IDs moved to templates/airtable-schema.json and Schema Map (shared/airtable.md)
+BR-0103,brief-agent-installer.md,Step 0.5,Feedback is distilled into reusable rules,shared/rule-extraction.md,"come from repeated reviewer feedback, through the Orchestrator"
+BR-0104,brief-agent-installer.md,Step 0.5,Every agent applies Active rules before work,modes/brief.md,Apply the product rules and learned rules now too.
+BR-0105,brief-agent-installer.md,Step 0.5,This agent writes a Rework History row per brief rework,modes/brief.md,"Rework Pass # (the new Brief Rework Count), Stage `Brief`"
+BR-0106,brief-agent-installer.md,Step 0.5,Scheduled tasks and other agents are not this agent's job,modes/brief.md,Scheduled tasks are not this mode's job
+BR-0107,brief-agent-installer.md,Step 0.5,Reuse the record ID instead of re-searching,modes/brief.md,keep its record ID and reuse it for every later update in
+BR-0108,brief-agent-installer.md,Step 0.5,New Feedback Log and Rework History rows are creates,shared/airtable.md,New rows in Rework History and Feedback Log are always
+BR-0109,brief-agent-installer.md,Step 0.5,Update only fields this stage owns,modes/brief.md,Write only the fields this stage owns
+BR-0110,brief-agent-installer.md,Step 0.55,Orchestrator reads Slack and writes the resulting Status,modes/brief.md,The Orchestrator reads the reply and writes the resulting Status
+BR-0111,brief-agent-installer.md,Step 0.55,Don't rebuild Slack reading logic here,modes/brief.md,never read Slack approvals here and never check on the Orchestrator
+BR-0112,brief-agent-installer.md,Step 0.55,Never check on or ask about the Orchestrator,shared/guards.md,Never check whether another mode
+BR-0113,brief-agent-installer.md,Step 0.6,This agent also reworks returned briefs,modes/brief.md,There is no separate reworker at this stage
+BR-0114,brief-agent-installer.md,Step 0.6,Reworks come before any new topic,modes/brief.md,before treating this run as a brand-new topic or keyword
+BR-0115,brief-agent-installer.md,Step 0.6,Scan Needs Rework rows for this product,modes/brief.md,"rows with no Blog Doc Link, at most three per run"
+BR-0116,brief-agent-installer.md,Step 0.6,Run stalled and repost checks in the same batch,modes/brief.md,"Then build this mode's work queue from the batched read, in this"
+BR-0117,brief-agent-installer.md,Step 0.6,Blog Doc Link filled: leave it for the Blog Writer,modes/brief.md,belongs to the draft: the Blog Writer handles it
+BR-0118,brief-agent-installer.md,Step 0.6,Brief link only: genuine brief rework,modes/brief.md,this is a genuine brief-stage rework
+BR-0119,brief-agent-installer.md,Step 0.6,Includes Blog Writer send-backs,modes/brief.md,This includes a brief the Blog Writer sent back because something core
+BR-0120,brief-agent-installer.md,Step 0.6,Neither link: treat as unfinished initial work,modes/brief.md,Treat it as unfinished initial work instead
+BR-0121,brief-agent-installer.md,Step 0.6,Reuse the existing Item ID and record,modes/brief.md,"reusing its existing Item ID and record, not running rework mechanics on"
+BR-0122,brief-agent-installer.md,Step 0.6,Awaiting Brief Approval or Brief Approved: no action,modes/brief.md,both are already exactly where they should be
+BR-0123,brief-agent-installer.md,Step 0.6,"Work 0.6a to 0.6h in order, within limits",modes/brief.md,"Take it up through 0.6a to 0.6h, in order."
+BR-0124,brief-agent-installer.md,Step 0.6,Rework-only run stops after reworks,modes/brief.md,If this run was started only to check for pending reworks
+BR-0125,brief-agent-installer.md,Step 0.6,Then continue to a new topic if given,modes/brief.md,"first `Topic Requested` rows, then a topic or keyword given in chat"
+BR-0126,brief-agent-installer.md,Step 0.6a,Re-read and claim as Rework In Progress,modes/brief.md,with Status `Rework In Progress` and Last Saved Step `brief rework [N]
+BR-0127,brief-agent-installer.md,Step 0.6a,"Status changed: another run has it, skip",modes/brief.md,"If its Status already changed, another run has it, so skip it."
+BR-0128,brief-agent-installer.md,Step 0.6a,Read the full record,modes/brief.md,"Then read the full row: Primary Keyword, Format Skeleton"
+BR-0129,brief-agent-installer.md,Step 0.6a,Open and read the current brief in full,modes/brief.md,Open the current brief at Brief Doc Link and read it in
+BR-0130,brief-agent-installer.md,Step 0.6a,Brief Doc Link always points to the newest version,modes/brief.md,Brief Doc Link always points to the newest version.
+BR-0131,brief-agent-installer.md,Step 0.6a,Read the Slack thread reply as feedback,modes/brief.md,every Human Feedback entry newer than the newest Rework History row
+BR-0132,brief-agent-installer.md,Step 0.6a,Read comments left in the brief,modes/brief.md,an unresolved comment from an approver left in the brief after it
+BR-0133,brief-agent-installer.md,Step 0.6a,Read corrections typed into chat,modes/brief.md,"any correction typed straight into this chat, in an attended run"
+BR-0134,brief-agent-installer.md,Step 0.6a,Standing rules apply even if not restated,modes/brief.md,a standing rule from a past item holds even if nobody restates
+BR-0135,brief-agent-installer.md,Step 0.6b,Diagnose before changing anything,modes/brief.md,Diagnose before touching a word.
+BR-0136,brief-agent-installer.md,Step 0.6b,Hold the original strategic intent,modes/brief.md,the original strategic intent this brief was built around
+BR-0137,brief-agent-installer.md,Step 0.6b,Audit the brief honestly as it stands,modes/brief.md,an honest audit of the brief as it currently stands
+BR-0138,brief-agent-installer.md,Step 0.6b,Build a checklist from every feedback signal,modes/brief.md,a complete checklist built from every feedback signal
+BR-0139,brief-agent-installer.md,Step 0.6b,Tag each item by feedback type,modes/brief.md,"(structural, tone, clarity, SEO, factual)"
+BR-0140,brief-agent-installer.md,Step 0.6b,Tag each item by action asked,modes/brief.md,"(add, remove, rewrite, expand, cut)"
+BR-0141,brief-agent-installer.md,Step 0.6b,Never silently drop a checklist item,modes/brief.md,Nothing on this checklist gets silently dropped later for seeming minor
+BR-0142,brief-agent-installer.md,Step 0.6b,Write a one-sentence refinement mission,modes/brief.md,Write the refinement mission in one sentence
+BR-0143,brief-agent-installer.md,Step 0.6c,"Conflict order: strategy, structure, then style",modes/brief.md,"The original brief's own strategy comes first, then structural or strategic feedback"
+BR-0144,brief-agent-installer.md,Step 0.6c,Style never overrides strategy; flag in Open Questions,modes/brief.md,Never let a stylistic preference override a strategic requirement from the brief
+BR-0145,brief-agent-installer.md,Step 0.6d,Check escalation count before any rework,modes/brief.md,Check the escalation count before doing any actual rework.
+BR-0146,brief-agent-installer.md,Step 0.6d,Count 3 or more: no fourth automated pass,modes/brief.md,do not run a fourth automated pass on this item
+BR-0147,brief-agent-installer.md,Step 0.6d,Post unresolved summary tagging approvers,modes/brief.md,with up to three short lines on what's still unresolved after three
+BR-0148,brief-agent-installer.md,Step 0.6d,"Set Escalated, thread link, and summary in one update",modes/brief.md,one Agent Notes block with the full summary of what's unresolved
+BR-0149,brief-agent-installer.md,Step 0.6d,Post failed twice: still set the Status,modes/brief.md,"If the post failed twice, still write the Status, leave Slack Thread"
+BR-0150,brief-agent-installer.md,Step 0.6d,Write a Rework History row with Outcome Escalated,modes/brief.md,Create a Rework History row: Rework Pass # (the brief pass count)
+BR-0151,brief-agent-installer.md,Step 0.6d,Move on to the next item,modes/brief.md,Then move on to the next row in the queue.
+BR-0152,brief-agent-installer.md,Step 0.6d,Three failed passes need a person's call,modes/brief.md,Three passes without success means the remaining issue needs a person's judgment
+BR-0153,brief-agent-installer.md,Step 0.6d,Under 3 passes: continue to the fix,modes/brief.md,"If the brief pass count is under 3, continue to 0.6e."
+BR-0154,brief-agent-installer.md,Step 0.6d,Count uses the shared Rework Count,modes/brief.md,Read this item's brief pass count (G6: the larger of Brief Rework
+BR-0155,brief-agent-installer.md,Step 0.6e,"Fix one feedback item at a time, full standards",modes/brief.md,"Apply the fix, one feedback item at a time"
+BR-0156,brief-agent-installer.md,Step 0.6e,"Locate, fix, confirm against strategy, mark resolved",modes/brief.md,locate the exact part of the brief it targets
+BR-0157,brief-agent-installer.md,Step 0.6e,Revised brief still clears Steps 2 to 4,modes/brief.md,the revised brief still has to clear every standard this mode sets
+BR-0158,brief-agent-installer.md,Step 0.6e,"Spearhead, Cornerstone, three CTAs, keywords, no em dashes",modes/brief.md,CTA count is still exactly three correctly matched to intent
+BR-0159,brief-agent-installer.md,Step 0.6e,Do fresh research live when a fix needs it,modes/brief.md,"do that research live, the same way Step 2 does, rather than"
+BR-0160,brief-agent-installer.md,Step 0.6e,Preserve sections that already clear the bar,modes/brief.md,leave any section that already clears the bar alone rather than rewriting
+BR-0161,brief-agent-installer.md,Step 0.6e,Reread the whole brief after every fix,modes/brief.md,Reread the whole brief once after every fix lands
+BR-0162,brief-agent-installer.md,Step 0.6f,Build the full revised brief in Step 5 structure,modes/brief.md,Build the full revised brief in the same Step 5 structure
+BR-0163,brief-agent-installer.md,Step 0.6f,Carry untouched sections over as-is,modes/brief.md,every untouched section carried over as-is
+BR-0164,brief-agent-installer.md,Step 0.6f,"Write a resolution log, one line per item",modes/brief.md,one line per feedback item from 0.6b's checklist
+BR-0165,brief-agent-installer.md,Step 0.6f,"Log goes to notes, Rework History, and post, not the brief",modes/brief.md,it isn't part of the brief itself
+BR-0166,brief-agent-installer.md,Step 0.6g,Save the revision as a new Doc,modes/brief.md,every rework is a new document and every earlier one stays
+BR-0167,brief-agent-installer.md,Step 0.6g,Rework title uses rework N,shared/storage-drive.md,[Working Title] - Brief (rework [N])
+BR-0168,brief-agent-installer.md,Step 0.6g,Connector can't edit a Doc; keep old versions,shared/storage-drive.md,The connector can't edit a Doc's text once it exists.
+BR-0169,brief-agent-installer.md,Step 0.6g,Never use Claude Docs for a rework,shared/storage-drive.md,"Never use Claude Docs, a `.docx` built by a script"
+BR-0170,brief-agent-installer.md,Step 0.6h,Update link and add 1 to the rework count,modes/brief.md,Brief Rework Count set to the brief pass count (G6) plus 1
+BR-0171,brief-agent-installer.md,Step 0.6h,Leave Status at Rework In Progress until posted,modes/brief.md,Leave Status at `Rework In Progress` for now
+BR-0172,brief-agent-installer.md,Step 0.6h,Add rework Doc and replaced link lines to Notes,modes/brief.md,Brief rework [N] document: [new link] (replaced: [previous link])
+BR-0173,brief-agent-installer.md,Step 0.6h,Create a Rework History row with full fields,modes/brief.md,"Rework Pass # (the new Brief Rework Count), Stage `Brief`"
+BR-0174,brief-agent-installer.md,Step 0.6h,"Triggered By: cross is Human Rejection, else Reply or Comment",modes/brief.md,`Human Rejection` when the feedback is only a cross
+BR-0175,brief-agent-installer.md,Step 0.6h,"Outcome Resubmitted, Date, and Item link",modes/brief.md,"Outcome Status `Resubmitted`, Date now, and Item linked to this row"
+BR-0176,brief-agent-installer.md,Step 0.6h,Post the updated brief tagging approvers,modes/brief.md,Post the updated-brief message (shared/slack.md
+BR-0177,brief-agent-installer.md,Step 0.6h,First line reads Updated brief ready for your OK,shared/slack.md,"Updated brief ready for your OK: [Item ID], [working title]"
+BR-0178,brief-agent-installer.md,Step 0.6h,What changed list of up to five plain lines,modes/brief.md,is the resolution log cut down to plain words
+BR-0179,brief-agent-installer.md,Step 0.6h,Full resolution log stays out of the post,modes/brief.md,the full resolution log stays in Agent Notes and Rework History
+BR-0180,brief-agent-installer.md,Step 0.6h,"Set Awaiting, thread link, and sent line in one update",modes/brief.md,Last Saved Step `brief rework [N] posted`
+BR-0181,brief-agent-installer.md,Step 0.6h,Post failed twice: still Awaiting; next run reposts,modes/brief.md,"so the next run's Recovery posts it (shared/slack.md, Confirmed post)"
+BR-0182,brief-agent-installer.md,Step 0.6h,Log repeatable feedback as general rules,modes/brief.md,for every feedback item that's a genuinely repeatable pattern
+BR-0183,brief-agent-installer.md,Step 0.6h,Feedback Log rows set Status Active,modes/brief.md,"Reference Rule ID, Status `Suggested`"
+BR-0184,brief-agent-installer.md,Step 0.6h,Zero or several rules are both fine,modes/brief.md,Zero rules is fine if every item this pass was genuinely a
+BR-0185,brief-agent-installer.md,Step 0.7,Covers brand-new topics or keywords only,modes/brief.md,This covers a brand-new topic or keyword only
+BR-0186,brief-agent-installer.md,Step 0.7,Neither-link rows reuse their record,modes/brief.md,that row reuses its existing record
+BR-0187,brief-agent-installer.md,Step 0.7,Assign an Item ID per G7,modes/brief.md,Then write Item ID from the returned Seq
+BR-0188,brief-agent-installer.md,Step 0.7,"Log the row immediately, before research",modes/brief.md,Otherwise create the row per shared/airtable.md
+BR-0189,brief-agent-installer.md,Step 0.7,"Row fields: Item ID, Input, Status, dates",modes/brief.md,"Input (the raw input, exactly as given, plus any context the person"
+BR-0190,brief-agent-installer.md,Step 0.7,Trigger Type filled in later,modes/brief.md,from your first read of the input; Step 1 may change it
+BR-0191,brief-agent-installer.md,Step 0.7,Logging early shows the item as being worked,modes/brief.md,"Logging now is what lets the tracker, and anyone glancing at it"
+BR-0192,brief-agent-installer.md,Step 0.7,Keep the returned record ID for later updates,modes/brief.md,keep its record ID and reuse it for every later update in
+BR-0193,brief-agent-installer.md,Step 1,Input is a topic or a keyword,modes/brief.md,Tell them apart like this:
+BR-0194,brief-agent-installer.md,Step 1,A keyword reads like a real search query,modes/brief.md,reads like an actual search query: something a real person would type
+BR-0195,brief-agent-installer.md,Step 1,"If you can picture it in a search bar, keyword",modes/brief.md,"If you can picture it in a search bar, it's a keyword."
+BR-0196,brief-agent-installer.md,Step 1,A topic is a broad territory,modes/brief.md,a subject area or theme with no single obvious query attached to
+BR-0197,brief-agent-installer.md,Step 1,Ambiguous: ask one question when attended,modes/brief.md,ask one direct clarifying question in an attended run
+BR-0198,brief-agent-installer.md,Step 1,Otherwise make the call yourself,modes/brief.md,this is a judgment call the agent is expected to make correctly
+BR-0199,brief-agent-installer.md,Path A,"Find the primary keyword, then the secondary map",modes/brief.md,The job is to find the primary keyword this content should actually
+BR-0200,brief-agent-installer.md,Path A,"Search the topic, ranking pages, related queries, PAA",modes/brief.md,Search the topic itself and see what's already ranking for it
+BR-0201,brief-agent-installer.md,Path A,Don't assume the topic phrase is the keyword,modes/brief.md,Do not assume the topic phrase itself is the right keyword to
+BR-0202,brief-agent-installer.md,Path A,Apply the parent-topic method,modes/brief.md,Apply the parent-topic method: look at what actually ranks well
+BR-0203,brief-agent-installer.md,Path A,The winning higher-intent query becomes the primary keyword,modes/brief.md,"That query, not the raw topic phrase, becomes the working primary keyword."
+BR-0204,brief-agent-installer.md,Path A,Cross-check against audience segments and objections,modes/brief.md,Cross-check it against the audience segments and their stated objections
+BR-0205,brief-agent-installer.md,Path A,State the keyword and one-sentence reasoning,modes/brief.md,State the primary keyword you've selected and the one-sentence reasoning
+BR-0206,brief-agent-installer.md,Path A,Build the secondary map as in Path B,modes/brief.md,Build the secondary keyword map the same way described in Path B
+BR-0207,brief-agent-installer.md,Path B,"Validate the keyword, frame an idea, build the map",modes/brief.md,"The job is to validate the keyword, frame a specific content idea"
+BR-0208,brief-agent-installer.md,Path B,Don't take keyword intent for granted,modes/brief.md,Do not take the keyword's intent for granted.
+BR-0209,brief-agent-installer.md,Path B,Confirm intent from the results page's shape,modes/brief.md,Confirm this from the search results' own shape
+BR-0210,brief-agent-installer.md,Path B,Frame one specific angle grounded in a real gap,modes/brief.md,"a single, specific sentence describing the angle this piece will take"
+BR-0211,brief-agent-installer.md,Path B,"Name the move and the gap, Spearhead style",modes/brief.md,Use the same discipline the pipeline's Spearhead Strategy already uses
+BR-0212,brief-agent-installer.md,Path B,Acceptable and unacceptable idea examples,modes/brief.md,Example of an unacceptable idea
+BR-0213,brief-agent-installer.md,Path B,"Pull PAA, related searches, long-tail variations",modes/brief.md,pull every People Also Ask question and related search tied to the
+BR-0214,brief-agent-installer.md,Path B,Tag each for this post or a future one,modes/brief.md,"Tag each one for this post, or flag it as a future"
+BR-0215,brief-agent-installer.md,Path B,Don't force; log for the next brief,modes/brief.md,it should be logged for the pipeline's next brief
+BR-0216,brief-agent-installer.md,Path B,Both paths converge at Step 2,modes/brief.md,Everything from Step 2 onward is identical regardless of which trigger fired.
+BR-0217,brief-agent-installer.md,Step 2,Do all research before drafting,modes/brief.md,Do all of this before drafting anything.
+BR-0218,brief-agent-installer.md,Step 2,Never skip because the knowledge base seems to cover it,modes/brief.md,Do not skip a step because the product knowledge already seems to
+BR-0219,brief-agent-installer.md,Step 2,Run 2a to 2d as one parallel pass,modes/brief.md,"Do these four as one parallel research pass, not four sequential ones."
+BR-0220,brief-agent-installer.md,Step 2,Fire the tool calls together in one batch,modes/brief.md,"together in the same batch, rather than one at a time"
+BR-0221,brief-agent-installer.md,Step 2,Running 2d alongside is the biggest time saver,modes/brief.md,the biggest lever this mode has for cutting total build time
+BR-0222,brief-agent-installer.md,Step 2a,Start from the brand guide's sources of truth,modes/brief.md,starting with the sources of truth the brand guide lists
+BR-0223,brief-agent-installer.md,Step 2a,Read a feature's live doc before writing about it,modes/brief.md,read that feature's actual current doc page before writing anything about it
+BR-0224,brief-agent-installer.md,Step 2a,The live page beats the file,modes/brief.md,the live page is always the source of truth over the file
+BR-0225,brief-agent-installer.md,Step 2a,Search the blog archive for cannibalization,modes/brief.md,"search the blog's own archive (a site search, or a `site:` search"
+BR-0226,brief-agent-installer.md,Step 2a,Existing post: name a distinct angle explicitly,modes/brief.md,target a genuinely distinct angle or search intent the existing post doesn't
+BR-0227,brief-agent-installer.md,Step 2a,Or flag update or consolidate instead,modes/brief.md,flag plainly that this piece should update or consolidate into the existing
+BR-0228,brief-agent-installer.md,Step 2a,Name the existing URL in the brief,modes/brief.md,name the existing URL in the brief
+BR-0229,brief-agent-installer.md,Step 2a,Check this product's pipeline rows for the same keyword,modes/brief.md,Also check this product's own Content Items rows for an in-progress brief
+BR-0230,brief-agent-installer.md,Step 2b,"Profile today's top 10, not memory",modes/brief.md,Search it and profile what's actually in the top 10 today
+BR-0231,brief-agent-installer.md,Step 2b,Note the dominant format,modes/brief.md,"The dominant format: listicle, how-to guide, comparison or versus page"
+BR-0232,brief-agent-installer.md,Step 2b,Note word count of the top three,modes/brief.md,Approximate word count of the top three results
+BR-0233,brief-agent-installer.md,Step 2b,Repeating H2 topics are table stakes,modes/brief.md,"these are table stakes, sections the brief cannot skip"
+BR-0234,brief-agent-installer.md,Step 2b,Capture every PAA question and related search,modes/brief.md,Every People Also Ask question and every related search shown
+BR-0235,brief-agent-installer.md,Step 2b,Note featured snippet and AI Overview,modes/brief.md,What currently occupies the featured snippet box
+BR-0236,brief-agent-installer.md,Step 2b,Mine ranking forum threads for real language,modes/brief.md,"open it and mine the actual language, objections, and unresolved questions"
+BR-0237,brief-agent-installer.md,Step 2b,Note visible weaknesses in what ranks,modes/brief.md,"Visible weaknesses in what's ranking: thin sections, no comparison table"
+BR-0238,brief-agent-installer.md,Step 2b,One search should surface everything; don't re-search,modes/brief.md,don't re-search separately for each one unless the first read is genuinely
+BR-0239,brief-agent-installer.md,Step 2b,Use a keyword tool for real numbers if available,modes/brief.md,use it to pull real numbers for the primary and secondary keywords
+BR-0240,brief-agent-installer.md,Step 2b,"No tool: say so, never invent volumes",modes/brief.md,say so plainly in Open Questions rather than inventing a volume or
+BR-0241,brief-agent-installer.md,Step 2b,Classify the weakness archetype with evidence,modes/brief.md,Classify the primary weakness into one of these archetypes
+BR-0242,brief-agent-installer.md,Step 2b,Archetype: thin semantic coverage,modes/brief.md,Answers the keyword but misses adjacent questions and the full user journey
+BR-0243,brief-agent-installer.md,Step 2b,Archetype: lacks real-world proof,modes/brief.md,"Claims with no data, no named examples, no first-hand evidence"
+BR-0244,brief-agent-installer.md,Step 2b,Archetype: generic or surface-level advice,modes/brief.md,"Covers the topic broadly, avoids the specific nuance an expert would give"
+BR-0245,brief-agent-installer.md,Step 2b,Archetype: over-optimized or keyword-stuffed,modes/brief.md,Over-optimized or keyword-stuffed | Repetition over readability and depth
+BR-0246,brief-agent-installer.md,Step 2b,Archetype: outdated,modes/brief.md,"References old pricing, deprecated features, stale statistics"
+BR-0247,brief-agent-installer.md,Step 2b,Archetype: low trust signals,modes/brief.md,"No sourcing, no methodology, no named evidence"
+BR-0248,brief-agent-installer.md,Step 2c,Check the skeleton against the product's best posts,modes/brief.md,confirm the chosen skeleton actually matches how this product's best-performing content is
+BR-0249,brief-agent-installer.md,Step 2c,A different house pattern wins,modes/brief.md,"shows a different house pattern, follow that instead"
+BR-0250,brief-agent-installer.md,Step 2d,Interrogate Google AI Mode and ChatGPT in two rounds,modes/brief.md,Interrogate the AI answer engines directly (Google AI Mode and ChatGPT)
+BR-0251,brief-agent-installer.md,Step 2d,Use Chrome automation,modes/brief.md,Do this with the session's browser tools (shared/platform-tools.md).
+BR-0252,brief-agent-installer.md,Step 2d,Fire both opening queries together,modes/brief.md,"Fire both opening queries together, don't run the engines back to back."
+BR-0253,brief-agent-installer.md,Step 2d,"Use AI Mode, not the AI Overview",modes/brief.md,"the full conversational panel, not the short AI Overview snippet"
+BR-0254,brief-agent-installer.md,Step 2d,Ask ChatGPT as a real user would,modes/brief.md,the way a real user would phrase it
+BR-0255,brief-agent-installer.md,Step 2d,Read both full answers,modes/brief.md,Read both full answers once they land.
+BR-0256,brief-agent-installer.md,Step 2d,One combined follow-up per engine,modes/brief.md,"Ask one combined follow-up per engine, not four separate ones."
+BR-0257,brief-agent-installer.md,Step 2d,Use the fixed combined follow-up question,modes/brief.md,What sources did you use for that answer?
+BR-0258,brief-agent-installer.md,Step 2d,Third round only when vague on a point,modes/brief.md,Only run a third round if the combined answer is genuinely vague
+BR-0259,brief-agent-installer.md,Step 2d,Ask only for the one missing specific,modes/brief.md,ask for that one missing specific rather than reopening the whole question
+BR-0260,brief-agent-installer.md,Step 2d,Close both tabs,modes/brief.md,Close both tabs once done.
+BR-0261,brief-agent-installer.md,Step 2d,Fold findings into the weakness archetype,modes/brief.md,Fold what both engines surfaced into the weakness archetype from Step 2b
+BR-0262,brief-agent-installer.md,Step 2d,Shared gaps confirm the Cornerstone or Spearhead target,modes/brief.md,that is strong confirmation the Cornerstone Asset or Spearhead Strategy should address
+BR-0263,brief-agent-installer.md,Step 2d,Note engine disagreements and blind spots,modes/brief.md,a blind spot in even one major engine is worth prioritizing
+BR-0264,brief-agent-installer.md,Step 2d,"Record cited sources, gaps, and differences",modes/brief.md,"Record, for use in the brief: the sources each engine cited"
+BR-0265,brief-agent-installer.md,Step 2d,No browser: skip and note in Open Questions,modes/brief.md,When no browser is available (and always in an unattended run without
+BR-0266,brief-agent-installer.md,Step 2d,An engine blocks: skip it and say so,modes/brief.md,"If an engine blocks the query, skip that engine and say so"
+BR-0267,brief-agent-installer.md,Step 2d,Never fabricate what an engine would say,modes/brief.md,Don't fabricate what an AI engine
+BR-0268,brief-agent-installer.md,Step 3,Match format and keyword shape to four skeletons,shared/base-rules/brief.md,Match the search results' dominant format and the keyword's own shape
+BR-0269,brief-agent-installer.md,Step 3,Skeletons are proven working patterns,shared/base-rules/brief.md,"each is a proven, working pattern, not a hypothetical template"
+BR-0270,brief-agent-installer.md,Step 3,Word count comes from the research,shared/base-rules/brief.md,The word count always comes from the research.
+BR-0271,brief-agent-installer.md,Step 3,Target is top-three average plus a depth premium,shared/base-rules/brief.md,the average length of the top three results plus a depth premium
+BR-0272,brief-agent-installer.md,Step 3,Research number wins in either direction,shared/base-rules/brief.md,"the research number wins, in either direction"
+BR-0273,brief-agent-installer.md,Step 3,Comparison skeleton section order,shared/base-rules/brief.md,"Key Takeaways, then a Quick Answer summary table, then Methodology"
+BR-0274,brief-agent-installer.md,Step 3,Comparison: one H3 per competitor with costs,shared/base-rules/brief.md,"each with Pros, Cons, Pricing, and Hidden Costs"
+BR-0275,brief-agent-installer.md,Step 3,Comparison length guide,shared/base-rules/brief.md,"Typically roughly 5,500 to 6,000 words"
+BR-0276,brief-agent-installer.md,Step 3,Versus: open on the real philosophical difference,shared/base-rules/brief.md,Open on the real philosophical difference between the two
+BR-0277,brief-agent-installer.md,Step 3,Versus: pricing split into H3s,shared/base-rules/brief.md,"Pricing broken into H3s (Annual Plans, Lifetime Plans, Extra Costs)"
+BR-0278,brief-agent-installer.md,Step 3,Versus: three-column comparison tables,shared/base-rules/brief.md,"Comparison tables use three columns: feature, this product, the competitor."
+BR-0279,brief-agent-installer.md,Step 3,Versus length guide,shared/base-rules/brief.md,"Typically roughly 4,500 to 5,000 words"
+BR-0280,brief-agent-installer.md,Step 3,Listicle skeleton section order,shared/base-rules/brief.md,"What Is X, then Why X Helps (the mechanism, not just the"
+BR-0281,brief-agent-installer.md,Step 3,"Listicle items: name, scenario, why it works",shared/base-rules/brief.md,"each with a name, a concrete scenario, and a short Why It"
+BR-0282,brief-agent-installer.md,Step 3,Listicle: no comparison table or FAQ by default,shared/base-rules/brief.md,No comparison table and no FAQ on this format unless the brief
+BR-0283,brief-agent-installer.md,Step 3,Listicle: heavier outside citation,shared/base-rules/brief.md,External citation is heavier here than on other formats
+BR-0284,brief-agent-installer.md,Step 3,Listicle length guide,shared/base-rules/brief.md,"Typically 4,000 words at minimum, and up to 8,000-plus"
+BR-0285,brief-agent-installer.md,Step 3,How-to: open on the concrete problem,shared/base-rules/brief.md,"Open on the concrete problem, not generic scene-setting"
+BR-0286,brief-agent-installer.md,Step 3,How-to: imperative Step 1 to N,shared/base-rules/brief.md,explicit Step 1 through Step N instructions using imperative verbs
+BR-0287,brief-agent-installer.md,Step 3,How-to: short honest product note,shared/base-rules/brief.md,"a short, honest note on why the product makes this step easier"
+BR-0288,brief-agent-installer.md,Step 3,How-to length guide,shared/base-rules/brief.md,"Typically roughly 1,500 to 2,500 words, the shortest of the four formats"
+BR-0289,brief-agent-installer.md,Step 3,None fits: don't force a skeleton,shared/base-rules/brief.md,"If none of these four cleanly fits, don't force it."
+BR-0290,brief-agent-installer.md,Step 3,Propose a structure grounded in what ranks,shared/base-rules/brief.md,propose a structure grounded in what's actually ranking
+BR-0291,brief-agent-installer.md,Step 3,Log the closest Format Skeleton and describe the difference,shared/base-rules/brief.md,so log the closest one and describe the difference in the brief
+BR-0292,brief-agent-installer.md,Step 4a,Spearhead sentence form,modes/brief.md,This piece outranks the current top 10 by [specific move]
+BR-0293,brief-agent-installer.md,Step 4a,Both halves must be concrete,modes/brief.md,Both halves must be concrete.
+BR-0294,brief-agent-installer.md,Step 4a,Acceptable and unacceptable Spearhead examples,modes/brief.md,by pulling live 2026 pricing across all six platforms
+BR-0295,brief-agent-installer.md,Step 4a,"Under 40 words, plain words",modes/brief.md,"Keep it under 40 words, in plain words (5a)."
+BR-0296,brief-agent-installer.md,Step 4b,Pick the single most relevant real asset,modes/brief.md,pick the single most relevant real asset to lean on for this
+BR-0297,brief-agent-installer.md,Step 4b,Asset must offset the weakness archetype,modes/brief.md,Choose the one asset that most directly compensates for the weakness archetype
+BR-0298,brief-agent-installer.md,Step 4c,Three CTAs matched to intent,modes/brief.md,"Three CTA placements, matched to the confirmed search intent."
+BR-0299,brief-agent-installer.md,Step 4c,No free plan: use the closest real offer,modes/brief.md,"If the product has no free plan or trial, use its closest"
+BR-0300,brief-agent-installer.md,Step 4c,Informational CTA placements,modes/brief.md,"Free plan or free-tool link, right after the intro"
+BR-0301,brief-agent-installer.md,Step 4c,Commercial CTA placements,modes/brief.md,"Free trial or demo link, right after the intro"
+BR-0302,brief-agent-installer.md,Step 4c,Transactional CTA placements,modes/brief.md,"A trust or proof element, immediately"
+BR-0303,brief-agent-installer.md,Step 4c,No CTA in FAQ or consecutive sections,modes/brief.md,No CTA inside the FAQ. No CTA in two consecutive sections back
+BR-0304,brief-agent-installer.md,Step 4d,Primary keyword placements,modes/brief.md,"Primary keyword: H1, first 100 words of the intro, at least one"
+BR-0305,brief-agent-installer.md,Step 4d,Secondary keywords never forced; note drops,modes/brief.md,drop it from that section and note the drop
+BR-0306,brief-agent-installer.md,Step 4e,Plan 40 to 60 word answer openers,modes/brief.md,plan a direct 40 to 60 word answer at the top of
+BR-0307,brief-agent-installer.md,Step 4e,Name one or two snippet sections and format,modes/brief.md,Identify one or two sections with the clearest snippet potential and name
+BR-0308,brief-agent-installer.md,Step 4e,Cite about every 150 to 200 words,modes/brief.md,Plan a citation roughly every 150 to 200 words
+BR-0309,brief-agent-installer.md,Step 4e,Note FAQPage and Article schema,modes/brief.md,Note where FAQPage and Article schema markup should apply.
+BR-0310,brief-agent-installer.md,Step 4e,AI-engine gaps get the strongest openers and sources,modes/brief.md,should get the clearest 40-to-60-word opener and the strongest sourcing
+BR-0311,brief-agent-installer.md,Step 4f,Two to four internal links,modes/brief.md,Two to four internal links into existing published pieces
+BR-0312,brief-agent-installer.md,Step 4f,Links chosen for relevance,modes/brief.md,"chosen for actual topical relevance, not just because they exist"
+BR-0313,brief-agent-installer.md,Step 4f,Note where to link to this piece later,modes/brief.md,Note where this new piece should itself get linked from later
+BR-0314,brief-agent-installer.md,Step 4g,"Flag pricing, plan, feature, competitor sections",modes/brief.md,"Mark every section that will contain pricing, plan structure, feature availability"
+BR-0315,brief-agent-installer.md,Step 4g,Quarterly and annual review cadence,modes/brief.md,"quarterly for pricing and feature data, annually for general statistics"
+BR-0316,brief-agent-installer.md,Step 4g,Mirrors the knowledge base freshness rule,modes/brief.md,This mirrors the freshness rule already established in the product knowledge
+BR-0317,brief-agent-installer.md,Step 4h,Plan the opening and argument for the writer,modes/brief.md,so the Blog Writer executes a plan instead of inventing one at
+BR-0318,brief-agent-installer.md,Step 4h,Hook: direct number,modes/brief.md,A direct number leads if the research turned up one
+BR-0319,brief-agent-installer.md,Step 4h,Hook: cost of inaction,modes/brief.md,"A cost-of-inaction opener leads if this is a compliance, risk"
+BR-0320,brief-agent-installer.md,Step 4h,Hook: single strongest proof point,modes/brief.md,A single-strongest-proof-point opener leads if this is a comparison or versus piece
+BR-0321,brief-agent-installer.md,Step 4h,Hook: contrarian or myth-busting,modes/brief.md,A contrarian or myth-busting opener leads if Step 2's research surfaced
+BR-0322,brief-agent-installer.md,Step 4h,Default hook: reader's stakes; never generic scene-setting,modes/brief.md,never open on generic scene-setting
+BR-0323,brief-agent-installer.md,Step 4h,Name the hook and its specific material,modes/brief.md,"Name which one applies here, in one sentence"
+BR-0324,brief-agent-installer.md,Step 4h,Plan the seven-beat narrative arc,modes/brief.md,the shape its argument takes from open to close
+BR-0325,brief-agent-installer.md,Step 4h,Arc traceable through the outline,modes/brief.md,the arc as a whole should be traceable through the outline
+BR-0326,brief-agent-installer.md,Step 4h,Flag data-synthesis opportunities,modes/brief.md,flag any data-synthesis opportunity Step 2's research turned up
+BR-0327,brief-agent-installer.md,Step 4h,"Synthesis framed as reasoning, never fact",modes/brief.md,mark it clearly as reasoning framed as reasoning
+BR-0328,brief-agent-installer.md,Step 4h,Never force a synthesis,modes/brief.md,forcing a synthesis from unrelated data points is worse
+BR-0329,brief-agent-installer.md,Step 4i,Place specific first-hand proof in named sections,modes/brief.md,as a specific section and a specific kind of proof
+BR-0330,brief-agent-installer.md,Step 4i,"No first-hand proof: say so, never invent",modes/brief.md,rather than inventing a placeholder quote or a fabricated case study
+BR-0331,brief-agent-installer.md,Step 4i,Cornerstone Asset can be the trust signal,modes/brief.md,The Cornerstone Asset from 4b can double as this piece's primary trust
+BR-0332,brief-agent-installer.md,Step 5,Write in exactly the template structure,shared/base-rules/brief.md,Write the brief in exactly the structure shown in the template below.
+BR-0333,brief-agent-installer.md,Step 5,Name things exactly; no vague sections,shared/base-rules/brief.md,so name things exactly and don't leave a section vague
+BR-0334,brief-agent-installer.md,Step 5,Every brief has the same fixed shape,shared/base-rules/brief.md,"Every brief, new or reworked, has the same shape, in the same"
+BR-0335,brief-agent-installer.md,Step 5,Title is the only H1,shared/base-rules/brief.md,The title as the only H1
+BR-0336,brief-agent-installer.md,Step 5,At a glance table right under the title,shared/base-rules/brief.md,"table, right under the title."
+BR-0337,brief-agent-installer.md,Step 5,Twelve numbered H2 sections with exact names,shared/base-rules/brief.md,"The twelve numbered sections, as H2 headings, with exactly the names the"
+BR-0338,brief-agent-installer.md,Step 5,No other H2 headings,shared/base-rules/brief.md,"No other H2 headings, ever."
+BR-0339,brief-agent-installer.md,Step 5,Extra material goes in as H3s per the map,shared/base-rules/brief.md,"goes inside the section it belongs to, as an H3 under that"
+BR-0340,brief-agent-installer.md,Step 5,"Map: title, keyword, intent, format, length, slug",shared/base-rules/brief.md,"Working title, keyword, intent, format, length, slug"
+BR-0341,brief-agent-installer.md,Step 5,Map: thesis goes in section 5,shared/base-rules/brief.md,"The piece's main argument or thesis | Section 5, next to the"
+BR-0342,brief-agent-installer.md,Step 5,Map: reader outcome goes in section 4,shared/base-rules/brief.md,What the reader will be able to do after reading | Section
+BR-0343,brief-agent-installer.md,Step 5,Map: research findings go in section 5,shared/base-rules/brief.md,"Search results findings, AI answer engine findings, community threads | Section 5"
+BR-0344,brief-agent-installer.md,Step 5,Map: products and tools table in section 6,shared/base-rules/brief.md,"Product roles, tool stacks, and integration or compatibility notes"
+BR-0345,brief-agent-installer.md,Step 5,Map: teaching material in section 7,shared/base-rules/brief.md,"Business models, step lists, test checklists, and anything else the article will"
+BR-0346,brief-agent-installer.md,Step 5,Map: CTA and visual plans in section 7,shared/base-rules/brief.md,"CTA plan, and planned visuals or tables"
+BR-0347,brief-agent-installer.md,Step 5,Map: sources in section 9,shared/base-rules/brief.md,Sources read | Section 9
+BR-0348,brief-agent-installer.md,Step 5,Map: pre-publish checks in section 10,shared/base-rules/brief.md,Things to check before publishing | Section 10
+BR-0349,brief-agent-installer.md,Step 5,Map: reviewer decisions in section 11,shared/base-rules/brief.md,Decisions for the reviewer | Section 11
+BR-0350,brief-agent-installer.md,Step 5,Map: Slack summary never in the Doc,shared/base-rules/brief.md,Nowhere in the document. It goes only in the Slack post
+BR-0351,brief-agent-installer.md,Step 5,Empty sections still appear with one line,shared/base-rules/brief.md,"A section with nothing to say still appears, with one line saying"
+BR-0352,brief-agent-installer.md,Step 5a,Exact and simple are not in conflict,shared/base-rules/brief.md,Being exact and being simple are not in conflict
+BR-0353,brief-agent-installer.md,Step 5a,"Aim for grade 6, never above 7",shared/base-rules/brief.md,"Reading level: aim for grade 6, never above grade 7."
+BR-0354,brief-agent-installer.md,Step 5a,"Keywords, titles, URLs, product names are exempt",shared/base-rules/brief.md,"It doesn't cover the keywords, titles, meta drafts, URLs, quoted search queries"
+BR-0355,brief-agent-installer.md,Step 5a,15-word average; split sentences over 25,shared/base-rules/brief.md,Aim for 15 words on average. Split any sentence over 25 words.
+BR-0356,brief-agent-installer.md,Step 5a,One idea per sentence; short paragraphs,shared/base-rules/brief.md,One idea per sentence. Paragraphs of 1 to 3 sentences.
+BR-0357,brief-agent-installer.md,Step 5a,Explain technical points in a fixed order,shared/base-rules/brief.md,Explain every technical point in this order.
+BR-0358,brief-agent-installer.md,Step 5a,First say what it is plainly,shared/base-rules/brief.md,"First, one plain sentence saying what it is"
+BR-0359,brief-agent-installer.md,Step 5a,Then why it matters,shared/base-rules/brief.md,"Then, one sentence on why it matters for this piece."
+BR-0360,brief-agent-installer.md,Step 5a,Then detail as steps or a table,shared/base-rules/brief.md,"Then the detail, as short numbered steps or a small table"
+BR-0361,brief-agent-installer.md,Step 5a,Define each term on first use,shared/base-rules/brief.md,Define a term the first time it appears
+BR-0362,brief-agent-installer.md,Step 5a,Spell out shortened forms on first use,shared/base-rules/brief.md,Spell out shortened forms on first use
+BR-0363,brief-agent-installer.md,Step 5a,Use exact button and menu names,shared/base-rules/brief.md,Use the product's own button and menu names exactly
+BR-0364,brief-agent-installer.md,Step 5a,Break up noun piles,shared/base-rules/brief.md,what happened to each page builder module when we converted it
+BR-0365,brief-agent-installer.md,Step 5a,No filler,shared/base-rules/brief.md,"Say what you mean, then stop."
+BR-0366,brief-agent-installer.md,Step 5a,No vague stand-in words,shared/base-rules/brief.md,No vague words standing in for a specific one
+BR-0367,brief-agent-installer.md,Step 5a,Keep section headings exactly,shared/base-rules/brief.md,Keep the section headings exactly as the template shows them.
+BR-0368,brief-agent-installer.md,Step 5a,"Define Spearhead, Cornerstone, archetype on first use",shared/base-rules/brief.md,each get a plain one-line meaning the first time they appear in
+BR-0369,brief-agent-installer.md,Step 5a,"Unknown: say so, tag VERIFY, list in Open Questions",shared/base-rules/brief.md,Never cover a gap with technical-sounding words.
+BR-0370,brief-agent-installer.md,Step 5a,Spearhead stays one plain sentence under 40 words,shared/base-rules/brief.md,The Spearhead Strategy stays the one sentence from Step 4a
+BR-0371,brief-agent-installer.md,Step 5b,Read the brief as an outsider,shared/base-rules/brief.md,as someone who has never used this product and never seen this
+BR-0372,brief-agent-installer.md,Step 5b,Rewrite any sentence needing two reads,shared/base-rules/brief.md,Rewrite any sentence you'd need to read twice.
+BR-0373,brief-agent-installer.md,Step 5b,Rewrite technical points out of order,shared/base-rules/brief.md,Rewrite any technical point that doesn't follow the order in 5a.3.
+BR-0374,brief-agent-installer.md,Step 5b,Measure grade and sentence length with a shell,shared/base-rules/brief.md,Check the Flesch-Kincaid grade and the average sentence length
+BR-0375,brief-agent-installer.md,Step 5b,"Fix until grade 7 or lower, none over 25",shared/base-rules/brief.md,Fix until the grade is 7 or lower and no sentence is
+BR-0376,brief-agent-installer.md,Step 5b,"No shell: check by reading, claim no number",shared/base-rules/brief.md,"do the same check by reading, and don't claim a measured number"
+BR-0377,brief-agent-installer.md,Step 5b,Heading marks only show levels,shared/base-rules/brief.md,marks in the template only show heading levels
+BR-0378,brief-agent-installer.md,Template,At a glance two-column table rows,shared/base-rules/brief.md,"At a glance (a 2-column table, no heading above it):"
+BR-0379,brief-agent-installer.md,Template,Section 1: keyword and how it was found,shared/base-rules/brief.md,"Primary keyword, and how it was determined (Path A or Path B,"
+BR-0380,brief-agent-installer.md,Template,Section 1: intent with evidence,shared/base-rules/brief.md,with the evidence for the classification
+BR-0381,brief-agent-installer.md,Template,Section 1: secondary keyword map table,shared/base-rules/brief.md,Keyword | Use in this post or a future one | Section
+BR-0382,brief-agent-installer.md,Template,Section 2: target with reasoning,shared/base-rules/brief.md,"search results average plus depth premium, calibrated against the relevant format skeleton"
+BR-0383,brief-agent-installer.md,Template,Section 2: budget table total matches target,shared/base-rules/brief.md,with a total row that matches the target
+BR-0384,brief-agent-installer.md,Template,"Section 3: three specific, non-clickbait titles",shared/base-rules/brief.md,"Three options, as a numbered list, each keyword-forward and specific, not clickbait"
+BR-0385,brief-agent-installer.md,Template,Section 4: who is searching,shared/base-rules/brief.md,"Who is actually searching this, drawn from the product knowledge audience segments"
+BR-0386,brief-agent-installer.md,Template,"Section 4: believe, know, do after reading",shared/base-rules/brief.md,"What they need to believe, know, and do after reading"
+BR-0387,brief-agent-installer.md,Template,Section 5: format and table stakes,shared/base-rules/brief.md,Table stakes topics found across the current top results
+BR-0388,brief-agent-installer.md,Template,Section 5: weakness archetype with evidence,shared/base-rules/brief.md,"Weakness archetype identified, with the specific supporting evidence"
+BR-0389,brief-agent-installer.md,Template,Section 5: cannibalization check,shared/base-rules/brief.md,Cannibalization check: whether the product's own blog already has a post
+BR-0390,brief-agent-installer.md,Template,Section 5: community threads as linked titles,shared/base-rules/brief.md,with each thread as a linked title
+BR-0391,brief-agent-installer.md,Template,Section 5: AI answer engine findings,shared/base-rules/brief.md,AI answer engine findings: the sources Google AI Mode and ChatGPT cited
+BR-0392,brief-agent-installer.md,Template,Section 5: Spearhead sentence bold on its own line,shared/base-rules/brief.md,"The Spearhead Strategy sentence, on its own line, in bold"
+BR-0393,brief-agent-installer.md,Template,Section 6: tone and hard red lines,shared/base-rules/brief.md,Tone descriptors and hard red lines from the brand guide and writing
+BR-0394,brief-agent-installer.md,Template,Section 6: Cornerstone Asset and why,shared/base-rules/brief.md,"The Cornerstone Asset selected, and why"
+BR-0395,brief-agent-installer.md,Template,Section 6: trust signal plan,shared/base-rules/brief.md,E-E-A-T and trust signal plan: where a first-hand data point
+BR-0396,brief-agent-installer.md,Template,Section 6: approved and prohibited claims,shared/base-rules/brief.md,"Any approved claim this piece will lean on, and any prohibited claim"
+BR-0397,brief-agent-installer.md,Template,Section 6: products and tools table,shared/base-rules/brief.md,Product | Its job in this piece | How it connects to
+BR-0398,brief-agent-installer.md,Template,Section 7: planned article H1,shared/base-rules/brief.md,"The planned H1 of the article, on its own line"
+BR-0399,brief-agent-installer.md,Template,Section 7: one H3 per planned section,shared/base-rules/brief.md,"Then one H3 per planned article section, in order"
+BR-0400,brief-agent-installer.md,Template,Section 7: labeled bullets in order,shared/base-rules/brief.md,"Under each one, these labeled bullets, in this order:"
+BR-0401,brief-agent-installer.md,Template,Section 7: planned article H3s under Must cover,shared/base-rules/brief.md,"Any planned H3s of the article go here, by name"
+BR-0402,brief-agent-installer.md,Template,Section 7: answer opener where relevant,shared/base-rules/brief.md,"Answer opener: the planned 40-to-60-word opener, where relevant"
+BR-0403,brief-agent-installer.md,Template,Section 7: CTA and Visual only where planned,shared/base-rules/brief.md,CTA: only in the sections where one lands
+BR-0404,brief-agent-installer.md,Template,Section 7: FAQ as one numbered list,shared/base-rules/brief.md,"PAA questions plus logically derived ones, each answered in 40 to 60"
+BR-0405,brief-agent-installer.md,Template,Section 7: CTA plan table with three rows,shared/base-rules/brief.md,CTA plan: a table with exactly three rows
+BR-0406,brief-agent-installer.md,Template,Section 7: visual plan table,shared/base-rules/brief.md,Visual plan (if visuals are planned): a table
+BR-0407,brief-agent-installer.md,Template,Section 8: internal link table,shared/base-rules/brief.md,Page (linked) | Why it's relevant | Section it goes in
+BR-0408,brief-agent-installer.md,Template,Section 8: where to link from later,shared/base-rules/brief.md,Where this piece should get linked from once published
+BR-0409,brief-agent-installer.md,Template,Section 9: meta title within limit,shared/base-rules/brief.md,"Meta title draft, within the measured character limit"
+BR-0410,brief-agent-installer.md,Template,Section 9: meta description within limit,shared/base-rules/brief.md,"Meta description draft, within the measured character limit"
+BR-0411,brief-agent-installer.md,Template,"Section 9: slug, schema, citation notes",shared/base-rules/brief.md,Citation cadence and sourcing notes
+BR-0412,brief-agent-installer.md,Template,Section 9: sources as linked page names,shared/base-rules/brief.md,as a bulleted list of linked page names
+BR-0413,brief-agent-installer.md,Template,Section 10: freshness table,shared/base-rules/brief.md,Claim or section | Why it can go stale | Recheck how
+BR-0414,brief-agent-installer.md,Template,Section 11: one decision per numbered item,shared/base-rules/brief.md,"one decision per item, each in one or two plain sentences"
+BR-0415,brief-agent-installer.md,Template,Section 11: three most important first,shared/base-rules/brief.md,Put the three most important first.
+BR-0416,brief-agent-installer.md,Template,Section 12: hook approach and material,shared/base-rules/brief.md,The hook approach selected in Step 4h
+BR-0417,brief-agent-installer.md,Template,Section 12: narrative arc table,shared/base-rules/brief.md,Beat | What it says | Section it lands in
+BR-0418,brief-agent-installer.md,Template,Section 12: synthesis marked as reasoning,shared/base-rules/brief.md,"marked as reasoning, not fact"
+BR-0419,brief-agent-installer.md,Step 5c,Formatting rules prevent a messy Doc,shared/base-rules/brief.md,Breaking these rules is what makes a brief look messy
+BR-0420,brief-agent-installer.md,Step 5c,Real headings; never bold lines as headings,shared/base-rules/brief.md,"Never use a bold line, or a paragraph ending in a colon,"
+BR-0421,brief-agent-installer.md,Step 5c,Numbered lists only for one-line items,shared/base-rules/brief.md,Numbered lists only for short items.
+BR-0422,brief-agent-installer.md,Step 5c,All items in one list,shared/base-rules/brief.md,Put all the items in one list.
+BR-0423,brief-agent-installer.md,Step 5c,Explanations go inside the same item,shared/base-rules/brief.md,put that text inside the same item
+BR-0424,brief-agent-installer.md,Step 5c,Long items become numbered H3s,shared/base-rules/brief.md,make each one an H3 with the number in its text
+BR-0425,brief-agent-installer.md,Step 5c,Never restart a list after a paragraph,shared/base-rules/brief.md,Never close a list to add a paragraph and then start a
+BR-0426,brief-agent-installer.md,Step 5c,Three or more same-field items become a table,shared/base-rules/brief.md,When three or more items share the same fields
+BR-0427,brief-agent-installer.md,Step 5c,Never type a table with pipe marks,shared/base-rules/brief.md,Never type a table as plain text with `|` marks
+BR-0428,brief-agent-installer.md,Step 5c,"Cells under 15 words, five columns max",shared/base-rules/brief.md,"Keep each cell under about 15 words, and no more than 5"
+BR-0429,brief-agent-installer.md,Step 5c,One sentence after each table,shared/base-rules/brief.md,Put one plain sentence after the table saying what it shows.
+BR-0430,brief-agent-installer.md,Step 5c,"Labels bold, inline with their text",shared/base-rules/brief.md,"A label and its text sit in one paragraph, with the label"
+BR-0431,brief-agent-installer.md,Step 5c,Never a label on its own line,shared/base-rules/brief.md,Never put a label on its own line with the text below
+BR-0432,brief-agent-installer.md,Step 5c,Every URL is a named link,shared/base-rules/brief.md,Every URL is a link with readable text
+BR-0433,brief-agent-installer.md,Step 5c,Never a bare URL,shared/base-rules/brief.md,Never paste a bare URL as text.
+BR-0434,brief-agent-installer.md,Step 5c,"Flows are numbered lists, not arrows",shared/base-rules/brief.md,"A step-by-step flow is a numbered list, never a line of arrows"
+BR-0435,brief-agent-installer.md,Step 5c,One empty spacer paragraph between blocks,shared/base-rules/brief.md,"Put exactly one empty paragraph, `<p>&nbsp;</p>`, between blocks"
+BR-0436,brief-agent-installer.md,Step 5c,Never two spacers or spacers inside lists,shared/base-rules/brief.md,Never two in a row. Never inside a list or a table.
+BR-0437,brief-agent-installer.md,Step 5c,No Markdown marks; everything real HTML,shared/base-rules/brief.md,or `---` in the text; everything is real HTML
+BR-0438,brief-agent-installer.md,Step 6a,"Save as a new Google Doc in one call, no files",shared/storage-drive.md,"Save in one call, with no files built on disk."
+BR-0439,brief-agent-installer.md,Step 6a,Never Claude Docs or a docx,shared/storage-drive.md,"Never use Claude Docs, a `.docx` built by a script"
+BR-0440,brief-agent-installer.md,Step 6a,Drive converts HTML to a Google Doc,shared/storage-drive.md,The Drive connector turns HTML into a native Google Doc by itself.
+BR-0441,brief-agent-installer.md,Step 6a,Build one clean HTML string in memory,shared/storage-drive.md,"Turn the finished text into one clean HTML string, in memory."
+BR-0442,brief-agent-installer.md,Step 6a,Use h1 to h3 for real headings,shared/storage-drive.md,so they arrive as real Google Docs headings
+BR-0443,brief-agent-installer.md,Step 6a,One p per paragraph; real list tags,shared/storage-drive.md,never a typed bullet character
+BR-0444,brief-agent-installer.md,Step 6a,Bordered tables with th and td,shared/storage-drive.md,"with `<th>` and `<td>` for every table, so the borders survive"
+BR-0445,brief-agent-installer.md,Step 6a,Anchor tags for every link,shared/storage-drive.md,"for every link, including links inside table cells"
+BR-0446,brief-agent-installer.md,Step 6a,Strong for bold,shared/storage-drive.md,`<strong>` for bold. Each image-suggestion callout
+BR-0447,brief-agent-installer.md,Step 6a,Escape ampersand and angle brackets,shared/storage-drive.md,"Escape `&`, `<`, and `>` inside text."
+BR-0448,brief-agent-installer.md,Step 6a,Wrap in html with utf-8; entities for non-ASCII,shared/storage-drive.md,write every non-ASCII character as a numeric HTML entity
+BR-0449,brief-agent-installer.md,Step 6a,"No style blocks, scripts, or embedded images",shared/storage-drive.md,"No `<style>` blocks, no scripts, no embedded images."
+BR-0450,brief-agent-installer.md,Step 6a 1b,Check structure with a script before saving,shared/base-rules/brief.md,run a short script on the text about to be saved
+BR-0451,brief-agent-installer.md,Step 6a 1b,Structure check isn't a save attempt,shared/base-rules/brief.md,This check doesn't count as a save attempt.
+BR-0452,brief-agent-installer.md,Step 6a 1b,One h1 and twelve h2 in order,shared/base-rules/brief.md,"and exactly twelve H2 headings, matching the template's section names"
+BR-0453,brief-agent-installer.md,Step 6a 1b,At a glance table right after h1,shared/base-rules/brief.md,table sits right after the H1
+BR-0454,brief-agent-installer.md,Step 6a 1b,No one-item ol; no two ol split by a paragraph,shared/base-rules/brief.md,no two numbered lists sit with only a paragraph between them
+BR-0455,brief-agent-installer.md,Step 6a 1b,"No pipe text, bare http, or Markdown marks",shared/base-rules/brief.md,no bare `http` text outside a link
+BR-0456,brief-agent-installer.md,Step 6a 1b,Repeated labeled lists are tables,shared/base-rules/brief.md,with the same labeled fields is a table instead
+BR-0457,brief-agent-installer.md,Step 6a 1b,"One spacer between blocks, never two",shared/base-rules/brief.md,"In Drive: one `<p>&nbsp;</p>` between blocks, and never two in a row"
+BR-0458,brief-agent-installer.md,Step 6a,"create_file with title, HTML, mime type, folder",shared/storage-drive.md,"`create_file` with `title`, `textContent` set to the HTML"
+BR-0459,brief-agent-installer.md,Step 6a,Returned mimeType must be a Google Doc,shared/storage-drive.md,The returned `mimeType` must be `application/vnd.google-apps.document`.
+BR-0460,brief-agent-installer.md,Step 6a,viewUrl is the Brief Doc Link,shared/storage-drive.md,The returned `viewUrl` is the document's link.
+BR-0461,brief-agent-installer.md,Step 6a,Anything else is a failed attempt,shared/storage-drive.md,Anything else counts as a failed attempt.
+BR-0462,brief-agent-installer.md,Step 6a,Access check before the link goes anywhere,modes/brief.md,the access check (G19) before the link goes into Airtable or Slack
+BR-0463,brief-agent-installer.md,Step 6a,Brief title format,modes/brief.md,with the title the storage file gives for a brief
+BR-0464,brief-agent-installer.md,Step 6a,Narrate the save as it happens,shared/storage-drive.md,Say what's happening as it happens.
+BR-0465,brief-agent-installer.md,Step 6a,Never go quiet for minutes,shared/storage-drive.md,Never go quiet for minutes at a time
+BR-0466,brief-agent-installer.md,Step 6a,At most three save attempts,modes/brief.md,"at most three attempts, narrating the save as it happens"
+BR-0467,brief-agent-installer.md,Step 6a,Fix the exact error named and retry,shared/storage-drive.md,"read the error, fix the exact thing it names"
+BR-0468,brief-agent-installer.md,Step 6a,After three failures follow the failed-save guard,modes/brief.md,"After three failures, follow G15"
+BR-0469,brief-agent-installer.md,Step 6a,Never fall back to another format,shared/storage-drive.md,Never fall back to another document type.
+BR-0470,brief-agent-installer.md,Step 6a,Confirmed means done; don't re-read or re-call,shared/storage-drive.md,Don't read the Doc back to double check
+BR-0471,brief-agent-installer.md,Step 6b,"Update the existing row, not a new one",modes/brief.md,"fills in the rest, rather than creating a new row"
+BR-0472,brief-agent-installer.md,Step 6b,"Fill trigger type, keywords, format skeleton",modes/brief.md,"Secondary Keywords (comma-separated), Format Skeleton (from Step 3)"
+BR-0473,brief-agent-installer.md,Step 6b,Brief Doc Link always set,modes/brief.md,"Brief Doc Link set to the link from 6a, always, never left"
+BR-0474,brief-agent-installer.md,Step 6b,Status stays Brief In Progress until the post,modes/brief.md,Status left at `Brief In Progress` for now
+BR-0475,brief-agent-installer.md,Step 6b,Last Updated At set to now,shared/airtable.md,Every write sets Last Updated At to now.
+BR-0476,brief-agent-installer.md,Step 6b,Freshness Flags from Step 4g,modes/brief.md,Freshness Flags summarized from Step 4g
+BR-0477,brief-agent-installer.md,Step 6b,Run notes per G8,modes/brief.md,"any run notes as one Agent Notes block, per G8"
+BR-0478,brief-agent-installer.md,Step 6b,Leave later-stage fields alone,modes/brief.md,"Leave QA Score, QA Report Link, Draft Rework Count, and Assigned Reviewer"
+BR-0479,brief-agent-installer.md,Step 6b,Airtable update comes before Slack,modes/brief.md,since Airtable is the actual record of what happened and Slack is
+BR-0480,brief-agent-installer.md,Step 6c,"Post after Airtable is saved, tagging approvers",modes/brief.md,"Once 6b's update is saved, post the"
+BR-0481,brief-agent-installer.md,Step 6c,"Include ID, title, keyword, Spearhead, link",modes/brief.md,"with the Item ID, the working title, the primary keyword"
+BR-0482,brief-agent-installer.md,Step 6c,"Ask for a tick, cross, or reply",shared/slack.md,"React with a tick to approve, a cross to send it back"
+BR-0483,brief-agent-installer.md,Step 6c,"Set Awaiting, thread link, and sent line in one update",modes/brief.md,"Last Saved Step `brief posted`, Stall Count 0, an Agent Notes line"
+BR-0484,brief-agent-installer.md,Step 6c,A waiting brief always has a visible post,modes/brief.md,must always have a post the reviewers can see
+BR-0485,brief-agent-installer.md,Step 6c,Post failed twice: still Awaiting; next run reposts,modes/brief.md,"still set `Awaiting Brief Approval`, leave Slack Thread Link empty"
+BR-0486,brief-agent-installer.md,Step 6c,Orchestrator records the decision; don't wait,modes/brief.md,this run doesn't wait for it
+BR-0487,brief-agent-installer.md,Step 6c,Write the post at grade 5,shared/slack.md,Write at a grade 5 reading level.
+BR-0488,brief-agent-installer.md,Step 6c,Keep the post under about 120 words,shared/slack.md,Every post that asks a person to act stays under about 120 words
+BR-0489,brief-agent-installer.md,Step 6c,Use the fixed post shape,shared/slack.md,"New brief ready for your OK: [Item ID], [working title]"
+BR-0490,brief-agent-installer.md,Step 6c,Leave out Needs your call when nothing to decide,modes/brief.md,Leave the heading out when there's nothing to decide.
+BR-0491,brief-agent-installer.md,Step 6c,At most three calls; rest in Open Questions,modes/brief.md,at most three. The rest stay in the brief's Open Questions.
+BR-0492,brief-agent-installer.md,Step 6c,No pipeline words in the post,shared/slack.md,Never use pipeline words in Slack.
+BR-0493,brief-agent-installer.md,Step 6c,Say the plain thing instead,modes/brief.md,"Say the plain thing instead, such as"
+BR-0494,brief-agent-installer.md,Step 6c,Don't type a Sent using line,shared/slack.md,"Don't type a ""Sent using"" line. Slack adds it."
+BR-0495,brief-agent-installer.md,Step 6c,Slack down: still finish 6a and 6b,modes/brief.md,6a and 6b still complete regardless
+BR-0496,brief-agent-installer.md,Step 6c,Slack fallback writes the message into Notes,shared/slack.md,Leave Slack Thread Link empty so the next run posts it
+BR-0497,brief-agent-installer.md,Step 6c,Tell the user the brief is saved and posted,modes/brief.md,say in the run output that the brief is saved and posted
+BR-0498,brief-agent-installer.md,Step 6.5,Only fires when the person gives feedback,modes/brief.md,"This step is conditional, not automatic"
+BR-0499,brief-agent-installer.md,Step 6.5,Any direct correction counts as feedback,modes/brief.md,Don't wait for a formal rejection to treat something as feedback
+BR-0500,brief-agent-installer.md,Step 6.5,"Distill a general, reusable rule",modes/brief.md,"distill what was said into a general, reusable rule"
+BR-0501,brief-agent-installer.md,Step 6.5,Rule must prevent the mistake on other topics,modes/brief.md,would stop the same mistake on a completely different topic
+BR-0502,brief-agent-installer.md,Step 6.5,Example of a rule versus a one-off fix,modes/brief.md,CTA copy leads with the specific benefit the reader gets
+BR-0503,brief-agent-installer.md,Step 6.5,"Feedback Log row with Date, Stage, What Happened, Rule",modes/brief.md,What Happened (one honest sentence on what the feedback actually was)
+BR-0504,brief-agent-installer.md,Step 6.5,Feedback Log Status Active,modes/brief.md,"Layer `Learned rule`, Content (the rule, one testable line)"
+BR-0505,brief-agent-installer.md,Step 6.5,Related Item links to this row,modes/brief.md,and Related Item linked to this item's row
+BR-0506,brief-agent-installer.md,Step 6.5,Never skip logging feedback,modes/brief.md,Don't skip this because the session is ending or the feedback felt
+BR-0507,brief-agent-installer.md,Self-check,Confirm every line before posting; fix failures,modes/brief.md,Confirm every line of the first list before 6a saves the brief
+BR-0508,brief-agent-installer.md,Self-check,Never asked for setup values,modes/brief.md,"No step in this run asked the person for the product, the"
+BR-0509,brief-agent-installer.md,Self-check,Primary keyword and reasoning present,modes/brief.md,The primary keyword and its selection reasoning are both present
+BR-0510,brief-agent-installer.md,Self-check,Every claim traces to something read this run,modes/brief.md,Every claim in the brief traces to something actually read this run
+BR-0511,brief-agent-installer.md,Self-check,"Brand and style rules reflected, not just named",modes/brief.md,"are reflected in the brief, not just referenced by name"
+BR-0512,brief-agent-installer.md,Self-check,Spearhead names a move and a gap,modes/brief.md,The Spearhead Strategy sentence names a specific move and a specific gap
+BR-0513,brief-agent-installer.md,Self-check,Cornerstone Asset is real and named,modes/brief.md,"The Cornerstone Asset is a real, named thing, not a placeholder"
+BR-0514,brief-agent-installer.md,Self-check,"Exactly three CTAs, none in FAQ, real offers",modes/brief.md,every offer named is one the product actually has
+BR-0515,brief-agent-installer.md,Self-check,Two to four internal links or the quality minimum,modes/brief.md,"has two to four links, or at least the quality checks' minimum"
+BR-0516,brief-agent-installer.md,Self-check,Freshness flag present when pricing or features appear,modes/brief.md,using the stricter of Step 4g's cadence and the product knowledge's rule
+BR-0517,brief-agent-installer.md,Self-check,Meta title and description within limits,modes/brief.md,Meta title and description are both within their measured character limits
+BR-0518,brief-agent-installer.md,Self-check,No em dashes; the brief models house style,modes/brief.md,"The brief should model the house style, not just tell the writer"
+BR-0519,brief-agent-installer.md,Self-check,Fixed structure with twelve sections and placement map,modes/brief.md,"then the twelve numbered sections with the template's names, in order"
+BR-0520,brief-agent-installer.md,Self-check,5c formatting and structure check passed,modes/brief.md,"the structure check passed: real headings, no one-item numbered lists"
+BR-0521,brief-agent-installer.md,Self-check,"Plain words: grade 7 or lower, sentences under 25",modes/brief.md,grade 7 or lower (grade 6 is the aim)
+BR-0522,brief-agent-installer.md,Self-check,Plain-language pass ran; measured when possible,modes/brief.md,"the grade and sentence lengths were measured, not guessed"
+BR-0523,brief-agent-installer.md,Self-check,Spearhead under 40 plain words,modes/brief.md,"is the Step 4a sentence, under 40 words, in plain words"
+BR-0524,brief-agent-installer.md,Self-check,Slack post follows the short shape,modes/brief.md,"at most three calls for the reviewer, no pipeline words"
+BR-0525,brief-agent-installer.md,Self-check,Both AI engines interrogated or noted,modes/brief.md,Google AI Mode and ChatGPT were both interrogated in Step 2d
+BR-0526,brief-agent-installer.md,Self-check,2a to 2d ran as one parallel pass,modes/brief.md,2a through 2d ran as one parallel research pass
+BR-0527,brief-agent-installer.md,Self-check,Snippet and AI Overview reflected in section 5,modes/brief.md,Featured snippet and AI Overview occupancy from Step 2b are reflected
+BR-0528,brief-agent-installer.md,Self-check,Blog and pipeline checked for the same keyword,modes/brief.md,The product's own blog and this product's own pipeline rows were checked
+BR-0529,brief-agent-installer.md,Self-check,A named trust signal is placed or its absence stated,modes/brief.md,"At least one specific, named E-E-A-T or trust signal is placed in"
+BR-0530,brief-agent-installer.md,Self-check,Real keyword numbers used or their absence stated,modes/brief.md,real numbers were pulled and used; if none was available
+BR-0531,brief-agent-installer.md,Self-check,Live research beat the knowledge base; noted,modes/brief.md,"the live research won, and the disagreement is noted in Open Questions"
+BR-0532,brief-agent-installer.md,Self-check,Did not read Slack approvals itself,modes/brief.md,This mode did not read Slack reactions or replies itself to decide
+BR-0533,brief-agent-installer.md,Self-check,"Rework scan ran first, filtered to this product",modes/brief.md,The queue ran in this mode's order
+BR-0534,brief-agent-installer.md,Self-check,Rework: every checklist item has a log line,modes/brief.md,every item on the 0.6b checklist has a matching line in the
+BR-0535,brief-agent-installer.md,Self-check,Rework: count rose by exactly 1,modes/brief.md,Brief Rework Count went up by exactly 1
+BR-0536,brief-agent-installer.md,Self-check,"Rework: new Doc saved, old kept, link moved",modes/brief.md,a new document in Drive with the old one left in place
+BR-0537,brief-agent-installer.md,Self-check,Rework: Rework History row written,modes/brief.md,a Rework History row with Stage `Brief` was written
+BR-0538,brief-agent-installer.md,Self-check,Rework: repeatable feedback logged,modes/brief.md,every genuinely repeatable feedback item was recorded as a suggested rule
+BR-0539,brief-agent-installer.md,Self-check,"Item ID, logged before research, now Awaiting",modes/brief.md,it was logged at `Brief In Progress` before research began
+BR-0540,brief-agent-installer.md,Self-check,Hook plan names an approach and maps the arc,modes/brief.md,names a specific hook approach and maps the narrative arc
+BR-0541,brief-agent-installer.md,Self-check,"Saved as a Google Doc in the folder, access checked",modes/brief.md,"The brief was saved per the piece's storage file, inside the product's"
+BR-0542,brief-agent-installer.md,Self-check,Airtable updated before the Slack post,modes/brief.md,Airtable was updated in 6b before the Slack post in 6c went
+BR-0543,brief-agent-installer.md,Self-check,Post went out with tags and link; thread link saved,modes/brief.md,"the tool returned a message link, and Slack Thread Link holds it"
+BR-0544,brief-agent-installer.md,Self-check,Notes only added to,modes/brief.md,"Agent Notes was only ever added to, never cleared (G8)"
+BR-0545,brief-agent-installer.md,Self-check,"Active rules applied, not set aside",modes/brief.md,"was actually applied to this brief, not just read and set aside"
+BR-0546,brief-agent-installer.md,Self-check,Feedback this run logged per Step 6.5,modes/brief.md,it was distilled into a rule and recorded as Suggested per Step
+BR-0547,brief-agent-installer.md,Self-check,Never asked about other skills or schedules,modes/brief.md,"No step asked the person about other skills, other modes, or scheduled"
+BR-0548,brief-agent-installer.md,Self-check,Approval happens in Slack via the Orchestrator,modes/brief.md,"Approval happens in Slack: a tick, cross, or reply is how the"
+BR-0549,brief-agent-installer.md,Self-check,A tick means Brief Approved and hands to the writer,modes/brief.md,A tick sets Status to `Brief Approved` and hands off to the
+BR-0550,brief-agent-installer.md,Self-check,A cross or reply returns via Step 0.6 next run,modes/brief.md,this same mode picks it up on its own next run through
+BR-0551,brief-agent-installer.md,Footer,Standard template setup note,DROPPED,Installer and template setup note replaced by modes/setup.md
+BR-0552,brief-agent-installer.md,Old live: files disagree,"Product files win on facts, claims, terms, sources",shared/base-rules/brief.md,so they win on anything about the product
+BR-0553,brief-agent-installer.md,Old live: files disagree,"On style and structure, follow the stricter rule",shared/base-rules/brief.md,follow whichever rule is stricter
+BR-0554,brief-agent-installer.md,Old live: files disagree,Stricter freshness rule goes in the Freshness Log,shared/base-rules/brief.md,the stricter rule goes into the Freshness Log
+BR-0555,brief-agent-installer.md,Old live: files disagree,Link plan meets the quality checks' minimum,shared/base-rules/brief.md,the Internal Link Plan in Step 4f meets that minimum
+BR-0556,brief-agent-installer.md,Old live: files disagree,Add structural blocks the files require,shared/base-rules/brief.md,add it to the outline where the file says
+BR-0557,brief-agent-installer.md,Old live: files disagree,Calibrate length against style guide ranges,shared/base-rules/brief.md,calibrate Step 3's word counts against those
+BR-0558,brief-agent-installer.md,Old live: files disagree,Brief follows both these and the style guide's rules,shared/base-rules/brief.md,since it models the house style for the writer
+BR-0559,brief-agent-installer.md,Old live: files disagree,Reworker Agent means this mode's Step 0.6,shared/base-rules/brief.md,"wherever the files name a ""Reworker Agent,"""
