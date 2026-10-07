@@ -44,7 +44,7 @@ Otherwise, ask one question, with own setup as the default:
 
 ## Step 1: Preflight, before any question about the company
 
-Check every connection with one small real read, not just "is it listed," because a connection can be listed and still signed out. Don't ask anything else until the required ones pass.
+Check every connection with one small real read, not just "is it listed," because a connection can be listed and still signed out. Run every check in the table before stopping, then name everything that failed in one message, so the person can connect them all at once. Don't ask anything else until the required ones pass.
 
 | Connection | Needed when | The check | If it fails |
 |---|---|---|---|
@@ -54,7 +54,7 @@ Check every connection with one small real read, not just "is it listed," becaus
 | Running code | Always (QA measures drafts with a script) | run a one-line script | Go on, but say QA will measure by careful reading instead, which is less exact. |
 | Google Drive | The person picks Drive | `list_recent_files` (or search for one file) | Stop if Drive is their choice; otherwise offer Notion. |
 | Notion | The person picks Notion | `notion-get-users` for their own user | Stop if Notion is their choice; otherwise offer Drive. |
-| Scheduled tasks (Claude) | Claude only | `list_triggers` | Go on, but say schedules will need a few manual steps. |
+| Scheduled tasks (Claude) | Claude only | `list_triggers` (or `list_scheduled_tasks`, shared/platform-tools.md) | Go on, but say schedules will need a few manual steps. |
 | Slack inside Airtable | Optional | `list_external_accounts` shows a Slack account | Don't stop. Offer the one-click step (Step 7). |
 | Google Calendar | Optional | none | Never checked. It's only used for reminders. |
 
@@ -63,7 +63,7 @@ Drive and Notion are checked right after Step 4 item 7, once the person has pick
 **How a person connects something that's missing:**
 
 - In the Claude app or Cowork: show the connector's connect card if the app offers one; otherwise say "Open Settings, then Connectors, find [name], and click Connect." They sign in, then type "done," and setup checks again.
-- In Claude Code or Codex: print the exact lines to add (shared/platform-tools.md has the server addresses), then the sign-in step. Codex users add the Airtable, Slack, and Notion servers in Codex's MCP settings. Slack on Codex needs a Slack workspace admin to approve it once for the company; Google Drive on Codex needs an admin to make a Google Cloud OAuth client once (that's a beta, so suggest Notion on Codex).
+- In Claude Code or Codex: print the exact lines to add (shared/platform-tools.md, Connecting a server, has the commands and addresses), then the sign-in step. Codex users add the Airtable, Slack, and Notion servers in Codex's MCP settings. Slack on Codex needs a Slack workspace admin to approve it once for the company; Google Drive on Codex needs an admin to make a Google Cloud OAuth client once (that's a beta, so suggest Notion on Codex).
 - The same check fails twice: name the likely cause (signed out, an admin approval, the wrong account), then stop cleanly. Never half-set things up.
 
 **What a person needs, said plainly before going on:** "You'll need: a Claude plan that includes connectors and scheduled tasks, so the agents can run on their own (or the Codex app left open on a computer that stays on); free Airtable, Slack, and Google Drive or Notion accounts. Airtable's free plan allows 5 editors per base and 1,000 automated reads and writes a month per workspace, which is enough for about 7 blog posts a month at 3 rounds a day, or about 12 at 2 rounds a day."
@@ -187,6 +187,7 @@ Each agent has one schedule that fires once per round. Every day uses all 7 days
 4. Read each result. Check its connector list includes Airtable, Slack, and the document tool. If one is missing, say which connector to connect, then "repair schedules."
 5. **Approvals.** A scheduled run that hits an approval prompt waits forever. Read each schedule's approval setting from the result. If runs will ask before acting, tell the person how to switch the schedule to automatic approval in its settings, and wait for "done." If their organization doesn't allow it, say so plainly: runs may stall until someone approves.
 6. If the platform refuses to create a schedule, don't work around it. Show the exact name, time, and prompt to add by hand.
+7. **Desktop scheduled tasks.** If this session has the Claude desktop app's scheduled-task tools instead (shared/platform-tools.md), do steps 1 to 6 with them: `taskId` `content-machine-[mode]-[prefix]`, the same prompt, and the cron line without `CRON_TZ`, because these run in the computer's own time zone (adjust the hours if that differs from the Team row's Time Zone). Tell the person these run only while the Claude app is open; a run that was due while it was closed runs when it next opens.
 
 **On Codex:** schedules are added in the Codex app's Automations tab. Show three ready-to-paste entries (name, schedule, prompt), with: "Set each one to run in this project, with network access on and approvals set so it can use your connected tools without asking. Codex runs scheduled tasks only while the app is open on a computer that stays on." Wait for "done."
 
@@ -199,7 +200,7 @@ Prove each part works before calling setup finished. Explain what's about to hap
 3. **A test row.** Create a Content Items row for the test (Product, Input "Setup test," Item ID `[prefix]TEST`, Brief Doc Link set to the test document), then set Slack Thread Link to the test post's link and Status to `Awaiting Brief Approval` in one update.
 4. **The bot test** (only if the bot was built and switched on): wait about a minute, then read the channel's newest messages for a post from "Content Machine" naming `[prefix]TEST`. Ask the host: "Did you get a Slack notification from Content Machine just now?" If the post arrived and they got the ping, set Bot Status On. If not, set Bot Status `Failed test`, show the automation link, and ask the person to switch it off in Airtable; wait for 'done' and check with `list_automations`. Then show the fallback message from shared/slack.md.
 5. **Clean up the test row:** set its Status `Rejected` and Notes "Setup test." (Rows are never deleted.) Leave the test document; say the person can delete it.
-6. **Fire each schedule once** (Claude: `fire_trigger`). Each run will find no real work. Wait a few minutes, then read the Team row: each agent's Last Run field should now be set. Check up to 3 times, about 3 minutes apart. Any agent that didn't run gets named, with the likely cause (approvals, a missing connector, or the account) and "repair schedules."
+6. **Fire each schedule once** (Claude: `fire_trigger`, or `run_scheduled_task`). Each run will find no real work. Wait a few minutes, then read the Team row: each agent's Last Run field should now be set. Check up to 3 times, about 3 minutes apart. Any agent that didn't run gets named, with the likely cause (approvals, a missing connector, or the account) and "repair schedules."
 
 If any step fails, name it, fix what can be fixed, and run that step again. Setup isn't finished until every step here passes or the person chooses to go on without the bot.
 
@@ -239,8 +240,8 @@ shared/rule-extraction.md, "Keeping them right over time": read the new or chang
 
 ## Repair schedules
 
-1. `list_triggers` and find this base's three schedules by their prompts' base ID.
-2. A schedule made before a connector was connected can't gain it. After a yes, delete those schedules (`delete_trigger`) and create them again (Step 8). Others just get their time and prompt corrected (`update_trigger`).
+1. `list_triggers` (or `list_scheduled_tasks`) and find this base's three schedules by their prompts' base ID.
+2. A schedule made before a connector was connected can't gain it. After a yes, delete those schedules (`delete_trigger`; desktop scheduled tasks are switched off with `update_scheduled_task` and enabled false) and create them again (Step 8). Others just get their time and prompt corrected (`update_trigger` or `update_scheduled_task`).
 3. Fire each once and check Last Run (Step 9, part 6).
 
 ## Move host
@@ -254,5 +255,7 @@ Hands the schedules and documents to another account, for example when someone l
 
 ## Pause and resume
 
+First find the base, as Step 0 does: `search_bases` for a name ending in "Content Machine" (more than one: ask which). If Airtable isn't connected, say: "Airtable isn't connected in this session. Connect it, then type the same words again." If no base is found, say: "I can't find a content machine base on this account. If a teammate hosts it, ask them to pause it." Then:
+
 - "pause content machine": after a yes, set Paused on in the Team row. Every run stops at run-start step 2 until resumed.
-- "resume content machine": set Paused off.
+- "resume content machine": after a yes, set Paused off.

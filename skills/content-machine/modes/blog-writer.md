@@ -24,7 +24,7 @@ Everything about the company comes from the base: Settings (product, channel, do
 
 ### The work queue
 
-Build the queue from the batched read (shared/airtable.md), for this product only (G4), in this order. Within each step, Priority High first, then the oldest by Last Updated At. Skip rows flagged Needs Fix, rows with Duplicate Decision `Pending` (G23), Escalated rows, and rows another run holds a live claim on (shared/run-start.md, step 6).
+Build the queue from the batched read (shared/airtable.md), for this product only (G4), in this order. Within each step, Priority High first, then the oldest by Last Updated At. Skip rows flagged Needs Fix, rows with Duplicate Decision `Pending` (G23), Escalated rows (except step 1's re-post of an escalation that never went out), and rows another run holds a live claim on (shared/run-start.md, step 6).
 
 1. **Recovery rows this mode owns** (G21, shared/run-start.md step 4). These don't count toward the limits below.
    - A row in `QA Passed - Awaiting Publish Review`, or in `Escalated - Needs Human Input` with a Blog Doc Link, whose Slack Thread Link is empty: the post never went out. Search the product's channel for a post naming the Item ID and the current Blog Doc Link. If one exists, save its link. Otherwise post it now: the "Blog passed its checks" message or the "Stuck after 3 rounds" message (shared/slack.md), tagging every approver (G11). Then save Slack Thread Link.
@@ -33,7 +33,7 @@ Build the queue from the batched read (shared/airtable.md), for this product onl
 3. **`In QA` rows with no claim.** Claim them (Status stays `In QA`, Claimed By `Blog Writer (QA in-session)`) and resume per Resuming a row. No QA schedule exists, so this mode owns them. Each counts like a stalled row (G3).
 4. **Drafts sent back by a person.** `Needs Rework` with a Blog Doc Link, whose newest Human Feedback entry is newer than its newest QA verdict and is marked `Human send-back` (G13). Work it through Step 0.6.
 5. **Drafts sent back by QA.** Every other `Needs Rework` row with a Blog Doc Link. Work it through Step 0.6.
-6. **Approved briefs with no draft yet.** `Brief Approved` rows, oldest approval first. Take one per run. Before claiming it, run the duplicate check (shared/run-start.md, step 5), leaving out this row. A row whose Duplicate Decision is already `Go` for the match named in Overlap With passes. On a new match, never change its Status: set Overlap With and Duplicate Decision `Pending`, keep `Brief Approved`, post the "Possible repeat" question (modes/brief.md, 0.7c) and save its link in Slack Thread Link, and skip the row. Otherwise write it from Step 1 onward.
+6. **Approved briefs with no draft yet.** `Brief Approved` rows, oldest approval first. Take one per run. Before claiming it, run the duplicate check (shared/run-start.md, step 5), leaving out this row. A row whose Duplicate Decision is already `Go` for the match named in Overlap With passes. On a new match, never change its Status: set Overlap With and Duplicate Decision `Pending`, keep `Brief Approved`, post the "Possible repeat" question (shared/slack.md, Other short posts) and save its link in Slack Thread Link, and skip the row. Otherwise write it from Step 1 onward.
 
 A `Needs Rework` row with an empty Blog Doc Link is a brief-stage rework. It belongs to the Brief mode. This mode never touches it.
 
@@ -339,7 +339,7 @@ Confirm every line below before moving to Step 13. Fix anything that fails.
 
 **Recording a learned rule.** Agents never make a rule Active; only a person's yes does (shared/rule-extraction.md).
 
-1. Create a Reference row (`create_records_for_table`): Entry (a short name), Product, Type `Rule`, Layer `Learned rule`, Rule ID (the product's next free learned-rule ID, shared/rule-extraction.md, Rule IDs, like `ACME-L03`), Category, Agents (Blog Writer, plus QA when QA should check it), Level, Check Method, Source Quote (the feedback in its own words), Status `Suggested`, and Version 1.
+1. Create a Reference row (`create_records_for_table`): Entry (a short name), Product, Type `Rule`, Layer `Learned rule`, Rule ID (the product's next free learned-rule ID, shared/rule-extraction.md, Rule IDs, like `ACME-L03`), Content (the rule, one testable line), Category, Agents (Blog Writer, plus QA when QA should check it), Level, Check Method, Source Quote (the feedback in its own words), Status `Suggested`, and Version 1.
 2. Create a Feedback Log row: Date, Product, Stage `Draft`, What Happened (the Item ID and what went wrong, in plain words), The Rule, Reference Rule ID (from step 1), Status `Suggested`, and Related Item linked to this row.
 3. List each new Suggested rule in the run summary. The Orchestrator asks the approvers about every new Suggested rule in its next run (shared/rule-extraction.md).
 

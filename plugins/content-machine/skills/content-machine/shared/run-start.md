@@ -4,7 +4,7 @@ Brief, Blog Writer, QA (when run on its own), and Orchestrator all start here, i
 
 ## Attended or unattended
 
-A run is **unattended** when the message that started it is a schedule's prompt (it says "Unattended run"). Everything else is attended.
+A run is **unattended** when the message that started it is a schedule's prompt (it says "Unattended run"). A prompt that names a Mode but reads like a schedule's (no person asking in a chat) counts as unattended too; when unsure, treat the run as unattended (G2). Everything else is attended.
 
 - An unattended run never asks a question and never enters setup. When something needs a person, it posts one alert (shared/slack.md, Alerts) and stops, or skips that row and lists it in the run summary.
 - An attended run may ask the person in chat, but only about this run's own work. Setup questions only happen in setup mode.
@@ -59,7 +59,7 @@ Finish what an earlier run left half done, before taking new work. Only for this
 
 - **A post that never went out.** A row in `Awaiting Brief Approval`, `QA Passed - Awaiting Publish Review`, or `Escalated - Needs Human Input` with an empty Slack Thread Link: the owning agent (Brief Agent for briefs, Blog Writer for drafts) posts it now, per shared/slack.md, and saves the link. Before posting, search the channel for a post naming the Item ID, and use it instead of posting twice.
 - **A verdict saved but not posted.** A row in `In QA` whose Last Saved Step is `QA round [n] verdict saved: Approved` or `...: Escalated`, with a stale or empty claim and no post for it: the Blog Writer finishes QA's close-out for that verdict (post, then Status and Slack Thread Link in one update). A saved `Needs Rework` verdict goes straight to the rework.
-- **A stalled row.** A row in `Brief In Progress`, `Writing In Progress`, `Rework In Progress`, or `In QA` whose claim is stale (shared/airtable.md, Claims): add 1 to Stall Count and take it over, resuming from Last Saved Step. If Stall Count reaches 2, don't work on it: set `Escalated - Needs Human Input`, post the escalation (shared/slack.md), reset Stall Count to 0, and clear the claim.
+- **A stalled row.** A row in `Brief In Progress`, `Writing In Progress`, `Rework In Progress`, or `In QA` whose claim is stale (shared/airtable.md, Claims): add 1 to Stall Count and take it over, resuming from Last Saved Step. A row put back with its claim cleared after a failed save (G15) is taken the same way, without adding to Stall Count. If Stall Count reaches 2, don't work on it: set `Escalated - Needs Human Input`, post the escalation (shared/slack.md), reset Stall Count to 0, and clear the claim.
 
 ## Step 5: Row checks and duplicates
 
@@ -84,7 +84,7 @@ A match is any of: the same primary keyword after cleanup (lowercase, singular a
 |---|---|
 | An exact match already in progress | No new row. One Slack line links the existing piece. |
 | A close match (same keyword, different angle) | The row is created (or kept) at `Topic Requested` with Overlap With filled in and Duplicate Decision Pending. The agent posts the "Possible repeat" question and saves its link in Slack Thread Link, so the Orchestrator finds the answer. |
-| A match with a published piece or a live post | The row is created (or kept) at `Topic Requested` with Duplicate Decision Pending and Overlap With, and the same question is asked: update the published post, or take a new angle? |
+| A match with a published piece or a live post | The row is created (or kept) at `Topic Requested` with Duplicate Decision Pending and Overlap With, and the same question is asked, worded for a live post: 'go' writes a new piece with a different angle, 'drop' skips it so the live post can be updated by hand. |
 | A match with a Rejected row | Flag it "rejected before" in Overlap With, set Duplicate Decision Pending, and ask. |
 
 Rows with Duplicate Decision Pending are skipped by the Brief Agent and Blog Writer until the Orchestrator writes Go (work goes on) or Drop (the row is set Rejected). The Orchestrator itself always reads them, since it records the answer.
@@ -93,7 +93,7 @@ Rows with Duplicate Decision Pending are skipped by the Brief Agent and Blog Wri
 
 ## Step 6: Work queue
 
-Each agent builds its queue from the batched read, in the order its mode file lists. Within each step: Priority High first, then the oldest (Last Updated At). Every run skips rows flagged Needs Fix, rows with Duplicate Decision Pending, Escalated rows, and rows another run has a live claim on. In Notion mode within a shared base, only the host's runs write to Notion pages.
+Each agent builds its queue from the batched read, in the order its mode file lists. Within each step: Priority High first, then the oldest (Last Updated At). Every run skips rows flagged Needs Fix, rows with Duplicate Decision Pending, Escalated rows (Recovery in step 4 still posts an escalation that never went out), and rows another run has a live claim on. In Notion mode within a shared base, only the host's runs write to Notion pages.
 
 ## Loading the rules
 

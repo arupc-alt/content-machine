@@ -54,12 +54,22 @@ On Codex, Drive uses Google's own Drive and Docs servers, which need a one-time 
 
 On Codex, Notion is `https://mcp.notion.com/mcp`, signed in with `codex mcp login notion`.
 
+## Connecting a server
+
+- **Claude app, desktop, or Cowork:** Settings, then Connectors, find the name, and click Connect.
+- **Claude Code:** connectors added in the Claude app show up in Claude Code when it's signed in with the same Claude account. Otherwise add each server, then type `/mcp` and sign in:
+  - `claude mcp add --transport http airtable https://mcp.airtable.com/mcp`
+  - `claude mcp add --transport http slack https://mcp.slack.com/mcp`
+  - `claude mcp add --transport http notion https://mcp.notion.com/mcp`
+  - Google Drive has no server line here: connect it in the Claude app (Settings, Connectors), or pick Notion.
+- **Codex:** add the same addresses in Codex's MCP settings, then sign in (for Notion, `codex mcp login notion`). Slack needs a workspace admin's approval once.
+
 ## Other
 
 | Capability | Tool | Fallback |
 |---|---|---|
 | Web search and read a page | the session's web search and fetch tools | none: briefs can't be researched without them |
 | Run a script (QA measurements) | the session's code or shell tool | measure by careful reading and say so in the QA report |
-| Scheduled runs (setup) | Claude: `create_trigger`, `list_triggers`, `update_trigger`, `fire_trigger` | Codex: show ready-to-paste Automations entries |
+| Scheduled runs (setup) | Claude: `create_trigger`, `list_triggers`, `update_trigger`, `fire_trigger`, `delete_trigger`. In the Claude desktop app the same jobs are `create_scheduled_task`, `list_scheduled_tasks`, `update_scheduled_task`, and `run_scheduled_task` (cron in the computer's own time zone; runs only while the app is open) | Codex: show ready-to-paste Automations entries |
 | A browser for AI answer-engine checks | the session's browser tools | skip quietly; scheduled runs note it in Open Questions |
 | Calendar reminders | Google Calendar tools | the Recheck Due field (always used) |

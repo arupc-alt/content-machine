@@ -97,7 +97,7 @@ React with a tick to approve, a cross to send it back, or reply with changes. On
 (Content Machine)
 ```
 
-**Stuck after 3 rounds** (escalation, Brief Agent or QA):
+**Stuck after 3 rounds** (escalation, Brief Agent or QA). For a row that stalled twice (shared/run-start.md, step 4), the first line reads "[tags] Stalled twice without finishing, needs your call: [Item ID], [title]" instead, and the list says what Agent Notes show went wrong:
 
 ```
 [tags] Stuck after 3 rounds of changes, needs your call: [Item ID], [title]
@@ -147,8 +147,8 @@ Leave out a heading with nothing under it. Never add other sections.
 
 **Other short posts.** A few posts are written in the mode that sends them, in the same plain style, each ending with the marker line:
 
-- "Possible repeat, needs your call" and "already being worked on" (modes/brief.md, duplicate check)
-- "I can't open [document]" (G24; the wording is in modes/blog-writer.md and modes/brief.md)
+- **Possible repeat** (any mode's duplicate check, shared/run-start.md step 5): "[tags] Possible repeat, needs your call: [Item ID, when there is one], [input]. It looks close to [other Item ID and title, or live link]. Reply 'go' to write it anyway, or 'drop' to skip it." For a live post: "It matches a live post: [live link]. Reply 'go' to write a new piece with a different angle, or 'drop' to skip it and update the live post by hand." An exact match already in progress gets one line instead: "[input] is already being worked on: [Item ID], [title]."
+- **Can't open a document** (G24, any mode): "[tags] [Item ID], [title]: I can't open [document link]. Please move it into [the product's Drive Folder or Notion Home link], or share it with the team, so the work can continue."
 - "Which product is this topic for," the daily topic limit, "goes ahead," and the learned-rule question with its yes and no replies (modes/orchestrator.md)
 
 ## Alerts
