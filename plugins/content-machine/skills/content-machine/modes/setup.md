@@ -26,6 +26,7 @@ Work out which job this is from the person's words:
 | "update reference files" | Update reference files |
 | "repair the base", "update the base" | Repair the base |
 | "repair schedules", "change how often it runs" | Repair schedules |
+| "change Airtable plan" | Change Airtable plan |
 | "move host" | Move host |
 | "archive old pieces" | Archive old pieces |
 | "pause content machine", "resume content machine" | Pause and resume |
@@ -76,7 +77,7 @@ Slack inside Airtable (for the optional bot) is checked in Step 7. Google Calend
 - In Codex: name each server and its address to add in Codex's MCP settings, then the sign-in step (`codex mcp login [name]` in a terminal, or the sign-in button in Codex's settings). Slack on Codex needs a Slack workspace admin to approve it once for the company; Google Drive on Codex needs an admin to make a Google Cloud OAuth client once (that's a beta, so suggest Notion on Codex).
 - The same line still fails after two "done" replies: name the likely cause (signed out, an admin approval, the wrong account), then stop cleanly with: "Setup has stopped here, and nothing was created. Once [name] is connected, open a new chat and type 'set up content machine'." Never half-set things up.
 
-**What a person needs, said plainly once the checklist passes:** "You'll need: a Claude plan that includes connectors and scheduled tasks, so the agents can run on their own (or the Codex app left open on a computer that stays on); free Airtable, Slack, and Google Drive or Notion accounts. Airtable's free plan allows 5 editors per base and 1,000 automated reads and writes a month per workspace, which is enough for about 7 blog posts a month at 3 rounds a day, or about 12 at 2 rounds a day."
+**What a person needs, said plainly once the checklist passes:** "You'll need: a Claude plan that includes connectors and scheduled tasks, so the agents can run on their own (or the Codex app left open on a computer that stays on); free Airtable, Slack, and Google Drive or Notion accounts. Airtable's free plan allows 5 editors per base and 1,000 automated reads and writes a month per workspace, which is enough for about 18 blog posts a month at the default 3 rounds a day."
 
 **Another skill with the same job.** If this session's tools can list installed skills, look for another skill whose description says it writes briefs or blogs, or another skill named content-machine whose description lacks "github.com/arupc-alt/content-machine". Name what you find and ask whether to switch the others off. If more than one installed skill carries this repo's link (for example the plugin and an older uploaded zip), ask the person to keep only the newest and switch the others off, so a schedule never runs an old copy. If another skill already has the name content-machine and isn't this one, tell the person to install this repo's `content-machine-pipeline.zip` instead (it's the same skill under another name), and save that name in the Team row's Skill Name in Step 3.
 
@@ -122,12 +123,13 @@ If anything fails partway, say what was done and what wasn't. Running setup agai
 Ask only what Settings, Team, and Members don't already have:
 
 1. **The Slack channel** for updates and approvals. Find it with `slack_search_channels` (private channels too); confirm it exists, isn't archived, and that the person's Slack account can post in it. Save Slack Channel Name and Slack Channel ID in Settings.
-2. **Who approves.** One or more people, by name or work email. Find each with `slack_search_users` and read back their name and email for a yes. They need no accounts beyond Slack; they review in Slack and open document links.
+2. **Who approves.** One or more people, by name or work email. Find each with `slack_search_users` and read back their name and email for a yes. When a search finds several people, list them; if the person's reply picks one (by name, or by excluding the others), that's the choice: read the final list back once, not each name again. They need no accounts beyond Slack; they review in Slack and open document links.
 3. **Who else runs it,** if anyone shares this base (most own setups: nobody). Runners need the skill, Airtable, Slack, and the document tool. Airtable's free plan allows 5 editors per base.
 4. **This person.** Their Slack ID and email (from their own Slack profile) and time zone (ask, and suggest the one their Slack profile shows).
 5. **Item ID prefix.** Suggest one from the product's initials plus the person's initials, like `ACME-AR-`, and check no row in this base already uses it. People sharing one Slack channel with other personal content machines need different prefixes, which the initials give them.
-6. **How often the agents run.** Ask: "How often should the agents check for work? Pick a number of times a day (1 to 6, spread between about 9 AM and 6 PM your time), or every few hours (every 2, 3, 4, 6, 8, or 12 hours, around the clock). Each time, the Orchestrator, the Brief Agent, and the Blog Writer each run once, 20 minutes apart. Every day, or weekdays only?" Default: 3 times a day, every day. Work out Round Hours from the table in Step 8 and read the times back. Then show the cost on Airtable's free plan, which allows 1,000 calls a month per workspace: each round a day costs about 180 calls a month even when there's nothing to do, upkeep costs about 160, and each piece about 40. So 2 a day leaves room for about 12 posts a month, 3 a day about 7, 4 a day (or every 6 hours) about 3, and 5 or more a day (or every 4 hours or less) uses up the free plan before any posts. Weekdays only uses about a quarter less. For more than 3 a day, recommend Airtable's paid plan, and save the choice only after a yes. Rounds Per Day is the number of Round Hours (every N hours is 24 divided by N).
-7. **Google Drive or Notion** for the documents. Before they pick, show both:
+6. **How often the agents run.** Ask: "How often should the agents check for work? Pick a number of times a day (1 to 6, spread between about 9 AM and 6 PM your time), or every few hours (every 2, 3, 4, 6, 8, or 12 hours, around the clock). Each time, one run does the whole round in order: the Orchestrator reads Slack, then the Brief Agent, then the Blog Writer. Every day, or weekdays only?" Default: 3 times a day, every day. Work out Round Hours from the table in Step 8 and read the times back. Then show the cost on Airtable's free plan, which allows 1,000 calls a month per workspace: each round a day costs about 60 calls a month even when there's nothing to do, upkeep costs about 100, and each piece about 40. So 1 to 3 a day leaves room for about 18 to 21 posts a month, 4 to 6 a day (or every 4 or 6 hours) about 13 to 16, every 3 hours about 10, and every 2 hours about 4. Weekdays only uses about a quarter less. For every 2 or 3 hours, mention Airtable's paid plan, and save the choice only after a yes. Rounds Per Day is the number of Round Hours (every N hours is 24 divided by N).
+7. **Their Airtable plan.** "Is this Airtable workspace on the free plan, or a paid one?" Free: API Monthly Limit 1,000. Paid: ask for the monthly API call limit shown on Airtable's plan page (paid plans allow far more), and save that number. Say plainly: on the free plan the content machine paces itself so it never stops, and starts fewer new pieces near the end of a busy month; a paid plan removes that.
+8. **Google Drive or Notion** for the documents. Before they pick, show both:
 
    "**Google Drive.** Documents are Google Docs in one shared folder. Anyone on the team can open any piece. Limits: formatting can come out a little messy (lists, tables, spacing), each round of changes makes a new Doc, and every Doc must be shared so people can open it. On Codex, an admin must set up the Google connection once.
 
@@ -138,7 +140,7 @@ Ask only what Settings, Team, and Members don't already have:
 Read everything back in one short list. Wait for a yes. Then save:
 
 - Settings: Item ID Prefix, Slack Channel Name, Slack Channel ID, Doc Home.
-- Team: Time Zone, Schedule Host (this person's email), Rounds Per Day (the number of rounds a day), Round Hours (like `9,13,17`), Days, and the product's Slack Channel ID in Schema Map's `channels` (shared/airtable.md).
+- Team: Time Zone, Schedule Host (this person's email), Rounds Per Day (the number of rounds a day), Round Hours (like `9,13,17`), Days, API Monthly Limit, and the product's Slack Channel ID in Schema Map's `channels` (shared/airtable.md).
 - Members: one row per person (Name, Slack ID, Email, Time Zone, Role, Products blank, Active on, Joined On today). This person gets Role Host and Runner, plus Approver if they approve.
 
 ## Step 5: Reference files and product rules
@@ -205,13 +207,17 @@ If the person skips the bot, or anything here fails, show the fallback message f
 
 ## Step 8: Schedules
 
-**If scheduled tasks were waived in Step 0,** show the three schedules (name, times, days, and prompt) for the person to add by hand later, say plainly that the agents run only when someone asks until then, skip the rest of this step, and go to Step 9.
+**One schedule per base.** Every round runs the whole pipeline in one run, in order: the Orchestrator, then the Brief Agent, then the Blog Writer with QA (modes/round.md). So setup creates exactly one schedule. Never create one schedule per agent.
 
-**Make them last,** after every connector the runs need is connected: a schedule only gets the connectors that existed when it was made, and they can't be added later.
+**Only touch this base's schedule.** Other schedules on the account (older pipelines, other skills, things the person made by hand) are never changed, deleted, or "repaired," and never count as this base's schedule. This base's schedule is the one whose prompt names this base ID. If others look like they run a content pipeline too, say once, in one line, that two pipelines may both act on the same channel, and that the person may want to switch the old ones off themselves. Then go on.
 
-**Times.** Every round runs all three agents, 20 minutes apart, a few minutes off the hour, in the Team row's Time Zone: the Orchestrator at :07, the Brief Agent at :27, and the Blog Writer at :47 of each hour in the Team row's Round Hours. Round Hours come from the person's choice in Step 4:
+**If scheduled tasks were waived in Step 0,** show the one schedule (name, times, days, and prompt) for the person to add by hand later, say plainly that the agents run only when someone asks until then, skip the rest of this step, and go to Step 9.
 
-| Choice | Round Hours | Example: the Orchestrator runs at |
+**Make it last,** after every connector the runs need is connected: a schedule only gets the connectors that existed when it was made, and they can't be added later.
+
+**Times.** The schedule fires at 7 minutes past each hour in the Team row's Round Hours, in the Team row's Time Zone. Round Hours come from the person's choice in Step 4:
+
+| Choice | Round Hours | The round runs at |
 |---|---|---|
 | 1 a day | 9 | 9:07 |
 | 2 a day | 9, 15 | 9:07, 15:07 |
@@ -221,40 +227,42 @@ If the person skips the bot, or anything here fails, show the fallback message f
 | 6 a day | 8, 10, 12, 14, 16, 18 | 8:07 and every 2 hours to 18:07 |
 | Every N hours (2, 3, 4, 6, 8, or 12) | 9, then every N hours around the clock (every 4 hours: 1, 5, 9, 13, 17, 21) | each of those hours, at :07 |
 
-Each agent has one schedule that fires once per round, so the Orchestrator, the Brief Agent, and the Blog Writer each run as many times a day as there are rounds. Every day uses all 7 days; Weekdays uses Monday to Friday.
+Every day uses all 7 days; Weekdays uses Monday to Friday.
 
-**The prompts** are one line each, so they always run the installed skill and never go stale:
+**The prompt** is one line, so it always runs the installed skill and never goes stale:
 
-- `Use the [Skill Name] skill. Mode: Orchestrator. Base: [base ID]. Unattended run.`
-- `Use the [Skill Name] skill. Mode: Brief. Base: [base ID]. Unattended run.`
-- `Use the [Skill Name] skill. Mode: Blog Writer. Base: [base ID]. Unattended run.`
+`Use the [Skill Name] skill. Mode: Round. Base: [base ID]. Channels: [each product's Slack Channel ID, comma-separated]. Unattended run.`
 
-Use these same prompts on Claude and on Codex. They name the skill in plain words, which works whether it was installed as a plugin or as a standalone skill.
+The channel IDs let a round still answer in Slack in a month when Airtable's limit is used up (shared/airtable.md, When the limit is reached). When a product's channel changes or a product is added, update the prompt (Repair schedules).
+
+Use this same prompt on Claude and on Codex. It names the skill in plain words, which works whether it was installed as a plugin or as a standalone skill.
+
+**The name:** "Content Machine ([Company])".
 
 **On Claude:**
 
-1. `list_triggers`. If schedules with these names already exist for this base, update their time and prompt (`update_trigger`) instead of adding more.
-2. Say the three names, times, and prompts, and wait for a yes.
-3. Create each with `create_trigger`: name "Content Machine: [mode] ([Company])", the cron line with `CRON_TZ=[Time Zone]` (the minute is 7, 27, or 47 by agent, and the hours are Round Hours: for example `CRON_TZ=America/New_York 7 9,13,17 * * *` for the Orchestrator at 3 a day, or `1-5` in the last field for weekdays), the one-line prompt, `requires_local_device` false, and initiation `human_request`. Don't pin a model.
-4. Read each result. Check its connector list includes Airtable, Slack, and the document tool. If one is missing, say which connector to connect, then "repair schedules."
-5. **Approvals.** A scheduled run that hits an approval prompt waits forever. Read each schedule's approval setting from the result. If runs will ask before acting, tell the person how to switch the schedule to automatic approval in its settings, and wait for "done." If their organization doesn't allow it, say so plainly: runs may stall until someone approves.
-6. If the platform refuses to create a schedule, don't work around it. Show the exact name, time, and prompt to add by hand.
-7. **Desktop scheduled tasks.** If this session has the Claude desktop app's scheduled-task tools instead (shared/platform-tools.md), do steps 1 to 6 with them: `taskId` `content-machine-[mode]-[prefix]`, the same prompt, and the cron line without `CRON_TZ`, because these run on the computer's own clock (see Time zones on this computer, below). Tell the person these run only while the Claude app is open; a run that was due while it was closed runs when it next opens.
+1. `list_triggers`. If this base already has a schedule (its prompt names this base ID), update its time and prompt (`update_trigger`) instead of adding another. If this base has the three older per-agent schedules from skill 0.2 (prompts with Mode: Orchestrator, Brief, and Blog Writer), say so, and after a yes delete them (`delete_trigger`) and create the one Round schedule.
+2. Say the name, times, days, and prompt, and wait for a yes.
+3. Create it with `create_trigger`: the name, the cron line with `CRON_TZ=[Time Zone]` (minute 7, hours from Round Hours: for example `CRON_TZ=America/New_York 7 9,13,17 * * *`, or `1-5` in the last field for weekdays), the prompt, `requires_local_device` false, and initiation `human_request`. Don't pin a model.
+4. Read the result. Check its connector list includes Airtable, Slack, and the document tool. If one is missing, say which connector to connect, then "repair schedules."
+5. **Approvals.** A scheduled run that hits an approval prompt waits forever. Read the schedule's approval setting from the result. If runs will ask before acting, tell the person how to switch it to automatic approval in its settings, and wait for "done." If their organization doesn't allow it, say so plainly: runs may stall until someone approves.
+6. If the platform refuses to create the schedule, don't work around it. Show the exact name, times, and prompt to add by hand.
+7. **Desktop scheduled tasks.** If this session has the Claude desktop app's scheduled-task tools instead (shared/platform-tools.md), do steps 1 to 6 with them: `taskId` `content-machine-[prefix]`, the same prompt, and the cron line without `CRON_TZ`, because these run on the computer's own clock (see Time zones on this computer, below). Older per-agent tasks for this base are switched off with `update_scheduled_task` and enabled false. Tell the person these run only while the Claude app is open; a run that was due while it was closed runs when it next opens.
 
-**On Codex:** create the schedules with the Codex app's `automation_update` tool (part of Codex's built-in app tools; read its parameters in this session and fill them as below). Don't just show entries to paste when the tool is there.
+**On Codex:** create the schedule with the Codex app's `automation_update` tool (part of Codex's built-in app tools; read its parameters in this session and fill them as below). Don't just show an entry to paste when the tool is there.
 
-1. Look for automations this base already has (their prompts name the base ID). Update those instead of adding more.
-2. Say the three names, times, and prompts, and wait for a yes.
-3. Create each one: name "Content Machine: [mode] ([Company])"; kind `cron`; the prompt above; run locally, not tied to one chat; notify on failed runs only; and the schedule as a repeat rule, which runs on the computer's own clock (see Time zones on this computer, below):
-   - Every day: `RRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA;BYHOUR=[Round Hours];BYMINUTE=[7, 27, or 47]`, for example `RRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA;BYHOUR=9,13,17;BYMINUTE=27` for the Brief Agent at 3 a day. (This is the form the Codex app itself saves for a daily schedule.)
-   - Weekdays: `RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;BYHOUR=[Round Hours];BYMINUTE=[7, 27, or 47]`.
-   Codex asks the person to approve each one.
-4. Read each one back (see Check that the schedules really exist, below). Codex saves each automation as a file, `automation.toml`, in a folder under `~/.codex/automations/`; read them with a one-line script if the tool can't list them. Then tell the person: "Codex runs these only while the app is open on a computer that stays on. Make sure Codex can use Airtable, Slack, and [Drive or Notion] in these runs without asking."
-5. If this session has no automation tool, or creating one fails, show three ready-to-paste entries for the Automations tab (name, schedule, prompt), with: "Set each one to run locally, with network access on and approvals set so it can use your connected tools without asking." Wait for "done."
+1. Look for an automation this base already has (its prompt names this base ID). Update it instead of adding another. If this base has the three older per-agent automations from skill 0.2, say so, and after a yes replace them with the one Round automation (switch the old ones off, or delete them, with the same tool).
+2. Say the name, times, days, and prompt, and wait for a yes.
+3. Create it: the name; kind `cron`; the prompt above; run locally, not tied to one chat; notify on failed runs only; and the schedule as a repeat rule, which runs on the computer's own clock (see Time zones on this computer, below):
+   - Every day: `RRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA;BYHOUR=[Round Hours];BYMINUTE=7`, for example `RRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA;BYHOUR=9,13,17;BYMINUTE=7` at 3 a day. (This is the form the Codex app itself saves for a daily schedule.)
+   - Weekdays: `RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;BYHOUR=[Round Hours];BYMINUTE=7`.
+   Codex asks the person to approve it.
+4. Read it back (see Check that the schedule really exists, below). Codex saves each automation as a file, `automation.toml`, in a folder under `~/.codex/automations/`; read them with a one-line script if the tool can't list them. Then tell the person: "Codex runs this only while the app is open on a computer that stays on. Make sure Codex can use Airtable, Slack, and [Drive or Notion] in these runs without asking."
+5. If this session has no automation tool, or creating it fails, show one ready-to-paste entry for the Automations tab (name, schedule, prompt), with: "Set it to run locally, with network access on and approvals set so it can use your connected tools without asking." Wait for "done."
 
-**Check that the schedules really exist (every platform).** Creating a schedule isn't proof it's there. After creating or updating them, list the schedules again with a fresh call, not from the create results (Claude: `list_triggers` or `list_scheduled_tasks`; Codex: the saved automation files above). For each of the three agents, confirm: it exists, it's switched on, its prompt names this base ID and the right Mode, and its times are Round Hours at :07 (Orchestrator), :27 (Brief Agent), or :47 (Blog Writer). Show the person one small table: agent, times, days, on or off. If one is missing or wrong, fix it once (create or update) and list again. If it's still wrong, show the exact name, times, and prompt to add by hand, and don't call setup finished until the person types 'done' and a fresh list shows all three.
+**Check that the schedule really exists (every platform).** Creating a schedule isn't proof it's there. After creating or updating it, list the schedules again with a fresh call, not from the create result (Claude: `list_triggers` or `list_scheduled_tasks`; Codex: the saved automation files above). Confirm that this base has exactly one schedule, that it's switched on, that its prompt names this base ID and Mode: Round, and that its times are Round Hours at :07. Show the person one short line: name, times, days, on or off. If it's missing or wrong, fix it once and list again. If this base shows more than one schedule, say which, and after a yes switch off the extras. If it's still wrong, show the exact name, times, and prompt to add by hand, and don't call setup finished until the person types 'done' and a fresh list shows it.
 
-**Time zones on this computer.** Desktop scheduled tasks and Codex automations run on the computer's clock, not on a set time zone. Before creating them, compare the computer's time zone (run a one-line script, or ask) with the Team row's Time Zone. If they differ, say so and ask, after a yes, to set the Team row's Time Zone to the computer's, so the hours and the weekdays stay right all year. If the person says no, show the schedules to add by hand instead.
+**Time zones on this computer.** Desktop scheduled tasks and Codex automations run on the computer's clock, not on a set time zone. Before creating the schedule, compare the computer's time zone (run a one-line script, or ask) with the Team row's Time Zone. If they differ, say so and ask, after a yes, to set the Team row's Time Zone to the computer's, so the hours and the weekdays stay right all year. If the person says no, show the schedule to add by hand instead.
 
 ## Step 9: Dry run
 
@@ -265,7 +273,7 @@ Prove each part works before calling setup finished. Explain what's about to hap
 3. **A test row.** Create a Content Items row for the test (Product, Input "Setup test," Item ID `[prefix]TEST`, Brief Doc Link set to the test document), then set Slack Thread Link to the test post's link and Status to `Awaiting Brief Approval` in one update.
 4. **The bot test** (only if the bot was built and switched on): wait about a minute, then read the channel's newest messages for a post from "Content Machine" naming `[prefix]TEST`. Ask the host: "Did you get a Slack notification from Content Machine just now?" If the post arrived and they got the ping, set Bot Status On. If not, set Bot Status `Failed test`, show the automation link, and ask the person to switch it off in Airtable; wait for 'done' and check with `list_automations`. Then show the fallback message from shared/slack.md.
 5. **Clean up the test row:** set its Status `Rejected` and Notes "Setup test." (Only "archive old pieces" ever deletes rows.) Leave the test document; say the person can delete it.
-6. **Fire each schedule once** (skip this part when scheduled tasks were waived in Step 0). First clear the Team row's three Last Run fields, so each run writes a fresh one (Claude: `fire_trigger`, or `run_scheduled_task`; Codex: ask the person to click Run now on each automation). Each run will find no real work. Wait a few minutes, then read the Team row: each agent's Last Run field should now be set. Check up to 3 times, about 3 minutes apart. Any agent that didn't run gets named, with the likely cause (approvals, a missing connector, or the account) and "repair schedules."
+6. **Fire the schedule once** (skip this part when scheduled tasks were waived in Step 0). First clear the Team row's three Last Run fields, so the run writes fresh ones (Claude: `fire_trigger`, or `run_scheduled_task`; Codex: ask the person to click Run now on the automation). The round will find no real work. Wait a few minutes, then read the Team row: all three Last Run fields should now be set. Check up to 3 times, about 3 minutes apart. If they aren't set, say so, with the likely cause (approvals, a missing connector, or the account) and "repair schedules."
 
 If any step fails, name it, fix what can be fixed, and run that step again. Setup isn't finished until every step here passes, apart from the bot when the person chose to go on without it, and part 6 when scheduled tasks were waived.
 
@@ -306,21 +314,25 @@ shared/rule-extraction.md, "Keeping them right over time": read the new or chang
 
 ## Repair schedules
 
-For "change how often it runs": ask Step 4's question 6, show the cost, and after a yes save Rounds Per Day and Round Hours in the Team row. Then go on below, so every schedule moves to the new times.
+For "change how often it runs": ask Step 4's question 6, show the cost, and after a yes save Rounds Per Day and Round Hours in the Team row. Then go on below, so the schedule moves to the new times.
 
-1. `list_triggers` (or `list_scheduled_tasks`; on Codex, the automations) and find this base's three schedules by their prompts' base ID. Their times must match Round Hours (Step 8).
-2. A schedule made before a connector was connected can't gain it. After a yes, delete those schedules (`delete_trigger`; desktop scheduled tasks are switched off with `update_scheduled_task` and enabled false) and create them again (Step 8). Others just get their time and prompt corrected (`update_trigger`, `update_scheduled_task`, or on Codex `automation_update`). A missing schedule is created as Step 8 says.
+1. `list_triggers` (or `list_scheduled_tasks`; on Codex, the automations) and find this base's schedule by its prompt's base ID. Its times must match Round Hours (Step 8). Ignore every schedule that doesn't name this base ID (Step 8, Only touch this base's schedule). If this base still has the three per-agent schedules from skill 0.2, replace them with the one Round schedule after a yes (Step 8).
+2. A schedule made before a connector was connected can't gain it. After a yes, delete it (`delete_trigger`; desktop scheduled tasks are switched off with `update_scheduled_task` and enabled false) and create it again (Step 8). Otherwise its time and prompt are just corrected (`update_trigger`, `update_scheduled_task`, or on Codex `automation_update`). A missing schedule is created as Step 8 says, and Step 8's check confirms there's exactly one.
 3. If Heartbeat Automation ID is empty (for example, schedules were waived at setup and added later), build the heartbeat alert now (Step 7).
-4. Clear the Team row's three Last Run fields, then fire each schedule once and check that each Last Run is set again (Step 9, part 6). A run writes Last Run only once per run day, so without clearing them the check proves nothing.
+4. Clear the Team row's three Last Run fields, then fire the schedule once and check that all three Last Run fields are set again (Step 9, part 6). A run writes Last Run only once per run day, so without clearing them the check proves nothing.
 
 ## Move host
 
 Hands the schedules and documents to another account, for example when someone leaves. Run it from the new host's account:
 
 1. The new host runs the connections check (Step 0) and is added to Members with Role Host. They need creator access to the base, not just editor, because repairs and automation changes need it: ask the old host (or a workspace admin) to give it in Airtable's Share menu, or to move the base into a workspace the new host owns. Check by reading the automations with `list_automations`. The base's Airtable call budget belongs to its workspace, so say which workspace it's in.
-2. Create the three schedules from this account (Step 8). Ask the old host (or an admin) to switch off the old ones.
+2. Create the schedule from this account (Step 8). Ask the old host (or an admin) to switch off the old one.
 3. Drive: the old host transfers ownership of the folder (or it's already in a Shared Drive). Notion: duplicate the top page into the new host's workspace, then update every Notion link in Content Items and Settings.
 4. Update the Team row's Schedule Host, and the heartbeat email's recipients with `update_automation`. Changes to a live automation stay in draft until a person publishes them, so show the automation link (`https://airtable.com/[base ID]/[automation ID]`) and ask the person to open it and click Update, then type 'done'.
+
+## Change Airtable plan
+
+Ask for the new plan's monthly API call limit (from Airtable's plan page), read it back, and after a yes save it as API Monthly Limit and turn Limit Reached off. Say that lean mode and Slack-only mode end on the next round if the new limit leaves room.
 
 ## Archive old pieces
 

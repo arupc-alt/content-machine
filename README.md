@@ -29,7 +29,7 @@ It works on Claude and on Codex, with free Airtable, Slack, and Google Drive or 
 
 - **Claude** with connectors and scheduled tasks, so the agents can run on their own. In the Claude desktop app, scheduled tasks run only while the app is open. On **Codex**, the app must stay open on a computer that stays on.
 - **Scheduled runs set to approve on their own.** A scheduled run that stops at an approval prompt waits forever. Setup shows you where to change this.
-- **Airtable free plan limits.** About 1,000 automated reads and writes a month per workspace, shared by every base in that workspace (setup suggests a personal workspace). That's enough for about 7 blog posts a month at 3 rounds a day, or about 12 at 2 rounds a day. The notification bot has its own limit of 100 automation runs a month per base.
+- **Airtable's free plan is enough to start.** It allows about 1,000 automated reads and writes a month per workspace, shared by every base in that workspace (setup suggests a personal workspace). At the default 3 rounds a day that's room for about 18 blog posts a month. The content machine paces itself so it never stops (see [Airtable limits](#airtable-limits)). For more volume, Airtable's paid plan raises the limit; after upgrading, type "change Airtable plan".
 - **Codex only:** a Slack workspace admin approves the Slack connection once. Google Drive on Codex needs an admin to set up a Google Cloud OAuth client once and is a beta, so Notion is the easier pick there.
 - **Your reference files:** whatever you have that covers your product, your brand and voice, and your writing rules. Any format works. See [Reference files](#reference-files). Missing some? Setup can draft them from your website for you to review.
 
@@ -96,8 +96,8 @@ Setup goes step by step, and every change waits for your yes:
 6. Asks you to share your [reference files](#reference-files), in any format, then tells you which areas they cover, drafts anything missing if you want, and pulls out your rules for you to approve. Setup won't go past this step until product truth, brand and voice, and writing rules are covered.
 7. Builds your document folder or Notion pages.
 8. Builds the Airtable automations: a heartbeat email if the agents stop running, and the optional notification bot.
-9. Creates the schedules: one each for the Orchestrator, the Brief Agent, and the Blog Writer. On Codex, setup creates them as Codex automations and Codex asks you to approve each one.
-10. Runs a short test: a test post, document, and row, then fires each schedule once.
+9. Creates **one** schedule. Each time it fires, one run does the whole round in order: the Orchestrator, then the Brief Agent, then the Blog Writer. It never touches schedules it didn't make. On Codex, setup creates it as a Codex automation and Codex asks you to approve it. Then it lists your schedules again to prove it's there.
+10. Runs a short test: a test post, document, and row, then fires the schedule once and checks the round ran.
 
 Expect it to take a while (roughly 30 to 45 minutes). You can stop at any point and type `set up content machine` again later; it picks up where it stopped and never makes a second copy.
 
@@ -137,8 +137,10 @@ Only people set up as **approvers** can approve, send back, or drop a piece. Onl
 | Drop a piece | Reply "drop it" in the thread |
 | Mark it live | Approve the blog, publish it yourself, then reply in the thread with the live link |
 | Answer "Possible repeat" | Reply "go" to write it anyway (or as a new angle), or "drop" to skip it |
+| Answer a question from the agents | Reply in its thread. That piece waits until you answer; everything else keeps moving |
 | Re-check a tracked draft | "check this draft" plus its document link (the piece must be in your tracker) |
 | Write the next approved blog now | "write the next approved blog" |
+| Run a full round right now | "run a round" (otherwise the next scheduled round does it) |
 | Pick up Slack replies now | "run the orchestrator" (otherwise replies are read at the next scheduled round) |
 | Update your files or rules | "update reference files" |
 | Add a product or a teammate | "add a product", "add a teammate" |
@@ -148,16 +150,33 @@ Only people set up as **approvers** can approve, send back, or drop a piece. Onl
 | Free up Airtable records (the free plan holds 1,000 per base) | "archive old pieces" |
 | Hand the schedules to someone else | "move host", from the new host's account |
 
-The agents run on their own in rounds. In each round the Orchestrator reads your Slack replies and document comments first, then the Brief Agent runs, then the Blog Writer, 20 minutes apart. You choose how often in setup:
+The content machine runs on **one schedule**. Each time it fires, one run does the whole round in a fixed order:
+
+1. **Orchestrator:** reads your Slack replies, reactions, and document comments, and records approvals, change requests, new topics, and live links.
+2. **Brief Agent:** reworks briefs that were sent back, then writes one new brief.
+3. **Blog Writer:** reworks drafts that were sent back, then writes one new blog from an approved brief, and runs QA on it until it passes (up to 3 rounds).
+
+A part with nothing to do is skipped, so a quiet round is quick and cheap. You choose how often in setup:
 
 | Choice | Rounds start at (your time) | Room on Airtable's free plan |
 |---|---|---|
-| 2 a day | 9 AM, 3 PM | about 12 posts a month |
-| 3 a day (default) | 9 AM, 1 PM, 5 PM | about 7 posts a month |
-| 4 a day, or every 6 hours | 9 AM, 12, 3 PM, 6 PM (every 6 hours: 3 AM, 9 AM, 3 PM, 9 PM) | about 3 posts a month |
-| 5 or 6 a day, or every 2 to 4 hours | spread through the day, or around the clock | needs Airtable's paid plan |
+| 1 to 3 a day (default 3: 9 AM, 1 PM, 5 PM) | spread through the working day | about 18 to 21 posts a month |
+| 4 to 6 a day, or every 4 or 6 hours | through the day, or around the clock | about 13 to 16 posts a month |
+| Every 3 hours | around the clock | about 10 posts a month |
+| Every 2 hours | around the clock | about 4 posts a month; Airtable's paid plan recommended |
 
 Weekdays only uses about a quarter fewer calls. To change it later, type "change how often it runs".
+
+**When something is unclear, it asks.** If an agent needs an answer to get a piece right (which product it's for, what an ambiguous topic means, two approvers asking for opposite things, a key fact it can't confirm), it asks in that piece's Slack thread and waits for an approver's reply. Only that piece waits; the rest keep moving. In a chat, it asks all its questions up front, before it starts. Small calls that can't make a piece wrong are listed under "Needs your call" instead of asked.
+
+## Airtable limits
+
+Airtable's free plan allows about 1,000 automated reads and writes a month per workspace. The content machine is built to stay inside that and keep working:
+
+- **Lean mode.** Every run checks how many calls are left for the month. If they're running short, approvals, reworks, and pieces already in progress keep moving, and new pieces wait until next month. You get one Slack message when this starts.
+- **If the limit is hit anyway** (for example, another base in the same workspace used it up), it still answers in Slack: every approval, change request, and new topic is acknowledged as saved, and all of them are handled the moment the limit resets. Nothing is lost.
+- **The notification bot is optional.** Updates always go out from your own Slack account. If the bot isn't set up, fails, or uses up its own 100 automation runs a month, nothing stops; you just don't get the extra ping.
+- **To lift the limits,** move the workspace to an Airtable paid plan, then type "change Airtable plan" so the content machine knows the new limit.
 
 ## Notifications
 

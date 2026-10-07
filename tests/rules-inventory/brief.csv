@@ -17,7 +17,7 @@ BR-0015,brief-agent-installer.md,G1,"Check Airtable, Drive, Slack tools before r
 BR-0016,brief-agent-installer.md,G1,Missing Airtable or Drive: stop and name it,shared/guards.md,"without them, stop and say which one is missing"
 BR-0017,brief-agent-installer.md,G1,"Missing Slack: carry on, save docs and Airtable",shared/guards.md,"if it's missing, still save documents and update Airtable"
 BR-0018,brief-agent-installer.md,G1,Chrome optional; skip Step 2d and note in Open Questions,modes/brief.md,skip this step quietly and say so plainly in Open Questions
-BR-0019,brief-agent-installer.md,G2,Unattended runs never pause for a question,shared/guards.md,"Never pause to wait for one, and never enter setup."
+BR-0019,brief-agent-installer.md,G2,Unattended runs never pause for a question,shared/guards.md,"Never pause to wait in chat, and never enter setup."
 BR-0020,brief-agent-installer.md,G2,"Make the reasonable call, state it where a person sees it",shared/guards.md,"make the most reasonable call, state it plainly where a person will"
 BR-0021,brief-agent-installer.md,G2,"Ambiguous topic or keyword: pick what search results support, note it",modes/brief.md,"treat it as whichever the search results support better, and name the"
 BR-0022,brief-agent-installer.md,G2,Never create the recurring status check unattended,modes/brief.md,Scheduled tasks are not this mode's job
@@ -195,7 +195,7 @@ BR-0193,brief-agent-installer.md,Step 1,Input is a topic or a keyword,modes/brie
 BR-0194,brief-agent-installer.md,Step 1,A keyword reads like a real search query,modes/brief.md,reads like an actual search query: something a real person would type
 BR-0195,brief-agent-installer.md,Step 1,"If you can picture it in a search bar, keyword",modes/brief.md,"If you can picture it in a search bar, it's a keyword."
 BR-0196,brief-agent-installer.md,Step 1,A topic is a broad territory,modes/brief.md,a subject area or theme with no single obvious query attached to
-BR-0197,brief-agent-installer.md,Step 1,Ambiguous: ask one question when attended,modes/brief.md,ask one direct clarifying question in an attended run
+BR-0197,brief-agent-installer.md,Step 1,Ambiguous: ask one question when attended,modes/brief.md,one direct question in an attended run
 BR-0198,brief-agent-installer.md,Step 1,Otherwise make the call yourself,modes/brief.md,this is a judgment call the agent is expected to make correctly
 BR-0199,brief-agent-installer.md,Path A,"Find the primary keyword, then the secondary map",modes/brief.md,The job is to find the primary keyword this content should actually
 BR-0200,brief-agent-installer.md,Path A,"Search the topic, ranking pages, related queries, PAA",modes/brief.md,Search the topic itself and see what's already ranking for it

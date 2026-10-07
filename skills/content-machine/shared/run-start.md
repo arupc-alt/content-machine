@@ -7,7 +7,7 @@ Brief, Blog Writer, QA (when run on its own), and Orchestrator all start here, i
 A run is **unattended** when the message that started it is a schedule's prompt (it says "Unattended run"). A prompt that names a Mode but reads like a schedule's (no person asking in a chat) counts as unattended too; when unsure, treat the run as unattended (G2). Everything else is attended.
 
 - An unattended run never asks a question and never enters setup. When something needs a person, it posts one alert (shared/slack.md, Alerts) and stops, or skips that row and lists it in the run summary.
-- An attended run may ask the person in chat, but only about this run's own work. Setup questions only happen in setup mode.
+- An attended run may ask the person in chat, but only about this run's own work. Setup questions only happen in setup mode. Before starting the work, an attended run checks it has every input it needs and asks for anything missing or unclear in one message (G25).
 
 ## Step 1: Connectors
 
@@ -20,7 +20,7 @@ Tell apart these Airtable failures, because each has its own fix:
 | No Airtable tools in this session | "Airtable isn't connected in this session. Connect it, then run again." |
 | Connected, but the base ID can't be opened | "This account can't see base [ID]. Ask the host to share it with you as an editor, then sign in to Airtable again so the connection includes it." |
 | Base opens, but a table or field in Schema Map is gone | "A field the pipeline needs is missing: [name]. Type 'repair the base'." |
-| Airtable's monthly limit error | "The free Airtable limit for this month is used up. Runs will start again on [date]." (try to set Limit Reached; if that write fails too, put the alert in the run's own output and stop) |
+| Airtable's monthly limit error | Go to Slack-only mode (shared/airtable.md, When the limit is reached). The content machine keeps answering in Slack and catches up when the limit resets. |
 
 The same for Slack ("Slack isn't connected", "The channel [name] can't be found or the app isn't in it") and for the document home ("The Drive folder can't be opened from this account", "The Notion home page can't be opened from this account").
 
@@ -31,7 +31,8 @@ If Slack itself is the problem, say the message in the run's own output instead 
 From the Team row:
 
 - **Paused** on: stop. Output only "Paused. Type 'resume content machine' to start again."
-- **Limit Reached** on and API Month is still this month: stop quietly.
+- **Limit Reached** on and API Month is still this month: try one Airtable read; if it fails with the limit error, go to Slack-only mode (shared/airtable.md, When the limit is reached).
+- **Lean mode:** work out the reserve (shared/airtable.md, The API budget). A lean run starts no new piece.
 - **Min Skill Version** is higher than this skill's own version (in SKILL.md frontmatter, `metadata.version`; compare as numbers, part by part, so 0.10.0 is newer than 0.9.0): post one alert, "[Person]'s copy of the content machine skill is out of date (has [x], needs [y]). Update it from the GitHub release." and stop.
 - **Schema Version** is lower than this skill's schema version: apply only migrations marked 'safe unattended' (shared/migrations.md), then go on; otherwise post the 'A database update is waiting' alert and stop.
 - Save the model you are running as (if you can tell) in Last Model Used when it differs from a non-blank value there (a blank value is just filled in, with no alert), and post one alert: "The model running the content machine changed from [old] to [new]. Rerun the release checks before relying on new results."
@@ -48,7 +49,7 @@ From the Team row:
 - The document home opens (one read). For a product whose Doc Sharing is Notion web link, open its public link (pasted at setup and saved in Settings, Notion Home) with the web fetch tool; if it no longer opens, post one alert: "The public Notion link for [Product] no longer opens. Publish the top page to the web again from Notion's Share menu."
 - The Airtable bot: if Bot Status is On, `list_automation_runs` for Bot Automation ID shows no failures in the last 7 days. If it does, post one alert: "Bot pings are failing. Updates still arrive in the channel. To fix the pings, reconnect Slack in Airtable." The bot's recipients match the Active Approvers in Members (channel plus up to 9). If not, post one alert: "The bot's list of people to ping is out of date. Type 'add a teammate' to fix it."
 - Count rows in every table and save Records Count (see shared/airtable.md, Records).
-- The schedules: only when this run's account is the Team row's Schedule Host and its tools can list schedules (shared/platform-tools.md), check that this base's three schedules (their prompts name this base ID) exist and are on. If one is missing or off, post one alert: "A content machine schedule is missing or switched off: [mode]. Type 'repair schedules'." If none of this base's schedules show at all (they may live in another app on the host's computer), or the tools can't list them, skip this quietly; the heartbeat email still catches a schedule that stopped.
+- The schedules: only when this run's account is the Team row's Schedule Host and its tools can list schedules (shared/platform-tools.md), check that this base's schedule (its prompt names this base ID) exists and is on. If it's missing or off, post one alert: "The content machine schedule is missing or switched off. Type 'repair schedules'." If none of this base's schedules show at all (they may live in another app on the host's computer), or the tools can't list them, skip this quietly; the heartbeat email still catches a schedule that stopped.
 
 Save Last Full Check = now. If something's wrong, post one line naming what's missing and its fix, then stop.
 
@@ -94,7 +95,7 @@ Rows with Duplicate Decision Pending are skipped by the Brief Agent and Blog Wri
 
 ## Step 6: Work queue
 
-Each agent builds its queue from the batched read, in the order its mode file lists. Within each step: Priority High first, then the oldest (Last Updated At). Every run skips rows flagged Needs Fix, rows with Duplicate Decision Pending, Escalated rows (Recovery in step 4 still posts an escalation that never went out), and rows another run has a live claim on. In Notion mode within a shared base, only the host's runs write to Notion pages.
+Each agent builds its queue from the batched read, in the order its mode file lists. Within each step: Priority High first, then the oldest (Last Updated At). Every run skips rows flagged Needs Fix, rows with Duplicate Decision Pending, rows with an Open Question waiting (G25), Escalated rows (Recovery in step 4 still posts an escalation that never went out), and rows another run has a live claim on. In Notion mode within a shared base, only the host's runs write to Notion pages.
 
 ## Loading the rules
 
@@ -104,7 +105,7 @@ If the product has no Active Brand guide, Style guide, or Product knowledge rows
 
 ## The heartbeat
 
-On its first run of each run day (in the Team row's Time Zone), the agent writes its own Last Run field (Last Run Orchestrator, Last Run Brief, or Last Run Blog Writer) in the Team row, along with the API counter update. That is the mode's one Team write a day when it has nothing else to do. The Orchestrator writes Last Orchestrator Sweep in that same update, and also on any run that recorded or changed something (modes/orchestrator.md, End of run).
+On its first run of each run day (in the Team row's Time Zone), the agent writes its own Last Run field (Last Run Orchestrator, Last Run Brief, or Last Run Blog Writer) in the Team row, along with the API counter update. A Round run writes all three at once (modes/round.md, End once). That is the mode's one Team write a day when it has nothing else to do. The Orchestrator writes Last Orchestrator Sweep in that same update, and also on any run that recorded or changed something (modes/orchestrator.md, End of run).
 
 If a mode misses a full run day, the heartbeat alert that setup builds (setup Step 7) sends an email to the Schedule Host and every Active approver. It is email only; it never posts in Slack.
 

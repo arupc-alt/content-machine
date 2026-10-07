@@ -59,6 +59,7 @@ Keys are the table key, a dot, and the field name exactly as in the template. Ch
 | Human Feedback | Orchestrator only. Each entry starts `[ISO time] [reviewer name] via [Slack reply / Slack reaction / Doc comment / chat]:`, then the reviewer's exact words and the source link. The time is when the Orchestrator recorded it, not when the message was sent. The source link is how the Orchestrator knows a message was already recorded. Entries are only ever added at the end. An agent knows which entries it has already used by comparing their times with its newest Rework History row for that stage. |
 | Agent Notes | the agent holding the claim, adding a block at the end that starts `[agent] [ISO time]:`. This is where writer notes, QA issue lists, a Blog Writer's send-back of a brief, and post history go. Never overwrite it. Because only the claim holder writes it, two runs can't erase each other's lines. |
 | Duplicate Decision | the agent that finds the overlap sets Pending; the Orchestrator sets Go or Drop from an approver's reply |
+| Open Question | the agent that needs an answer sets it (the question and its Slack link, G25); the Orchestrator clears it in the same update that records an approver's answer |
 | Health Flag | run-start row checks |
 | Live URL, Published At | Orchestrator |
 | Everything else | the agent holding the claim, for its own stage |
@@ -118,13 +119,26 @@ Every run starts with as few reads as possible (each table read is 1 API call, a
 
 Airtable's free plan allows 1,000 API calls a month for each workspace, shared by every base in it.
 
-How the calls add up. A run with nothing to do costs 2 calls (the Team row and Content Items). Each mode also writes the Team row once per run day (its Last Run field and the API counter). The Orchestrator reads Reference once per run day, and the weekly full check costs about 10 calls. One piece, from topic to live link, costs about 40 more calls in all. Each round a day adds about 180 calls a month on its own (3 agents, 2 calls each, 30 days). So 3 rounds a day, every day, uses about 700 calls a month before any real work, which leaves room for about 7 pieces a month. 2 rounds a day, or weekdays only, leaves room for about 12.
+How the calls add up. A run with nothing to do costs 2 calls (the Team row and Content Items). A Round run (modes/round.md) reads the base once for all three parts, plus one more Content Items read when an earlier part changed something. The round writes the Team row once per run day (all three Last Run fields and the API counter). The Orchestrator reads Reference once per run day, and the weekly full check costs about 10 calls. One piece, from topic to live link, costs about 40 more calls in all. Each round a day adds about 60 calls a month on its own (2 calls, 30 days). So 3 rounds a day, every day, uses about 280 calls a month before any real work, which leaves room for about 18 pieces a month. Bases still on three separate per-agent schedules (skill 0.2) cost about three times as much per round.
 
 - Each run keeps a count of the Airtable calls it made.
 - At the end of a run that already writes the Team row (its Last Run field, once per run day), add this run's count, plus 2 for every run since the last write, to API Calls This Month. If API Month isn't this month (UTC), reset the count to this run's count, set API Month, and turn Limit Reached off, in the same update.
-- When API Calls This Month passes 800, post one alert (once per month): "[Company] Content Machine has used about 800 of 1,000 free Airtable calls this month. Runs will slow down. Consider 2 rounds a day, or Airtable's paid plan."
-- If any call fails with Airtable's monthly limit error, try to set Limit Reached on, post one alert, and stop. If that write fails too, put the alert in the run's own output and stop. Every run that sees Limit Reached on stops at step 2 of run-start until API Month changes.
+- **The limit** is the Team row's API Monthly Limit (blank means 1,000, the free plan). Setup sets it from the person's Airtable plan.
+- **Lean mode, so the content machine never runs out.** At the start of every run, after the Team read, work out what's left: API Monthly Limit minus API Calls This Month. Reserve what the rest of the month needs: 2 calls for every round left this month, plus 40 for every piece already in progress, plus 50 to spare. If what's left is less than that reserve, the run is lean: the Orchestrator and every piece already in progress (reworks, drafts, QA loops, posts) go on as normal, but no new brief and no new blog is started. Post one alert, once a month: "[Company] Content Machine is in lean mode until [first day of next month], to stay inside this month's Airtable limit. Approvals and pieces in progress keep moving; new pieces start again next month. Airtable's paid plan raises the limit: after upgrading, type 'change Airtable plan'."
+- **If the limit is hit anyway** (another base in the same workspace used it up, or the count was off), the content machine still doesn't stop: it goes into Slack-only mode (When the limit is reached, below).
+- **Monthly reset.** If API Month isn't this month (UTC), reset the count to this run's count, set API Month, and turn Limit Reached off, in the same update.
 - Airtable allows 5 calls a second. If a call fails for rate, wait 1 second and retry, up to 3 tries.
+
+## When the limit is reached
+
+When an Airtable call fails with the monthly limit error, try once to set Limit Reached on (that write may fail too). Then, instead of stopping, the run goes Slack-only for the rest of the month:
+
+1. Read the product channels named in the schedule's prompt (`Channels: ...`), from the last sweep's time if it's known, otherwise the last 24 hours. A chat run uses the channel the person names. Without any channel, put the notice in the run's own output and stop.
+2. For each new message from a person that a run would act on (an approval, a change request, an answer, a "New topic:"), reply once in its thread: "Saved. This month's Airtable limit is used up, so I'll pick this up on [first day of next month], or right away once the Airtable plan is upgraded." Read the thread first; never post that reply twice.
+3. Post one alert in each channel, once: "[Company] Content Machine has used this month's Airtable limit. Everything you post is saved and will be handled on [first day of next month]. To keep going now, upgrade Airtable, then type 'change Airtable plan'."
+4. Write nothing else: no documents, no Airtable.
+
+Nothing is lost. The Orchestrator's window starts at Last Orchestrator Sweep, which didn't move during Slack-only rounds, so the first normal round after the reset reads every message from those days. Each round tries one Airtable read first; when it works again, the round runs as normal.
 
 ## Records
 

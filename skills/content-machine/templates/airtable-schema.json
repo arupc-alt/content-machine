@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "baseNamePattern": "[Company] Content Machine",
   "notes": [
     "This file is passed to create_base almost as is. Setup creates the 7 tables below in one call, then adds every field listed under addAfterCreate (link fields and formulas need the tables to exist first).",
@@ -295,6 +295,11 @@
           "name": "Overlap With",
           "type": "multilineText",
           "description": "Item IDs or live URLs this piece may duplicate."
+        },
+        {
+          "name": "Open Question",
+          "type": "multilineText",
+          "description": "A question a run asked before going on, with its Slack link (G25). Rows with this filled in are skipped until the Orchestrator records an answer and clears it."
         },
         {
           "name": "Health Flag",
@@ -643,6 +648,14 @@
             "icon": "check",
             "color": "redBright"
           }
+        },
+        {
+          "name": "API Monthly Limit",
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "description": "This workspace's Airtable API calls a month: 1000 on the free plan. Used for lean mode."
         },
         {
           "name": "Records Count",

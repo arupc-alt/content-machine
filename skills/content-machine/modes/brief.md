@@ -14,7 +14,7 @@ The brief's fixed structure, the template, the format skeletons, and the plain-l
 
 ## Start of every run
 
-Do shared/run-start.md steps 1 to 6. Then build this mode's work queue from the batched read, in this order. Within each step: Priority High first, then the oldest (Last Updated At). Every step skips the rows run-start step 6 skips (Needs Fix, Duplicate Decision Pending, Escalated except for step 1's re-post, a live claim by another run), and each row is handled with its own product's Settings and Reference rows (G4).
+Do shared/run-start.md steps 1 to 6. Then build this mode's work queue from the batched read, in this order. Within each step: Priority High first, then the oldest (Last Updated At). Every step skips the rows run-start step 6 skips (Needs Fix, Duplicate Decision Pending, an Open Question waiting, Escalated except for step 1's re-post, a live claim by another run), and each row is handled with its own product's Settings and Reference rows (G4).
 
 1. **Recovery rows this mode owns** (run-start step 4, G21). A row in `Awaiting Brief Approval` with an empty Slack Thread Link: post it now (Step 6c, or the rework post in 0.6h when Brief Rework Count is above 0). A row in `Escalated - Needs Human Input` with an empty Slack Thread Link and no Blog Doc Link: post the escalation now (0.6d). Before posting, search the channel for a post naming the Item ID, and use it instead of posting twice. These rows don't count toward G3's limits.
 2. **Stalled briefs** (G5). A row in `Brief In Progress`, or in `Rework In Progress` with no Blog Doc Link, whose claim is stale: add 1 to Stall Count, take it over, and resume from its Last Saved Step (see "Resuming from Last Saved Step" below). A `Brief In Progress` row with empty claim fields (a save that failed and was put back, G15) is taken the same way, without adding to Stall Count. At Stall Count 2, escalate it instead (run-start step 4). A stalled rework counts toward the three reworks; a stalled new brief counts as the run's one new brief.
@@ -142,14 +142,14 @@ Once the row is logged and clear of duplicates, proceed to Step 1.
 
 ## Step 1: Determine which trigger fired
 
-For a row that started as `Topic Requested`, read its Human Feedback first: any change a person asked for before the brief existed (recorded by the Orchestrator) shapes this brief, and the brief answers it or names it in Open Questions.
+For a row that started as `Topic Requested`, or one resumed after an Open Question was answered (G25), read its Human Feedback first: any change a person asked for before the brief existed (recorded by the Orchestrator) shapes this brief, and the brief answers it or names it in Open Questions.
 
 The input arrives as either a **topic** or a **keyword**. Tell them apart like this:
 
 - **A keyword** reads like an actual search query: something a real person would type into Google. It has a specific shape. "Best [category] software for small teams," "how to [do a task] without [a common tool]," "[Product] vs [Competitor]." If you can picture it in a search bar, it's a keyword.
 - **A topic** is broader than that: a subject area or theme with no single obvious query attached to it yet. "Product bundling," "onboarding new customers," "tax compliance for online sellers." It names a territory, not a specific question.
 
-If the input is genuinely ambiguous, ask one direct clarifying question in an attended run. In an unattended run (G2), treat it as whichever the search results support better, and name the call in Open Questions. Otherwise, proceed on your own read; this is a judgment call the agent is expected to make correctly most of the time.
+If the input is genuinely ambiguous, ask before going on (G25): one direct question in an attended run; in an unattended run, the Slack "Question" message, holding the row. Only when the two readings would produce the same piece anyway, treat it as whichever the search results support better, and name the call in Open Questions. Otherwise, proceed on your own read; this is a judgment call the agent is expected to make correctly most of the time.
 
 ### Path A: A topic was given
 

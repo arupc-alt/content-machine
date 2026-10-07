@@ -5,7 +5,7 @@ BW-0003,blog-writer-agent-installer.md,What this agent is,Rework held to the sam
 BW-0004,blog-writer-agent-installer.md,What this agent is,A section anyone could research in an hour is unfinished,modes/blog-writer.md,"If a section reads like a competent summary, rewrite it"
 BW-0005,blog-writer-agent-installer.md,Run Guards,"G1: check Airtable, Drive, Slack tools before real work",shared/guards.md,"Before any real work, the run checks the tools it needs"
 BW-0006,blog-writer-agent-installer.md,Run Guards,G1: missing Slack uses Notes fallback for posts,DROPPED,Notes fallback replaced by empty Slack Thread Link; see G1 and shared/slack.md When Slack is down
-BW-0007,blog-writer-agent-installer.md,Run Guards,G2: unattended runs never pause for a question,shared/guards.md,A run started by a schedule has no one to answer
+BW-0007,blog-writer-agent-installer.md,Run Guards,G2: unattended runs never pause for a question,shared/guards.md,A run started by a schedule has no one in the chat to answer
 BW-0008,blog-writer-agent-installer.md,Run Guards,G2: unattended brief gap routes back to Brief Agent,modes/blog-writer.md,"Link left empty, which routes it back to the Brief mode"
 BW-0009,blog-writer-agent-installer.md,Run Guards,"G2: smaller gaps get smallest assumption, noted in writer notes",modes/blog-writer.md,make the smallest reasonable assumption and say so plainly
 BW-0010,blog-writer-agent-installer.md,Run Guards,G3: re-read row; skip if status changed since scan,modes/blog-writer.md,"if its Status changed since the batched read, skip it."

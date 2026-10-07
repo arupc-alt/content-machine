@@ -66,7 +66,7 @@ An item's title in Slack is its working title, taken from its current document's
 
 ## Sweep 1: Airtable first, the items waiting on a person
 
-From the batched read, list every product's Content Items with Status `Awaiting Brief Approval` or `QA Passed - Awaiting Publish Review`, and every row with Duplicate Decision `Pending`. For each one, collect its approvers' feedback from all three places. If the document won't open, decide from Slack alone, and list it once a day under "Needs you" in the run summary:
+From the batched read, list every product's Content Items with Status `Awaiting Brief Approval` or `QA Passed - Awaiting Publish Review`, and every row with Duplicate Decision `Pending` or an Open Question waiting. For each one, collect its approvers' feedback from all three places. If the document won't open, decide from Slack alone, and list it once a day under "Needs you" in the run summary:
 
 1. **Reactions** on the message at its Slack Thread Link (`slack_get_reactions`). Affirmative: white_check_mark, heavy_check_mark, +1, thumbsup, or any clearly positive emoji. Negative: x, heavy_multiplication_x, negative_squared_cross_mark, -1, thumbsdown, or any clearly negative emoji. Any other emoji (eyes, thinking, and so on) is not a decision.
 2. **Thread replies** on that message (`slack_read_thread`).
@@ -113,6 +113,10 @@ A message in a product's channel that starts with "New topic:" (any capitalizati
 7. **Reply** in the message's thread with the "New topic received" thread reply in shared/slack.md (unless step 5 already replied).
 
 The Brief Agent picks the row up from its queue. The Orchestrator never writes the brief (G10).
+
+### Answers to open questions
+
+For a row with Open Question filled in (G25): an approver's reply in the question's thread (the link in Open Question), or a reply naming the Item ID that answers it, is the answer. In one update, add a Human Feedback entry `Answer: "[their exact words]"` with its source link, and clear Open Question. Reply with one line: "Thanks, [Item ID] goes on in the next round." If the reply doesn't answer the question, it's Unclear: ask once more in the same thread. An unanswered question is listed under "Needs you" by the 3-day reminder.
 
 ### Duplicate decisions
 
@@ -190,7 +194,7 @@ Every status write also sets Last Updated At to now. Never touch Brief Rework Co
 
 ```
 [ISO time] [reviewer's name] via [Slack reply / Slack reaction :emoji_name: / Doc comment / chat]:
-[Approve / Change request / Reject / Pending human feedback / Duplicate go / Duplicate drop / Live link]: "[the reviewer's exact words, in full if short, otherwise quoted in part with a faithful summary]"
+[Approve / Change request / Reject / Pending human feedback / Duplicate go / Duplicate drop / Live link / Answer]: "[the reviewer's exact words, in full if short, otherwise quoted in part with a faithful summary]"
 Source: [link to the Slack message, or the document link plus the comment]
 [When the approver endorses another message or comment ("+1", "agree with Sam"):] Endorses: "[that message's words]" [its link]
 [For a blog-stage change request after QA's approval, after publishing, or after an escalation:] Human send-back

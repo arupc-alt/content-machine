@@ -38,7 +38,7 @@ Settings never come from a person in chat. The product, its reference files and 
 Do shared/run-start.md steps 1 to 6.
 
 - **Connectors (G1).** Airtable and the piece's document home (Drive or Notion) are required. Slack is needed only on an Approved or Escalated verdict. Google Calendar is optional (G20). A shell or code tool runs scripts/measure.py; without one, measure by hand (Step 1.5).
-- **Work queue,** in this order. Within each step: Priority High first, then the oldest (Last Updated At). Every step is limited to rows of one product at a time, by the Product field (G4), and skips the rows run-start step 6 skips (Needs Fix, Duplicate Decision Pending, Escalated, a live claim).
+- **Work queue,** in this order. Within each step: Priority High first, then the oldest (Last Updated At). Every step is limited to rows of one product at a time, by the Product field (G4), and skips the rows run-start step 6 skips (Needs Fix, Duplicate Decision Pending, an Open Question waiting, Escalated, a live claim).
   1. `In QA` rows with no live claim whose QA verdict for the current draft is already saved (Last Saved Step reads `QA round [n] verdict saved: [verdict]` for this draft's round) but whose close-out didn't finish: finish it from Step 5 without auditing again (G17, G21).
   2. `In QA` rows whose claim is stale (shared/airtable.md, Claims): take them over per shared/run-start.md step 4 (add 1 to Stall Count, resume from Last Saved Step; at Stall Count 2, escalate instead).
   3. `In QA` rows with empty claim fields.

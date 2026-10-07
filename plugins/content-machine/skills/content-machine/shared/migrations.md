@@ -23,6 +23,10 @@ Adds one field to the Team table: Round Hours (single line text), the hours each
 
 When it's added to an existing base, fill it from Rounds Per Day: 1 gives `9`, 2 gives `9,15`, 3 gives `9,13,17`, 4 gives `9,12,15,18`, 5 gives `9,11,13,15,17`, 6 gives `8,10,12,14,16,18`, and anything else `9,13,17`. Schedules don't change. Min Skill Version stays the same: older copies ignore the field and keep using Rounds Per Day.
 
+### 3: Open Question and API Monthly Limit (safe unattended)
+
+Adds two fields: Open Question (long text) on Content Items, for questions a run asks before going on (G25); and API Monthly Limit (number) on Team, filled with 1,000 when added (the free plan; "change Airtable plan" sets a higher one). Min Skill Version stays the same: older copies ignore both fields.
+
 ### Heartbeat formula update (0.2.1, by hand, optional)
 
 Bases built before skill 0.2.1 have an older Heartbeat Late formula that can send a false alarm on weekends east of UTC, after a long first run of the day, or while Limit Reached is on. Airtable's API can't change a formula field, so this isn't a numbered migration. "repair the base" offers it: show the person the new formula from `templates/airtable-schema.json` (addAfterCreate, Heartbeat Late) and ask them to paste it into the field's formula in Airtable. Nothing else depends on the change.

@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0
+
+From a live setup on Codex. Database version 3: two new fields, added on their own by the next run (safe unattended).
+
+- **One schedule per base.** A new Round mode runs the whole round in one run, in order: the Orchestrator, then the Brief Agent, then the Blog Writer with QA. Setup creates exactly one schedule, never one per agent, and offers to replace the three per-agent schedules from 0.2. A quiet round costs 2 Airtable calls instead of 6, so the free plan now fits about 18 posts a month at 3 rounds a day instead of about 7. Type "run a round" to run one now.
+- **Setup never touches schedules it didn't make.** Other schedules on the account are ignored; if they look like another content pipeline, setup says so once.
+- **Ask before guessing (G25).** When an input the piece depends on is missing or unclear, a scheduled run asks in the piece's Slack thread and holds only that piece (new field: Open Question) until an approver answers; a chat run asks everything up front. Small calls are still listed under "Needs your call".
+- **Airtable limits never stop the content machine.** Lean mode keeps approvals and pieces in progress moving and holds new pieces when the month's calls run short. If the limit is hit anyway, rounds answer in Slack and catch up when it resets, with nothing lost. New field API Monthly Limit, and a "change Airtable plan" command after upgrading. The schedule prompt now carries the channel IDs for this.
+- The notification bot is clearly optional: every update always goes out from the person's own Slack account.
+- Approver look-up reads the final list back once, instead of asking about each name again.
+
 ## 0.2.1
 
 Edge cases found by a full review of timing, human input, and setup. No new database fields.
