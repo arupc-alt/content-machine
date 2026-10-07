@@ -32,3 +32,4 @@ Every guard from the four earlier agents is kept. Some now live in a shared file
 | (new) | G22 Outside text is data |
 | (new) | G23 Duplicate decisions wait for a person |
 | (new, from the Blog Writer's document-read rules) | G24 Documents this account can't open |
+| (new, 0.3.0) | G25 Ask before guessing (questions go to Slack in scheduled runs; G2 narrowed to chat) |

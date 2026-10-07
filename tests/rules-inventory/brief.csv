@@ -17,7 +17,7 @@ BR-0015,brief-agent-installer.md,G1,"Check Airtable, Drive, Slack tools before r
 BR-0016,brief-agent-installer.md,G1,Missing Airtable or Drive: stop and name it,shared/guards.md,"without them, stop and say which one is missing"
 BR-0017,brief-agent-installer.md,G1,"Missing Slack: carry on, save docs and Airtable",shared/guards.md,"if it's missing, still save documents and update Airtable"
 BR-0018,brief-agent-installer.md,G1,Chrome optional; skip Step 2d and note in Open Questions,modes/brief.md,skip this step quietly and say so plainly in Open Questions
-BR-0019,brief-agent-installer.md,G2,Unattended runs never pause for a question,shared/guards.md,"Never pause to wait for one, and never enter setup."
+BR-0019,brief-agent-installer.md,G2,Unattended runs never pause for a question,shared/guards.md,"Never pause to wait in chat, and never enter setup."
 BR-0020,brief-agent-installer.md,G2,"Make the reasonable call, state it where a person sees it",shared/guards.md,"make the most reasonable call, state it plainly where a person will"
 BR-0021,brief-agent-installer.md,G2,"Ambiguous topic or keyword: pick what search results support, note it",modes/brief.md,"treat it as whichever the search results support better, and name the"
 BR-0022,brief-agent-installer.md,G2,Never create the recurring status check unattended,modes/brief.md,Scheduled tasks are not this mode's job
@@ -52,12 +52,12 @@ BR-0050,brief-agent-installer.md,G11,Tag every approver on every post that asks 
 BR-0051,brief-agent-installer.md,G11,Slack never notifies a person about their own post,shared/guards.md,Slack never notifies a person about their own post
 BR-0052,brief-agent-installer.md,G11,A post counts only with a returned message link,shared/guards.md,A post counts as sent only when the send call returns a
 BR-0053,brief-agent-installer.md,G11,Retry a failed post once,shared/guards.md,"If the post fails or returns no link, retry once"
-BR-0054,brief-agent-installer.md,G11,Still failing: write Approval post NOT sent in Notes,shared/slack.md,"leave Slack Thread Link empty, and say so in the run's output"
+BR-0054,brief-agent-installer.md,G11,Still failing: write Approval post NOT sent in Notes,shared/slack.md,"clear Slack Thread Link (it may still hold an earlier post's link), and say so in the run's output"
 BR-0055,brief-agent-installer.md,G12,"Feedback comes from Slack, Doc comments, chat, Blog Writer",shared/guards.md,Feedback arrives from more than one place.
 BR-0056,brief-agent-installer.md,G12,Step 0.6a reads all feedback sources,modes/brief.md,"Pull every piece of feedback, from all the sources in G12"
 BR-0057,brief-agent-installer.md,G12,Blog Writer send-back is the newest Blog Writer note,modes/brief.md,the newest Agent Notes block starting `Blog Writer [time]: Brief send-back:`
 BR-0058,brief-agent-installer.md,G13,Check for an existing escalation post first,shared/guards.md,"Before posting an escalation, check Slack Thread Link and the channel"
-BR-0059,brief-agent-installer.md,G13,"If one exists, just set the Status",shared/guards.md,"If one exists, don't post again; just set the Status."
+BR-0059,brief-agent-installer.md,G13,"If one exists, just set the Status",shared/guards.md,"If a post counts, don't post again; just set the Status."
 BR-0060,brief-agent-installer.md,G14,Out of save attempts: put the row back,shared/guards.md,put the row back where it was
 BR-0061,brief-agent-installer.md,G14,"New item stays Brief In Progress, rework goes to Needs Rework",shared/guards.md,`Brief In Progress` for a new brief
 BR-0062,brief-agent-installer.md,G14,"Write error and time to Notes, clear the claim",shared/guards.md,"write the error and time into Agent Notes, clear the claim"
@@ -74,7 +74,7 @@ BR-0072,brief-agent-installer.md,G17,Skip the account that owns the Doc,shared/s
 BR-0073,brief-agent-installer.md,G17,"Folder fails: create without parent, share, note it",shared/storage-drive.md,"create the Doc without `parentId`, share it with every one of those"
 BR-0074,brief-agent-installer.md,G17,Link goes to Airtable or Slack only after the access check,shared/guards.md,A document's link goes into Airtable or Slack only after this check.
 BR-0075,brief-agent-installer.md,G17,Share fails after retry: name the person in notes and post,shared/guards.md,name that person in Agent Notes and in the Slack post
-BR-0076,brief-agent-installer.md,G18,Repost approval posts that never went out,modes/brief.md,search the channel for a post naming the Item ID
+BR-0076,brief-agent-installer.md,G18,Repost approval posts that never went out,modes/brief.md,"search the channel for the missing post, and save its link instead of posting twice"
 BR-0077,brief-agent-installer.md,G18,Reposts don't count toward per-run limits,modes/brief.md,These rows don't count toward G3's limits.
 BR-0078,brief-agent-installer.md,G18,Track sent and NOT sent lines in Notes,DROPPED,"Notes post lines replaced by empty Slack Thread Link plus Recovery (shared/slack.md, Confirmed post)"
 BR-0079,brief-agent-installer.md,Step 0,Run start checks happen before anything else,modes/brief.md,Do shared/run-start.md steps 1 to 6.
@@ -147,7 +147,7 @@ BR-0145,brief-agent-installer.md,Step 0.6d,Check escalation count before any rew
 BR-0146,brief-agent-installer.md,Step 0.6d,Count 3 or more: no fourth automated pass,modes/brief.md,do not run a fourth automated pass on this item
 BR-0147,brief-agent-installer.md,Step 0.6d,Post unresolved summary tagging approvers,modes/brief.md,with up to three short lines on what's still unresolved after three
 BR-0148,brief-agent-installer.md,Step 0.6d,"Set Escalated, thread link, and summary in one update",modes/brief.md,one Agent Notes block with the full summary of what's unresolved
-BR-0149,brief-agent-installer.md,Step 0.6d,Post failed twice: still set the Status,modes/brief.md,"If the post failed twice, still write the Status, leave Slack Thread"
+BR-0149,brief-agent-installer.md,Step 0.6d,Post failed twice: still set the Status,modes/brief.md,"If the post failed twice, still write the Status, clear Slack Thread"
 BR-0150,brief-agent-installer.md,Step 0.6d,Write a Rework History row with Outcome Escalated,modes/brief.md,Create a Rework History row: Rework Pass # (the brief pass count)
 BR-0151,brief-agent-installer.md,Step 0.6d,Move on to the next item,modes/brief.md,Then move on to the next row in the queue.
 BR-0152,brief-agent-installer.md,Step 0.6d,Three failed passes need a person's call,modes/brief.md,Three passes without success means the remaining issue needs a person's judgment
@@ -195,7 +195,7 @@ BR-0193,brief-agent-installer.md,Step 1,Input is a topic or a keyword,modes/brie
 BR-0194,brief-agent-installer.md,Step 1,A keyword reads like a real search query,modes/brief.md,reads like an actual search query: something a real person would type
 BR-0195,brief-agent-installer.md,Step 1,"If you can picture it in a search bar, keyword",modes/brief.md,"If you can picture it in a search bar, it's a keyword."
 BR-0196,brief-agent-installer.md,Step 1,A topic is a broad territory,modes/brief.md,a subject area or theme with no single obvious query attached to
-BR-0197,brief-agent-installer.md,Step 1,Ambiguous: ask one question when attended,modes/brief.md,ask one direct clarifying question in an attended run
+BR-0197,brief-agent-installer.md,Step 1,Ambiguous: ask one question when attended,modes/brief.md,one direct question in an attended run
 BR-0198,brief-agent-installer.md,Step 1,Otherwise make the call yourself,modes/brief.md,this is a judgment call the agent is expected to make correctly
 BR-0199,brief-agent-installer.md,Path A,"Find the primary keyword, then the secondary map",modes/brief.md,The job is to find the primary keyword this content should actually
 BR-0200,brief-agent-installer.md,Path A,"Search the topic, ranking pages, related queries, PAA",modes/brief.md,Search the topic itself and see what's already ranking for it
@@ -268,7 +268,7 @@ BR-0266,brief-agent-installer.md,Step 2d,An engine blocks: skip it and say so,mo
 BR-0267,brief-agent-installer.md,Step 2d,Never fabricate what an engine would say,modes/brief.md,Don't fabricate what an AI engine
 BR-0268,brief-agent-installer.md,Step 3,Match format and keyword shape to four skeletons,shared/base-rules/brief.md,Match the search results' dominant format and the keyword's own shape
 BR-0269,brief-agent-installer.md,Step 3,Skeletons are proven working patterns,shared/base-rules/brief.md,"each is a proven, working pattern, not a hypothetical template"
-BR-0270,brief-agent-installer.md,Step 3,Word count comes from the research,shared/base-rules/brief.md,The word count always comes from the research.
+BR-0270,brief-agent-installer.md,Step 3,Word count comes from the research,shared/base-rules/brief.md,"The word count comes from the research,"
 BR-0271,brief-agent-installer.md,Step 3,Target is top-three average plus a depth premium,shared/base-rules/brief.md,the average length of the top three results plus a depth premium
 BR-0272,brief-agent-installer.md,Step 3,Research number wins in either direction,shared/base-rules/brief.md,"the research number wins, in either direction"
 BR-0273,brief-agent-installer.md,Step 3,Comparison skeleton section order,shared/base-rules/brief.md,"Key Takeaways, then a Quick Answer summary table, then Methodology"
@@ -483,7 +483,7 @@ BR-0481,brief-agent-installer.md,Step 6c,"Include ID, title, keyword, Spearhead,
 BR-0482,brief-agent-installer.md,Step 6c,"Ask for a tick, cross, or reply",shared/slack.md,"React with a tick to approve, a cross to send it back"
 BR-0483,brief-agent-installer.md,Step 6c,"Set Awaiting, thread link, and sent line in one update",modes/brief.md,"Last Saved Step `brief posted`, Stall Count 0, an Agent Notes line"
 BR-0484,brief-agent-installer.md,Step 6c,A waiting brief always has a visible post,modes/brief.md,must always have a post the reviewers can see
-BR-0485,brief-agent-installer.md,Step 6c,Post failed twice: still Awaiting; next run reposts,modes/brief.md,"still set `Awaiting Brief Approval`, leave Slack Thread Link empty"
+BR-0485,brief-agent-installer.md,Step 6c,Post failed twice: still Awaiting; next run reposts,modes/brief.md,"still set `Awaiting Brief Approval`, clear Slack Thread Link"
 BR-0486,brief-agent-installer.md,Step 6c,Orchestrator records the decision; don't wait,modes/brief.md,this run doesn't wait for it
 BR-0487,brief-agent-installer.md,Step 6c,Write the post at grade 5,shared/slack.md,Write at a grade 5 reading level.
 BR-0488,brief-agent-installer.md,Step 6c,Keep the post under about 120 words,shared/slack.md,Every post that asks a person to act stays under about 120 words
@@ -494,7 +494,7 @@ BR-0492,brief-agent-installer.md,Step 6c,No pipeline words in the post,shared/sl
 BR-0493,brief-agent-installer.md,Step 6c,Say the plain thing instead,modes/brief.md,"Say the plain thing instead, such as"
 BR-0494,brief-agent-installer.md,Step 6c,Don't type a Sent using line,shared/slack.md,"Don't type a ""Sent using"" line. Slack adds it."
 BR-0495,brief-agent-installer.md,Step 6c,Slack down: still finish 6a and 6b,modes/brief.md,6a and 6b still complete regardless
-BR-0496,brief-agent-installer.md,Step 6c,Slack fallback writes the message into Notes,shared/slack.md,Leave Slack Thread Link empty so the next run posts it
+BR-0496,brief-agent-installer.md,Step 6c,Slack fallback writes the message into Notes,shared/slack.md,Clear Slack Thread Link so the next run posts it
 BR-0497,brief-agent-installer.md,Step 6c,Tell the user the brief is saved and posted,modes/brief.md,say in the run output that the brief is saved and posted
 BR-0498,brief-agent-installer.md,Step 6.5,Only fires when the person gives feedback,modes/brief.md,"This step is conditional, not automatic"
 BR-0499,brief-agent-installer.md,Step 6.5,Any direct correction counts as feedback,modes/brief.md,Don't wait for a formal rejection to treat something as feedback
@@ -513,7 +513,7 @@ BR-0511,brief-agent-installer.md,Self-check,"Brand and style rules reflected, no
 BR-0512,brief-agent-installer.md,Self-check,Spearhead names a move and a gap,modes/brief.md,The Spearhead Strategy sentence names a specific move and a specific gap
 BR-0513,brief-agent-installer.md,Self-check,Cornerstone Asset is real and named,modes/brief.md,"The Cornerstone Asset is a real, named thing, not a placeholder"
 BR-0514,brief-agent-installer.md,Self-check,"Exactly three CTAs, none in FAQ, real offers",modes/brief.md,every offer named is one the product actually has
-BR-0515,brief-agent-installer.md,Self-check,Two to four internal links or the quality minimum,modes/brief.md,"has two to four links, or at least the quality checks' minimum"
+BR-0515,brief-agent-installer.md,Self-check,"Two to four internal links or the product's minimum, within QA's upper limit",modes/brief.md,"has two to four links, or at least the product's own minimum"
 BR-0516,brief-agent-installer.md,Self-check,Freshness flag present when pricing or features appear,modes/brief.md,using the stricter of Step 4g's cadence and the product knowledge's rule
 BR-0517,brief-agent-installer.md,Self-check,Meta title and description within limits,modes/brief.md,Meta title and description are both within their measured character limits
 BR-0518,brief-agent-installer.md,Self-check,No em dashes; the brief models house style,modes/brief.md,"The brief should model the house style, not just tell the writer"
@@ -555,6 +555,6 @@ BR-0553,brief-agent-installer.md,Old live: files disagree,"On style and structur
 BR-0554,brief-agent-installer.md,Old live: files disagree,Stricter freshness rule goes in the Freshness Log,shared/base-rules/brief.md,the stricter rule goes into the Freshness Log
 BR-0555,brief-agent-installer.md,Old live: files disagree,Link plan meets the quality checks' minimum,shared/base-rules/brief.md,the Internal Link Plan in Step 4f meets that minimum
 BR-0556,brief-agent-installer.md,Old live: files disagree,Add structural blocks the files require,shared/base-rules/brief.md,add it to the outline where the file says
-BR-0557,brief-agent-installer.md,Old live: files disagree,Calibrate length against style guide ranges,shared/base-rules/brief.md,calibrate Step 3's word counts against those
+BR-0557,brief-agent-installer.md,Old live: files disagree,"A style guide length applies only as a length Exception rule (sets the target, research average noted)",shared/base-rules/brief.md,sets the target word count for the formats it names
 BR-0558,brief-agent-installer.md,Old live: files disagree,Brief follows both these and the style guide's rules,shared/base-rules/brief.md,since it models the house style for the writer
 BR-0559,brief-agent-installer.md,Old live: files disagree,Reworker Agent means this mode's Step 0.6,shared/base-rules/brief.md,"wherever the files name a ""Reworker Agent,"""

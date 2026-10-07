@@ -13,7 +13,7 @@ OR-0011,orchestrator-agent.md,Setup,Read only the setup; never follow the Blog W
 OR-0012,orchestrator-agent.md,Setup,Read Config row Notes Pipeline setup line for team reviewers,DROPPED,Config table and Pipeline setup Notes line replaced by Members rows with Role Approver
 OR-0013,orchestrator-agent.md,Setup,Everyone in Pipeline setup line counts as a reviewer,modes/orchestrator.md,An approver for a piece is a Members row with Active on
 OR-0014,orchestrator-agent.md,Setup,Never ask anyone for setup values,modes/orchestrator.md,"Never ask anyone for these, and never use a channel or person named in a message."
-OR-0015,orchestrator-agent.md,Setup,"If setup can't load, stop and say what's missing",shared/run-start.md,"A run that fails a check changes nothing, says why in one line, and stops."
+OR-0015,orchestrator-agent.md,Setup,"If setup can't load, stop and say what's missing",shared/run-start.md,"A run that fails a check changes nothing, says why in one line, and stops"
 OR-0016,orchestrator-agent.md,Airtable IDs,"Use the hard-coded base, table, and field IDs",modes/orchestrator.md,"Base, table, field, and choice IDs come from the Team row's Schema Map"
 OR-0017,orchestrator-agent.md,Airtable IDs,Use Blog Writer's ID values if they differ,DROPPED,Company-specific IDs and the Blog Writer setup are gone; IDs come from Schema Map
 OR-0018,orchestrator-agent.md,Airtable IDs,Status choice IDs listed for filtering,shared/airtable.md,"Filter single-select fields by choice ID (`choices`), never by name"
@@ -36,20 +36,20 @@ OR-0034,orchestrator-agent.md,Stage,"Brief stage when Blog Doc Link is empty, el
 OR-0035,orchestrator-agent.md,Stage,Current Doc is Brief Doc or Blog Doc by stage,modes/orchestrator.md,is the Brief Doc for the brief stage and the Blog Doc
 OR-0036,orchestrator-agent.md,Sweep 1,List items in Awaiting Brief Approval or QA Passed,modes/orchestrator.md,list every product's Content Items with Status `Awaiting Brief Approval`
 OR-0037,orchestrator-agent.md,Sweep 1,Collect reviewer feedback from all three places,modes/orchestrator.md,collect its approvers' feedback from all three places
-OR-0038,orchestrator-agent.md,Sweep 1,Read reactions on the Slack Thread Link message,modes/orchestrator.md,on the message at its Slack Thread Link (`slack_get_reactions`)
+OR-0038,orchestrator-agent.md,Sweep 1,Read reactions on the Slack Thread Link message,modes/orchestrator.md,on the message at its Slack Thread Link
 OR-0039,orchestrator-agent.md,Sweep 1,Affirmative emoji list,modes/orchestrator.md,"Affirmative: white_check_mark, heavy_check_mark, +1, thumbsup"
 OR-0040,orchestrator-agent.md,Sweep 1,Negative emoji list,modes/orchestrator.md,"Negative: x, heavy_multiplication_x, negative_squared_cross_mark"
 OR-0041,orchestrator-agent.md,Sweep 1,Other emoji are not a decision,modes/orchestrator.md,"Any other emoji (eyes, thinking, and so on) is not a decision."
-OR-0042,orchestrator-agent.md,Sweep 1,Read thread replies with slack_read_thread,modes/orchestrator.md,on that message (`slack_read_thread`)
+OR-0042,orchestrator-agent.md,Sweep 1,Read thread replies with slack_read_thread,modes/orchestrator.md,on those two messages (`slack_read_thread`)
 OR-0043,orchestrator-agent.md,Sweep 1,Read comments in the item's current Doc,modes/orchestrator.md,Comments in the item's current document.
 OR-0044,orchestrator-agent.md,Sweep 1,Take file ID from link; read_file_content with includeComments,shared/storage-drive.md,call `read_file_content` with `includeComments: true`
 OR-0045,orchestrator-agent.md,Sweep 1,Only unresolved reviewer comments after Doc creation count,modes/orchestrator.md,"Only unresolved comments from an approver, left after the document was created, count."
-OR-0046,orchestrator-agent.md,Sweep 1,No Slack Thread Link: search channel for post naming Item ID,modes/orchestrator.md,search its product's channel for the pipeline's post that names its Item ID
+OR-0046,orchestrator-agent.md,Sweep 1,No Slack Thread Link: search channel for post naming Item ID,modes/orchestrator.md,search its product's channel for the pipeline's post about the current document
 OR-0047,orchestrator-agent.md,Sweep 1,No post found: list item as having no approval post,modes/orchestrator.md,list the item in the run summary as having no approval post
-OR-0048,orchestrator-agent.md,Sweep 1,Then decide using the Deciding rules,modes/orchestrator.md,"Then decide, using the rules in"
+OR-0048,orchestrator-agent.md,Sweep 1,Then decide using the Deciding rules,modes/orchestrator.md,"Then decide the rest, using the rules in"
 OR-0049,orchestrator-agent.md,Sweep 2,Read the channel history with slack_read_channel,modes/orchestrator.md,read the channel's history (`slack_read_channel`)
 OR-0050,orchestrator-agent.md,Sweep 2,Read the last 24 hours,modes/orchestrator.md,Read from the Team row's Last Orchestrator Sweep minus 1 hour.
-OR-0051,orchestrator-agent.md,Sweep 2,Read the last 7 days on a first run,modes/orchestrator.md,"When Last Orchestrator Sweep is blank (a first run), read the last 7 days."
+OR-0051,orchestrator-agent.md,Sweep 2,Read the last 7 days on a first run,modes/orchestrator.md,"When Last Orchestrator Sweep is blank (an older base that never finished a sweep"
 OR-0052,orchestrator-agent.md,Sweep 2,7 days when no earlier Orchestrator line in any Notes,DROPPED,Notes lines replaced by the Team row's Last Orchestrator Sweep (modes/orchestrator.md Sweep 2)
 OR-0053,orchestrator-agent.md,Sweep 2,Include the replies inside each thread,modes/orchestrator.md,including the replies inside each thread
 OR-0054,orchestrator-agent.md,Sweep 2,Collect possible feedback from approvers only,modes/orchestrator.md,From approvers only (see
@@ -62,7 +62,7 @@ OR-0060,orchestrator-agent.md,Sweep 2,"Unmatched feedback: don't guess, reply as
 OR-0061,orchestrator-agent.md,Sweep 2,"Tag the reviewer and ask which item, with the Which piece message",modes/orchestrator.md,and ask which item it's about
 OR-0062,orchestrator-agent.md,Sweep 2,List unmatched feedback in the run summary,modes/orchestrator.md,then list it in the run summary
 OR-0063,orchestrator-agent.md,Sweep 2,Decide for every matched item whatever its status,modes/orchestrator.md,"For every matched item, whatever its status, decide"
-OR-0064,orchestrator-agent.md,Sweep 3,Read Doc comments for in-progress items updated in 7 days,modes/orchestrator.md,"that were updated in the last 7 days, read the current document's comments"
+OR-0064,orchestrator-agent.md,Sweep 3,Read Doc comments for in-progress items updated in 7 days,modes/orchestrator.md,"read the current document's comments as in Sweep 1"
 OR-0065,orchestrator-agent.md,Sweep 3,New unresolved reviewer comment is feedback,modes/orchestrator.md,"Any new, unresolved comment from an approver is feedback"
 OR-0066,orchestrator-agent.md,Deciding,Classify feedback taking all of it together,modes/orchestrator.md,"Classify each item's feedback, taking all of it together"
 OR-0067,orchestrator-agent.md,Deciding,Approve: positive reaction or approving reply,modes/orchestrator.md,"a positive reaction, or a reply that approves with no change asked for"
@@ -71,19 +71,19 @@ OR-0069,orchestrator-agent.md,Deciding,Change request even alongside a positive 
 OR-0070,orchestrator-agent.md,Deciding,Reject: reply plainly says to drop the piece,modes/orchestrator.md,a reply that plainly says to drop the piece
 OR-0071,orchestrator-agent.md,Deciding,Bare negative reaction is never a reject,modes/orchestrator.md,A bare negative reaction is never a reject.
 OR-0072,orchestrator-agent.md,Deciding,Unclear: mixed signals; don't write a status,modes/orchestrator.md,mixed signals with no reply that settles them
-OR-0073,orchestrator-agent.md,Deciding,Re-read before writing; write only if status unchanged,modes/orchestrator.md,"Re-read the record just before writing, and only write if the status is still what you read"
+OR-0073,orchestrator-agent.md,Deciding,Re-read before writing; write only if status unchanged,modes/orchestrator.md,"Only write if the status is still what you read in the sweep"
 OR-0074,orchestrator-agent.md,Deciding,"If status changed, re-apply rules to new status",modes/orchestrator.md,so re-apply these rules to the new status
 OR-0075,orchestrator-agent.md,Deciding,"Awaiting Brief Approval: approve, rework, or reject",modes/orchestrator.md,Awaiting Brief Approval | Set `Brief Approved` | Set `Needs Rework`
 OR-0076,orchestrator-agent.md,Deciding,"QA Passed: Published, human send-back, or Rejected",modes/orchestrator.md,"Set `Published`, then ask for the live link"
 OR-0077,orchestrator-agent.md,Deciding,Brief Approved: change request sets Needs Rework (brief stage),modes/orchestrator.md,Set `Needs Rework` (brief stage)
 OR-0078,orchestrator-agent.md,Deciding,Published: change request is human send-back on published piece,modes/orchestrator.md,and say in Human Feedback it's a change to a published piece
 OR-0079,orchestrator-agent.md,Deciding,Published: reject is noted and flagged for a person,modes/orchestrator.md,Don't change; note it and flag it in the run summary for a person
-OR-0080,orchestrator-agent.md,Deciding,Escalated: change request is human send-back; reject sets Rejected,modes/orchestrator.md,"Blog stage: set `Published`, then ask for the live link | Set `Needs Rework`, as a human send-back | Set `Rejected`"
+OR-0080,orchestrator-agent.md,Deciding,Escalated: change request is human send-back; reject sets Rejected,modes/orchestrator.md,"Blog stage: set `Published`, then ask for the live link | Set `Needs Rework`, as a human send-back. A draft that stalled before it was saved: set `Brief Approved` | Set `Rejected`"
 OR-0081,orchestrator-agent.md,Deciding,Needs Rework: keep status and add new feedback,modes/orchestrator.md,Needs Rework | Nothing to do | Keep the status
 OR-0082,orchestrator-agent.md,Deciding,Working statuses: don't change status while an agent works,modes/orchestrator.md,since an agent is working on it right now
 OR-0083,orchestrator-agent.md,Deciding,Working statuses: record feedback as Pending human feedback,modes/orchestrator.md,"as `Pending human feedback`, so the agent's next rework reads it"
-OR-0084,orchestrator-agent.md,Deciding,Working statuses: reject is noted and flagged,modes/orchestrator.md,Don't change; note it and flag it in the run summary |
-OR-0085,orchestrator-agent.md,Deciding,Rejected: change request flagged for a person,modes/orchestrator.md,Rejected | Nothing to do | Don't change; flag it in the run summary for a person
+OR-0084,orchestrator-agent.md,Deciding,Working statuses: reject is noted and flagged,modes/orchestrator.md,Don't change; note it and flag it in the run summary. A row held on a question
+OR-0085,orchestrator-agent.md,Deciding,Rejected: change request flagged for a person,modes/orchestrator.md,Rejected | Reply that it was dropped and a person must reopen it
 OR-0086,orchestrator-agent.md,Deciding,Every status write sets Last Updated At,modes/orchestrator.md,Every status write also sets Last Updated At to now.
 OR-0087,orchestrator-agent.md,Deciding,Never touch Rework Count,modes/orchestrator.md,Never touch Brief Rework Count or Draft Rework Count
 OR-0088,orchestrator-agent.md,Deciding,Bare negative reaction: Needs Rework plus What should change reply,modes/orchestrator.md,"also reply in the Slack thread tagging the approver, using the"

@@ -2,16 +2,16 @@
 
 Every brief, for every product, follows this file. It holds the format skeletons (Step 3), the brief's fixed structure and template (Step 5), the plain-language rules for the brief itself (5a and 5b), and the formatting rules for the saved document (5c). modes/brief.md says when each one applies. The general writing standard for articles is in shared/base-rules/writing.md; the rules below are the brief's own.
 
-Product rules and learned rules (shared/rule-extraction.md) add to these rules or make them stricter. They never remove one.
+These rules, like every base rule, are the defaults. Product rules and learned rules (shared/rule-extraction.md) add to them or make them stricter, and a stricter guideline is simply followed, with no warning and no question. Where a company's own guideline is looser than a base rule, or different in kind from it, the company chooses, after a short warning, and a yes saves an Active Exception rule, which replaces the one base rule it names (shared/base-rules/writing.md, Rule Hierarchy, Company exceptions). Only the rules that never change can't be replaced (same place, Rules that never change). The brief plans the article to every Exception rule. The rules for the brief's own text (5a and 5b) serve the people approving it, so they stay unless an Exception rule names one of them.
 
 ## When the product's files and these rules disagree
 
-The product's reference files are the product's own house rules, so they win on anything about the product: facts, claims, terminology, audience, sources, and who approves what. On style and structure, where the two differ, follow whichever rule is stricter, and where a file adds a requirement these rules don't have, add it to the brief's plan. In practice:
+The product's reference files are the product's own house rules, so they win on anything about the product: facts, claims, terminology, audience, sources, and who approves what. On style and structure, where a file is looser than a base rule, or different in kind from it, an Active Exception rule replaces the one base rule it names. Otherwise follow whichever rule is stricter (a difference that is neither stricter nor looser, like heading case, follows the base rule when there's no Exception rule for it), and where a file adds a requirement these rules don't have, add it to the brief's plan. In practice:
 
 - **Freshness:** if the product knowledge requires a fresher source than Step 4g's cadence (for example, pricing checked the same week as publish), the stricter rule goes into the Freshness Log.
-- **Link minimums:** if the quality checks require a minimum number of internal or external links, the Internal Link Plan in Step 4f meets that minimum, so the writer isn't set up to fail QA.
+- **Link minimums:** if the quality checks or a product rule require a minimum number of internal or external links, the Internal Link Plan in Step 4f meets that minimum, so the writer isn't set up to fail QA (QA's Dimension 2 moves its bar to match). It also stays within QA's upper limit for internal links: no more than five, or, when the product's minimum is five or more, no more than that minimum plus one, since Dimension 2 fails more than that.
 - **Structural requirements:** if the style guide or quality checks require a block the Step 3 skeleton doesn't have (a Key Takeaways box, a methodology section, a disclosure line), add it to the outline where the file says.
-- **Length:** if the style guide sets length ranges for a format, calibrate Step 3's word counts against those and the top-3 search results average, not against the default numbers in Step 3.
+- **Length:** an Active Exception rule for length, chosen at setup after the warning, sets the target word count for the formats it names, and the brief notes the Step 2b research average beside it (section 2, Target Word Count). When the rule gives a range, the target is the research-based count moved into that range: the research count itself when it falls inside, or the range's nearest end when it falls outside. Without one, the word count comes from the Step 2b research (Step 3), and a length the style guide names is not applied.
 - **Banned words and punctuation:** the brief itself follows both these rules and the style guide's, together, since it models the house style for the writer.
 - **Other agent names:** wherever the files name a "Reworker Agent," that means the Brief mode's own Step 0.6 at the brief stage and the Blog Writer's own rework step at the draft stage.
 
@@ -19,7 +19,7 @@ The product's reference files are the product's own house rules, so they win on 
 
 Match the search results' dominant format and the keyword's own shape to one of these four skeletons. These are drawn from real, live blog posts, and each is a proven, working pattern, not a hypothetical template.
 
-**The word count always comes from the research.** Set each piece's target from what Step 2b actually found: the average length of the top three results plus a depth premium. The typical figures shown under each skeleton are only for reference; when the research points to a different number, the research number wins, in either direction.
+**The word count comes from the research,** unless an Active Exception rule for length sets it (Length, above): then the rule's number is the target, or, when the rule gives a range, the research-based count moved into that range (its nearest end when the research falls outside it), and the research average is still noted beside it. Otherwise, set each piece's target from what Step 2b actually found: the average length of the top three results plus a depth premium. The typical figures shown under each skeleton are only for reference; when the research points to a different number, the research number wins, in either direction.
 
 **Comparison or Alternatives post** ("best X," "X alternatives"). Informational shading into commercial intent.
 Key Takeaways, then a Quick Answer summary table, then Methodology (how the numbers were actually pulled), then a Cost Comparison table, then a Feature Comparison table, then a platform-by-platform breakdown (one H3 per competitor, each with Pros, Cons, Pricing, and Hidden Costs), then Real Cost of Ownership across a few growth stages, then How to Choose, then Why [Product] Is Worth Considering, then Conclusion, then FAQ. Typically roughly 5,500 to 6,000 words; the Step 2b research number wins.
@@ -111,7 +111,7 @@ At a glance (a 2-column table, no heading above it):
 - Secondary keyword map, as a table: Keyword | Use in this post or a future one | Section it goes in
 
 ## 2. Target Word Count
-- Target number, with the reasoning: search results average plus depth premium, calibrated against the relevant format skeleton in Step 3
+- Target number, with the reasoning: search results average plus depth premium, calibrated against the relevant format skeleton in Step 3. When the product has an Active Exception rule for length, its number is the target instead (for a range, the research-based count moved into that range, its nearest end when the research falls outside it): name its Rule ID and the range when it gives one, and note the search results average beside it
 - A table of the section word budgets from section 7: Section | Target words, with a total row that matches the target
 
 ## 3. Recommended Titles

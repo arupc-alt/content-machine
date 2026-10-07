@@ -19,11 +19,14 @@ Setup writes it, and "repair the base" rewrites it. Shape:
   "tables": {"content_items": "tbl...", "settings": "tbl...", "team": "tbl...", "reference": "tbl...", "members": "tbl...", "rework_history": "tbl...", "feedback_log": "tbl..."},
   "fields": {"content_items.Status": "fld...", "content_items.Item ID": "fld...", "...": "..."},
   "choices": {"content_items.Status.Awaiting Brief Approval": "sel...", "...": "..."},
-  "channels": {"[Product]": "[Slack Channel ID]"}
+  "channels": {"[Product]": "[Slack Channel ID]"},
+  "prefixes": {"[Product]": "[Item ID Prefix]"},
+  "archive": "app... (only after 'archive old pieces')",
+  "schedule": {"app": "Claude, Claude desktop, or Codex", "name": "Content Machine ([Company])"}
 }
 ```
 
-Keys are the table key, a dot, and the field name exactly as in the template. Choices add a dot and the choice name. `channels` copies each product's Slack Channel ID from its Settings row, so the Orchestrator can read Slack without reading Settings on a run with nothing to do. Setup writes it, "add a product" and "repair the base" rewrite it from Settings, and the weekly full check sets it right when it differs from Settings.
+Keys are the table key, a dot, and the field name exactly as in the template. Choices add a dot and the choice name. `channels` copies each product's Slack Channel ID from its Settings row, so the Orchestrator can read Slack without reading Settings on a run with nothing to do. `prefixes` copies each product's Item ID Prefix the same way, so the Orchestrator can tell another pipeline's Item ID without a lookup. Setup writes both, "add a product" and "repair the base" rewrite them from Settings, and the weekly full check sets them right when they differ from Settings. `schedule` says which app holds the base's one schedule, and its name. Setup Step 10 writes it once the schedule is checked, "repair the base" keeps it, like `archive`, and "move host" removes it until the new host's schedule is checked. A missing `schedule` doesn't mean there's no schedule: a base from an older version has none until "repair schedules" records it.
 
 - Filter single-select fields by choice ID (`choices`), never by name: a wrong name can quietly return zero rows instead of an error.
 - Write single-select values by their plain name.
@@ -34,12 +37,12 @@ Keys are the table key, a dot, and the field name exactly as in the template. Ch
 | Table | Rows | Read by | Written by |
 |---|---|---|---|
 | Team | exactly 1 | every run | setup; every agent writes its own Last Run field and the API counter fields; the Orchestrator also writes Last Orchestrator Sweep, and Reference Row Count when a learned rule goes Active or Retired; any run that loads more Active Reference rows than Reference Row Count expects sets that product's number to the new count |
-| Settings | 1 per product | every run with work (the Orchestrator: only when it has something to act on) | setup only |
+| Settings | 1 per product | every run with work (the Orchestrator: only when it has something to act on) | setup only, apart from migration 3's one-time copy of the bot fields (shared/migrations.md) |
 | Members | 1 per person | runs that post or decide | setup, and "add a teammate" |
-| Reference | files and rules | runs with real work, filtered to one product and Status Active | setup and "update reference files"; any agent may add a learned rule, only as Suggested; only the Orchestrator sets one Active or Retired, and only on an approver's yes or no |
+| Reference | files and rules | runs with real work, filtered to one product and Status Active | setup and "update reference files"; any agent may add a learned rule, only as Suggested; only the Orchestrator sets one Active or Retired, and only on an approver's yes or no, or Retired when it repeats another learned rule (modes/orchestrator.md, Learned rules, step 6) |
 | Content Items | 1 per piece | every run | the agent that holds the claim; the Orchestrator for its own fields |
-| Rework History | 1 per rework pass | Brief Agent, Blog Writer, QA | the agent doing that pass |
-| Feedback Log | 1 per piece of feedback | Orchestrator, Brief Agent, Blog Writer | Orchestrator, QA, Brief Agent, Blog Writer create rows; only the Orchestrator updates one, to set Status Active or Retired when the approver answers, matched by Reference Rule ID |
+| Rework History | 1 per rework pass | Brief Agent, Blog Writer, QA, and the Orchestrator (to tell used feedback from new) | the agent doing that pass |
+| Feedback Log | 1 per piece of feedback | Orchestrator, Brief Agent, Blog Writer | Orchestrator, QA, Brief Agent, Blog Writer create rows; only the Orchestrator updates one, to set Status Active or Retired when the approver answers, or Retired when its rule repeats another learned rule, matched by Reference Rule ID |
 
 ## Content Items field ownership
 
@@ -48,16 +51,17 @@ Keys are the table key, a dot, and the field name exactly as in the template. Ch
 | Item ID, Seq, Product, Trigger Type, Input, Doc Home, Created At | the agent that creates the row |
 | Working Title, Primary Keyword, Secondary Keywords, Format Skeleton, Brief Doc Link | Brief Agent (Blog Writer for a pasted brief) |
 | Freshness Flags | Brief Agent and Blog Writer, while holding the claim |
-| Recheck Due | QA, on an Approved verdict |
+| Recheck Due | QA, on an Approved verdict; the Orchestrator, when an approver says a due recheck is done (modes/orchestrator.md, Rechecks done) |
 | Status | the agent holding the claim, or the Orchestrator per its deciding table (always after re-reading the row) |
 | Claimed By, Claimed At, Claim Token | the claiming agent (see Claims) |
 | Last Saved Step, QA Round | the agent holding the claim |
 | Stall Count | the agent that finds the stall adds 1 (run-start step 4); the agent that sets a waiting status (`Awaiting Brief Approval`, `QA Passed - Awaiting Publish Review`, `Escalated - Needs Human Input`) resets it to 0 in that same update |
 | Brief Rework Count | Brief Agent |
 | Draft Rework Count | Blog Writer only (it closes every draft pass; QA never writes it) |
-| Human Feedback | Orchestrator only. Each entry starts `[ISO time] [reviewer name] via [Slack reply / Slack reaction / Doc comment / chat]:`, then the reviewer's exact words and the source link. The time is when the Orchestrator recorded it, not when the message was sent. The source link is how the Orchestrator knows a message was already recorded. Entries are only ever added at the end. An agent knows which entries it has already used by comparing their times with its newest Rework History row for that stage. |
+| Human Feedback | Orchestrator only. Each entry starts `[ISO time] [reviewer name] via [Slack reply / Slack reaction / Doc comment / chat]:`, then the reviewer's exact words and the source link. The time is when the Orchestrator recorded it, not when the message was sent. The source link is how the Orchestrator knows a message was already recorded. Entries are only ever added at the end. An agent knows which entries it has already used by comparing their times with its newest Rework History row for that stage whose Outcome Status is `Resubmitted`. |
 | Agent Notes | the agent holding the claim, adding a block at the end that starts `[agent] [ISO time]:`. This is where writer notes, QA issue lists, a Blog Writer's send-back of a brief, and post history go. Never overwrite it. Because only the claim holder writes it, two runs can't erase each other's lines. |
 | Duplicate Decision | the agent that finds the overlap sets Pending; the Orchestrator sets Go or Drop from an approver's reply |
+| Open Question | the agent that needs an answer sets it (the question and its Slack link, G25); the Orchestrator copies the question into the Human Feedback entry that records an approver's answer, and clears it in that same update, or in the update that records an approver's drop instead (modes/orchestrator.md, Answers to open questions) |
 | Health Flag | run-start row checks |
 | Live URL, Published At | Orchestrator |
 | Everything else | the agent holding the claim, for its own stage |
@@ -71,8 +75,8 @@ Two people, or a person and a schedule, can run the same mode at once. Before wo
 
 1. Make a token: the mode name, the current UTC time to the second, and 4 random letters, like `blog-20261006T091502-kqzm`.
 2. Write Claimed By (mode, and "scheduled" or the person's name), Claimed At (now), Claim Token, the working Status for this step, and Last Updated At, in one `update_records_for_table` call.
-3. Read the row back. If Claim Token is your token, go ahead. If not, another run has it: drop the row and move to the next one.
-4. A claim is stale when Claimed At is more than 2 rounds old and Last Updated At hasn't moved since. Two rounds means twice the longest gap between the Team row's Round Hours within a day, and never less than 4 hours (8 hours at 3 a day, 12 hours at 2 a day, 8 hours every 4 hours). A stale claim may be taken over by the owning agent's next run (run-start step 4).
+3. Read the row back. If Claim Token is your token, go ahead. If not, another run has it: drop the row and move to the next one. Before any write that comes more than an hour after this run's last write to the row (a computer that slept mid-run), read Claim Token again; if it isn't yours anymore, stop work on that row without writing.
+4. Every write that keeps the claim also sets Claimed At to now, so a long run that's still working never looks stale. A claim is stale when Claimed At is more than 2 rounds old. (Last Updated At isn't used for this, since other runs, like the Orchestrator adding feedback, also write it.) Two rounds means twice the longest gap between the Team row's Round Hours within a day, and never less than 4 hours (8 hours at 3 a day, 12 hours at 2 a day, 8 hours every 4 hours). A stale claim may be taken over by the owning agent's next run (run-start step 4).
 
 When the work for a step is done, clear Claimed By, Claimed At, and Claim Token in the same update that sets the next Status.
 
@@ -95,7 +99,8 @@ A check for "a QA verdict was saved" matches any value that starts with `QA roun
 - Confirm every write from its own response. If a write fails, retry once after 2 seconds. If it fails again, stop the run with one alert naming the row and the field.
 - Every write sets Last Updated At to now.
 - New rows in Rework History and Feedback Log are always `create_records_for_table`, never an update.
-- Never delete a row. Never merge rows. That's always a person's call.
+- **Agent Notes and Human Feedback only ever grow, but an Airtable cell holds 100,000 characters.** Before a write would take either past about 90,000 characters, shorten the oldest blocks to one line each, keeping every source link and every Item ID, and add one line saying older entries were shortened. Never drop a source link: the Orchestrator uses them to know what's been processed.
+- Never delete a row. Never merge rows. That's always a person's call. The one exception is setup's "archive old pieces", after a person's yes.
 
 ## Creating a Content Items row
 
@@ -108,22 +113,36 @@ A check for "a QA verdict was saved" matches any value that starts with `QA roun
 Every run starts with as few reads as possible (each table read is 1 API call, and each page of 100 rows is its own call):
 
 - Team row (1 call).
-- Content Items, filtered to rows that are not Published and not Rejected, with only the fields this mode needs (1 call, more pages only for a big backlog). The Orchestrator reads every row, Published and Rejected included, because feedback can arrive on any of them. The duplicate check (run-start step 5) also needs every row's Primary Keyword, Input, and Status, so a run that creates a row reads them too.
-- Settings, Members, and Reference only when the queue has real work. Reference is filtered to one product and Status Active, and its row count is checked against Team's Reference Row Count for that product (a JSON object of product name to number, like `{"Acme Writer": 42}`; always write it back in that shape). If fewer rows come back than Reference Row Count, read the next page; if still fewer, stop with one alert: "Reference rows for [product] didn't all load." If more come back, use them all, set Reference Row Count for that product to the new number, and note it in the run summary.
+- Content Items, filtered to rows that are not Published and not Rejected, with only the fields this mode needs (1 call, more pages only for a big backlog). The Orchestrator reads a wider but still filtered set, since feedback can arrive on finished pieces too (modes/orchestrator.md, The batched read). The duplicate check (run-start step 5) also needs every row's Primary Keyword, Input, and Status, so a run that creates a row reads them too.
+- Settings, Members, and Reference only when the queue has real work. Reference is filtered to one product and Status Active, and read in two parts, so long source material loads only when a piece needs it: (1) every row whose Section doesn't start with `Supplementary:`, with all its fields; (2) only when (1)'s index row lists supplementary sections, or (1) has fewer rows than Reference Row Count for that product (so a missing index row never hides them), the rows whose Section starts with `Supplementary:`, with only Entry, Type, Layer, Section, Version, and Status. A writing run reads a supplementary row's Content only when the piece needs it (shared/run-start.md, Loading the rules). The two parts' row count together is checked against Team's Reference Row Count for that product (a JSON object of product name to number, like `{"Acme Writer": 42}`; always write it back in that shape). Every Active row counts: each numbered part of a split section, each supplementary row, the writing profile, and the index row are one row each (shared/rule-extraction.md, Saving the content). The index row and the writing profile row count toward Reference Row Count, but never as content: the test for whether a product has Active rows of Type Brand guide, Style guide, and Product knowledge leaves out rows whose Section is `Index` or `Writing profile` (shared/run-start.md, Loading the rules). If fewer rows come back than Reference Row Count, read the next page; if still fewer, skip that product this run (other products go on) with one alert: "Reference rows for [product] didn't all load. If rows were retired on purpose, type 'update reference files'." If more come back, use them all, set Reference Row Count for that product to the new number, and note it in the run summary.
 - The Orchestrator reads Settings and Members only when its Content Items read or its Slack window shows something to act on, and reads Reference only on its first run of each run day, or when a learned rule is in play (modes/orchestrator.md).
 
 ## The API budget
 
 Airtable's free plan allows 1,000 API calls a month for each workspace, shared by every base in it.
 
-How the calls add up. A run with nothing to do costs 2 calls (the Team row and Content Items). Each mode also writes the Team row once per run day (its Last Run field and the API counter). The Orchestrator reads Reference once per run day, and the weekly full check costs about 10 calls. One piece, from topic to live link, costs about 40 more calls in all. Each round a day adds about 180 calls a month on its own (3 agents, 2 calls each, 30 days). So 3 rounds a day, every day, uses about 700 calls a month before any real work, which leaves room for about 7 pieces a month. 2 rounds a day, or weekdays only, leaves room for about 12.
+How the calls add up. A run with nothing to do costs 2 calls (the Team row and Content Items). A Round run (modes/round.md) reads the base once for all three parts, plus one more Content Items read when an earlier part changed something. The round writes the Team row once per run day (all three Last Run fields and the API counter). The Orchestrator reads Reference once per run day, and the weekly full check costs about 10 calls. One piece, from topic to live link, costs about 40 more calls in all. A product with supplementary rows (long docs, changelogs, past posts) adds 1 call to each run with work, to list them, and 1 more each time a piece reads some of them. Each round a day adds about 60 calls a month on its own (2 calls, 30 days). So 3 rounds a day, every day, uses about 280 calls a month before any real work, which leaves room for about 18 pieces a month. A channel shared with other people's pipelines costs more: their messages that name no Item ID, like their "New topic:" posts, still make a round read Settings and Members (2 calls). Bases still on three separate per-agent schedules (skill 0.2) cost about three times as much per round.
 
 - Each run keeps a count of the Airtable calls it made.
 - At the end of a run that already writes the Team row (its Last Run field, once per run day), add this run's count, plus 2 for every run since the last write, to API Calls This Month. If API Month isn't this month (UTC), reset the count to this run's count, set API Month, and turn Limit Reached off, in the same update.
-- When API Calls This Month passes 800, post one alert (once per month): "[Company] Content Machine has used about 800 of 1,000 free Airtable calls this month. Runs will slow down. Consider 2 rounds a day, or Airtable's paid plan."
-- If any call fails with Airtable's monthly limit error, try to set Limit Reached on, post one alert, and stop. If that write fails too, put the alert in the run's own output and stop. Every run that sees Limit Reached on stops at step 2 of run-start until API Month changes.
+- **The limit** is the Team row's API Monthly Limit (blank means 1,000, the free plan). Setup sets it from the person's Airtable plan.
+- **Lean mode, so the content machine never runs out.** At the start of every run, after the Team read, work out what's left: API Monthly Limit minus API Calls This Month. If API Month isn't this month (UTC), the month has reset: count API Calls This Month as 0 here, and the next Team write records the reset (Monthly reset, below). Reserve what the rest of the month needs: 2 calls for every round left this month (6 when this run's prompt names Mode: Orchestrator, Mode: Brief, or Mode: Blog Writer, since a base still on the three per-agent schedules from skill 0.2 makes three runs a round), plus 40 for every piece already in progress, plus 50 to spare. If what's left is less than that reserve, the run is lean: the Orchestrator and every piece already in progress (reworks, drafts, QA loops, posts) go on as normal, but no new brief and no new blog is started. Post one alert, once a month (look back to the 1st of this month first, shared/slack.md, Alerts): "[Company] Content Machine is in lean mode until the start of next month, to stay inside this month's Airtable limit. Approvals and pieces in progress keep moving; new pieces start again next month. Airtable's paid plan raises the limit. If this workspace is on a paid plan, or after upgrading, type 'change Airtable plan'."
+- **If the limit is hit anyway** (another base in the same workspace used it up, or the count was off), the content machine still doesn't stop: it goes into Slack-only mode (When the limit is reached, below).
+- **Monthly reset.** If API Month isn't this month (UTC), reset the count to this run's count, set API Month, and turn Limit Reached off, in the same update.
 - Airtable allows 5 calls a second. If a call fails for rate, wait 1 second and retry, up to 3 tries.
+
+## When the limit is reached
+
+When an Airtable call fails with the monthly limit error, try once to set Limit Reached on (that write may fail too). Then, instead of stopping, the run goes Slack-only for the rest of the month:
+
+1. Read the product channels named in the schedule's prompt (`Channels: ...`), from the last sweep's time if it's known, otherwise the last 24 hours. A chat run uses the channel the person names. Without any channel, put the notice in the run's own output and stop. (A per-agent schedule from skill 0.2 has no `Channels:`, so its output also says to type 'repair schedules'.)
+2. If the newest pause or resume notice this account posted in the channel is a pause notice ("Content machine paused"), do nothing more.
+3. Only messages in the thread of a post this Slack account made with the `(Content Machine)` marker count, since Airtable can't be read to tell this base's items from other pipelines' in a shared channel. Skip any message that already has a pipeline reply after it. For each one left, reply once in its thread: "Saved. This month's Airtable limit is used up, so I'll pick this up when Airtable resets the count (the start of next month), or right away once the Airtable plan is upgraded." with the `(Content Machine)` marker line (shared/slack.md). Read the thread first; never post that reply twice. Other messages, like "New topic:" posts, are left for the first normal round.
+4. Post one alert in each channel, once a month, without tags. This run only read the channel's recent messages, so first look back to the 1st of this month (UTC) for it (shared/slack.md, Alerts), and skip a channel where this Slack account already posted it: "The content machine has used this month's Airtable limit. Everything you post is saved and will be handled when Airtable resets the count (the start of next month). To keep going now, upgrade Airtable, then type 'change Airtable plan'. A 'stopped running' email this month or early next month means this limit, not a broken schedule."
+5. Write nothing else: no documents, no Airtable.
+
+Nothing is lost. The Orchestrator's window starts at Last Orchestrator Sweep, which didn't move during Slack-only rounds, so the first normal round after the reset reads every message from those days. Each round tries one Airtable read first; when it works again, the round runs as normal.
 
 ## Records
 
-The free plan holds 1,000 records per base. The weekly full check counts rows in every table and saves Records Count. Past 900, post one alert offering to archive Published pieces older than 6 months: move them to a base named "[Company] Content Machine Archive", and leave a stub row (Item ID, Primary Keyword, Live URL, Status Published) for the duplicate check. Archiving runs only after a person says yes.
+The free plan holds 1,000 records per base. The weekly full check counts rows in every table and saves Records Count. Past 900, post one alert: "[Company] Content Machine is close to the free plan's 1,000 records. Type 'archive old pieces' to move old finished pieces to an archive base." Archiving (setup mode) runs only after a person says yes, and the duplicate check reads the archive base too.

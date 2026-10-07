@@ -46,7 +46,7 @@ QA-0044,qa-agent.md,Reading a Doc link,Claude.ai link: never open with Claude Do
 QA-0045,qa-agent.md,Reading a Doc link,Stop work on that item; say it needs copying first,modes/qa.md,"Stop work on that item, say in the run output that it"
 QA-0046,qa-agent.md,Run Guards,Guards apply on top of steps; guard wins on conflict,shared/guards.md,"Where a step and a guard disagree, the guard wins."
 QA-0047,qa-agent.md,G1 Connectors,Airtable and document tools required before real work,modes/qa.md,Airtable and the piece's document home (Drive or Notion) are required.
-QA-0048,qa-agent.md,G1 Connectors,Slack needed only on Approved or Escalated verdict,modes/qa.md,Slack is needed only on an Approved or Escalated verdict.
+QA-0048,qa-agent.md,G1 Connectors,Slack needed only on Approved or Escalated verdict,modes/qa.md,"Slack is needed only on an Approved or Escalated verdict, or for"
 QA-0049,qa-agent.md,G1 Connectors,Slack missing: write post into Notes and say so,modes/qa.md,and put the post you would have sent into the Agent Notes
 QA-0050,qa-agent.md,G1 Connectors,"Calendar optional: one notes line with recheck dates, no mention",modes/qa.md,"add one Agent Notes line with the recheck dates, and don't mention"
 QA-0051,qa-agent.md,G2 Never audit twice,In-session Notes marker on drafts audited by Blog Writer,shared/guards.md,"it keeps its claim, with Claimed By `Blog Writer (QA in-session)`"
@@ -69,7 +69,7 @@ QA-0067,qa-agent.md,Step 0,QA leans on quality checks file more than any agent,m
 QA-0068,qa-agent.md,Step 0,Product quality-checks file is the senior authority,shared/base-rules/qa.md,treat that file as the senior authority
 QA-0069,qa-agent.md,Step 0,"Where they overlap, product rubric wins",shared/base-rules/qa.md,"Where the two overlap, the product's own rubric wins."
 QA-0070,qa-agent.md,Step 0,Uncovered product criteria become their own dimension,shared/base-rules/qa.md,add it as its own dimension in the audit rather than skipping
-QA-0071,qa-agent.md,Step 0,Reading level grade 5 to 6 applies over style guide,shared/base-rules/qa.md,The one exception is reading level: the Blog Writer's grade 5 to
+QA-0071,qa-agent.md,Step 0,Reading level grade 5 to 6 applies over style guide,shared/base-rules/qa.md,Reading level: the Blog Writer's grade 5 to
 QA-0072,qa-agent.md,Step 0,Own score bands or retry limits don't override verdict rules,shared/base-rules/qa.md,"QA's verdict rules (modes/qa.md, Step 4) still decide the outcome"
 QA-0073,qa-agent.md,Step 0,Any Blocker or Standard means Needs Rework; cap stays three,shared/base-rules/qa.md,the retry cap stays at three passes
 QA-0074,qa-agent.md,Step 0,Reworker Agent means Blog Writer's rework step,shared/base-rules/qa.md,"""Reworker Agent"" means the Blog Writer's own rework step"
@@ -134,7 +134,7 @@ QA-0132,qa-agent.md,Step 2 severities,Blocker: broken or dead citation link,shar
 QA-0133,qa-agent.md,Step 2 severities,Blocker: keyword missing from H1 or first paragraph,shared/base-rules/qa.md,the primary keyword missing from the H1 or the first paragraph;
 QA-0134,qa-agent.md,Step 2 severities,Blocker: any em dash,shared/base-rules/qa.md,a single em dash is a Blocker on its own
 QA-0135,qa-agent.md,Step 2 severities,Blocker: word count over 10% under target without reason,shared/base-rules/qa.md,a total word count more than 10% under the brief's target
-QA-0136,qa-agent.md,Step 2 severities,Blocker: reading level above grade 7,shared/base-rules/qa.md,a measured reading level above grade 7;
+QA-0136,qa-agent.md,Step 2 severities,Blocker: reading level above grade 7,shared/base-rules/qa.md,"a measured reading level above grade 7, or, when the product has a reading-level Exception rule"
 QA-0137,qa-agent.md,Step 2 severities,Blocker: saved doc renders broken,shared/base-rules/qa.md,"a saved document that renders broken (garbled characters, raw Markdown, missing spacing"
 QA-0138,qa-agent.md,Step 2 severities,Standard: real failure of a dimension's bar,shared/base-rules/qa.md,A real failure of a dimension's bar.
 QA-0139,qa-agent.md,Step 2 severities,Polish: one or two isolated minor slips,shared/base-rules/qa.md,"One or two isolated, minor slips that don't undermine the dimension"
@@ -150,10 +150,10 @@ QA-0148,qa-agent.md,Dimension 1,Title 50 to 60 chars; meta 140 to 155,shared/bas
 QA-0149,qa-agent.md,Dimension 1,Fail on weak placement or density over 3%,shared/base-rules/qa.md,"Fail if body placement is weak or absent, if density crosses 3%"
 QA-0150,qa-agent.md,Dimension 1,"Fail if title, meta, slug miss or bury keyword or length",shared/base-rules/qa.md,"buries it past where it does any good, or runs outside its"
 QA-0151,qa-agent.md,Dimension 2,Two to four relevant internal links,shared/base-rules/qa.md,Are there two to four internal links to genuinely relevant existing pages
-QA-0152,qa-agent.md,Dimension 2,Quality checks minimum applies if higher,shared/base-rules/qa.md,"or at least the quality checks' minimum, if it sets a higher"
+QA-0152,qa-agent.md,Dimension 2,Product's minimum (quality checks or a product rule) applies if higher,shared/base-rules/qa.md,"or at least the product's own minimum, from the quality checks or a product rule, if it sets a higher"
 QA-0153,qa-agent.md,Dimension 2,"Descriptive anchor text, not click here",shared/base-rules/qa.md,"with descriptive anchor text, not ""click here"""
 QA-0154,qa-agent.md,Dimension 2,Include brief's Internal Link Plan targets where they fit,shared/base-rules/qa.md,Do they include the brief's Internal Link Plan targets where those fit?
-QA-0155,qa-agent.md,Dimension 2,"Fail on zero, under minimum, over five, or non-resolving",shared/base-rules/qa.md,"Fail on zero links, fewer than the quality checks' minimum, more than"
+QA-0155,qa-agent.md,Dimension 2,"Fail on zero, under minimum, over five (or over a higher minimum plus one), or non-resolving",shared/base-rules/qa.md,"Fail on zero links, fewer than the product's minimum, more than five"
 QA-0156,qa-agent.md,Dimension 3,Free tool mentions earned and contextual,shared/base-rules/qa.md,do the mentions feel earned and contextual rather than forced or repeated?
 QA-0157,qa-agent.md,Dimension 3,"Fail irrelevant, four or more, or sales-pitch mentions",shared/base-rules/qa.md,"Fail on irrelevant mentions, four or more mentions where one to three"
 QA-0158,qa-agent.md,Dimension 3,Zero mentions fine if nothing relevant,shared/base-rules/qa.md,Zero mentions is fine if nothing in the knowledge base was actually
@@ -324,12 +324,12 @@ QA-0322,qa-agent.md,Step 5b,"No Slack post for Needs Rework, not even short",mod
 QA-0323,qa-agent.md,Step 5b order,"Approved/Escalated: write fields first, Status later",modes/qa.md,"Write every field above now, leaving Status at `In QA`."
 QA-0324,qa-agent.md,Step 5b order,"Then Status, thread link, and post-sent line in one update",modes/qa.md,"Then write, in one update: Status"
 QA-0325,qa-agent.md,Step 5b order,Never a must-act status with no visible post,modes/qa.md,"A status that says a person must act, with no post that"
-QA-0326,qa-agent.md,Step 5b order,"Post fails twice: still write Status, log NOT sent",modes/qa.md,"If the post fails twice, still write the Status, leave Slack Thread"
+QA-0326,qa-agent.md,Step 5b order,"Post fails twice: still write Status, log NOT sent",modes/qa.md,"If the post fails twice, still write the Status, clear Slack Thread"
 QA-0327,qa-agent.md,Step 5b order,Recovery or Step 14 finishes an unsent post,modes/qa.md,"or the Blog Writer's Step 14 in this same session, finishes it"
 QA-0328,qa-agent.md,Step 5c,Post only for Approved or Escalated,modes/qa.md,"Post to the product's Slack channel, only for Approved or Escalated."
 QA-0329,qa-agent.md,Step 5c,Never anything to Slack for Needs Rework,modes/qa.md,"do not send anything to Slack for it, under any circumstance, even"
-QA-0330,qa-agent.md,Step 5c,Check for existing escalation post on current doc,modes/qa.md,first check for an escalation post about the current Blog Doc Link
-QA-0331,qa-agent.md,Step 5c,Escalation about older draft doesn't count,modes/qa.md,One about an older draft doesn't count.
+QA-0330,qa-agent.md,Step 5c,Check for existing escalation post on current doc,modes/qa.md,first check for an escalation post about the current draft
+QA-0331,qa-agent.md,Step 5c,Escalation about older draft doesn't count,shared/guards.md,It counts only when it names the current document's link
 QA-0332,qa-agent.md,Step 5c,Approved: tag everyone on the approver list,modes/qa.md,every approver for this product from Members tagged by Slack ID (G11)
 QA-0333,qa-agent.md,Step 5c,Approved: include score and key measurements,modes/qa.md,Add the key measurements to the same line
 QA-0334,qa-agent.md,Step 5c,Approved: include polish items and open VERIFY tags,modes/qa.md,"open `[VERIFY]` items, Polish items, or anything a person should check or"
@@ -364,7 +364,7 @@ QA-0362,qa-agent.md,Step 5d,Skip when no flags or routing elsewhere,modes/qa.md,
 QA-0363,qa-agent.md,Step 5d,Freshness recheck works without Calendar,modes/qa.md,"to the soonest recheck date, in the 5b update"
 QA-0364,qa-agent.md,Step 6,User correction in chat: distill a reusable rule,modes/qa.md,"distill it into a general, reusable rule"
 QA-0365,qa-agent.md,Step 6,Kinds of correction to capture,modes/qa.md,"disputing a failed dimension, pointing out a check that missed something real"
-QA-0366,qa-agent.md,Step 6,Create Feedback Log row with Status Active,modes/qa.md,"Save it as Suggested only, with `create_records_for_table`, never an update"
+QA-0366,qa-agent.md,Step 6,Create Feedback Log row with Status Active,modes/qa.md,"save it as Suggested only, with `create_records_for_table`, never an update"
 QA-0367,qa-agent.md,Step 6,"Feedback Log fields: Date, Stage QA, What Happened, Rule, Related Item",modes/qa.md,"A Feedback Log row: Date, Product, Stage `QA`, What Happened"
 QA-0368,qa-agent.md,Step 6,Log cross-item patterns without being asked,modes/qa.md,if the same dimension keeps failing across different drafts for this product
 QA-0369,qa-agent.md,Step 6,Note cross-item pattern in What Happened,modes/qa.md,"note in What Happened that it's a cross-item pattern, not a single"

@@ -13,7 +13,7 @@ Each step needs a capability, not just a name. The connections check (setup Step
 | Create, update rows | `create_records_for_table`, `update_records_for_table` | none |
 | Read the structure | `list_tables_for_base`, `get_table_schema` | none |
 | Build the base (setup) | `create_base`, `create_table`, `create_field`, `update_field` | none |
-| Build and check automations (setup, weekly check) | `create_automation`, `update_automation`, `list_automations`, `list_automation_runs`, `list_external_accounts`, `fetch_automation_input_data` | skip the bot (it's optional); the heartbeat then can't be built, and setup says so |
+| Build and check automations (setup, weekly check) | `create_automation`, `update_automation`, `get_automation`, `list_automations`, `list_automation_runs`, `list_external_accounts`, `fetch_automation_input_data` | skip the bot, so waiting updates go out one way only (shared/slack.md, The fallback message); the heartbeat then can't be built either, and setup says so |
 
 On Codex, the Airtable server is `https://mcp.airtable.com/mcp`, added in Codex's MCP settings and signed in once. Tool names are the same.
 
@@ -25,6 +25,7 @@ On Codex, the Airtable server is `https://mcp.airtable.com/mcp`, added in Codex'
 | Read a channel's history | `slack_read_channel` | none for the Orchestrator: stop with an alert in the run output |
 | Read a thread | `slack_read_thread` | same |
 | Read reactions | `slack_get_reactions` | treat reactions as unread and say so in the run summary |
+| Search a channel's messages (for example, an alert posted earlier this month) | `slack_search_public_and_private` | read the channel's history back to the time needed (`slack_read_channel`) |
 | Find a channel or a person | `slack_search_channels`, `slack_search_users`, `slack_read_user_profile` | ask in setup (attended only) |
 
 On Codex, Slack is the official server at `https://mcp.slack.com/mcp`. A Slack workspace admin approves it once for the company.
@@ -39,7 +40,7 @@ On Codex, Slack is the official server at `https://mcp.slack.com/mcp`. A Slack w
 | Check and share access | `get_file_permissions`, `share_file` | name the people who couldn't be shared with |
 | Create a folder | `create_file` with `contentMimeType: "application/vnd.google-apps.folder"` | none |
 
-On Codex, Drive uses Google's own Drive and Docs servers, which need a one-time Google Cloud project and OAuth client made by an admin. Their tool names and abilities differ: the Codex entries in this file are confirmed during testing, and until then Codex plus Drive is a beta, and setup suggests Notion on Codex.
+On Codex, Drive uses Google's own Drive and Docs servers, which need a one-time Google Cloud project and OAuth client made by an admin. Their tool names and abilities differ: the Codex entries in this file are confirmed during testing, and until then Codex plus Drive is a beta, and setup suggests Notion on Codex. When a person on Codex picks Google Drive, setup checks before Step 5 that this session has tools that create a Google Doc or folder and share it (`create_file` and `share_file`, or tools that do the same jobs); if not, it says Drive on Codex is a beta and offers Notion (modes/setup.md, Step 0 and Step 4).
 
 ## Notion (when Doc Home is Notion)
 
@@ -70,6 +71,6 @@ On Codex, Notion is `https://mcp.notion.com/mcp`, signed in with `codex mcp logi
 |---|---|---|
 | Web search and read a page | the session's web search and fetch tools | none: briefs can't be researched without them |
 | Run a script (QA measurements) | the session's code or shell tool | measure by careful reading and say so in the QA report |
-| Scheduled runs (setup) | Claude: `create_trigger`, `list_triggers`, `update_trigger`, `fire_trigger`, `delete_trigger`. In the Claude desktop app the same jobs are `create_scheduled_task`, `list_scheduled_tasks`, `update_scheduled_task`, and `run_scheduled_task` (cron in the computer's own time zone; runs only while the app is open). Codex: `automation_update` from Codex's built-in app tools (kind `cron`, a repeat rule like `RRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA;BYHOUR=9,13,17;BYMINUTE=7`; saved as `~/.codex/automations/[id]/automation.toml`) | show ready-to-paste Automations entries |
+| Scheduled runs (setup) | Claude: `create_trigger`, `list_triggers`, `update_trigger`, `fire_trigger`, `delete_trigger` (the cloud schedule tools). In the Claude desktop app the same jobs are `create_scheduled_task`, `list_scheduled_tasks`, `update_scheduled_task`, and `run_scheduled_task` (cron in the computer's own time zone; runs only while the app is open). In Claude Code, only these desktop tools are used, and only they pass setup's Scheduled tasks check; Claude Code's own cloud schedules aren't used, even when their tools are there, because those runs start in the cloud, where this skill isn't installed. Only the Team row's Schedule Host makes or changes the schedule. It's changed in the app that Schema Map's `schedule` names, and making it in another app moves it there (setup Step 10, Where it lives). Codex: `automation_update` from the Codex app's built-in tools, not the Codex CLI (kind `cron`, a repeat rule like `RRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA;BYHOUR=9,13,17;BYMINUTE=7`; saved as `~/.codex/automations/[id]/automation.toml`) | give the prompt to paste into any app where scheduled tasks work and the content machine skill is installed: Claude with scheduled tasks, the Claude desktop app, or the Codex app, leaving out this app when its check, or creating or updating, failed here (Claude Code without the Claude desktop app's scheduled-task tools, and the Codex CLI, get the whole list; modes/setup.md, Step 10, Later, or in another app). When `schedule` names this app, "repair schedules" and "change how often it runs" name no other app, even when its scheduled tasks are off or the update or create fails there: they say how to fix it in that app and to type 'repair schedules' (or 'change how often it runs') there again (modes/setup.md, Repair schedules) |
 | A browser for AI answer-engine checks | the session's browser tools | skip quietly; scheduled runs note it in Open Questions |
 | Calendar reminders | Google Calendar tools | the Recheck Due field (always used) |

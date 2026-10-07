@@ -5,7 +5,7 @@ BW-0003,blog-writer-agent-installer.md,What this agent is,Rework held to the sam
 BW-0004,blog-writer-agent-installer.md,What this agent is,A section anyone could research in an hour is unfinished,modes/blog-writer.md,"If a section reads like a competent summary, rewrite it"
 BW-0005,blog-writer-agent-installer.md,Run Guards,"G1: check Airtable, Drive, Slack tools before real work",shared/guards.md,"Before any real work, the run checks the tools it needs"
 BW-0006,blog-writer-agent-installer.md,Run Guards,G1: missing Slack uses Notes fallback for posts,DROPPED,Notes fallback replaced by empty Slack Thread Link; see G1 and shared/slack.md When Slack is down
-BW-0007,blog-writer-agent-installer.md,Run Guards,G2: unattended runs never pause for a question,shared/guards.md,A run started by a schedule has no one to answer
+BW-0007,blog-writer-agent-installer.md,Run Guards,G2: unattended runs never pause for a question,shared/guards.md,A run started by a schedule has no one in the chat to answer
 BW-0008,blog-writer-agent-installer.md,Run Guards,G2: unattended brief gap routes back to Brief Agent,modes/blog-writer.md,"Link left empty, which routes it back to the Brief mode"
 BW-0009,blog-writer-agent-installer.md,Run Guards,"G2: smaller gaps get smallest assumption, noted in writer notes",modes/blog-writer.md,make the smallest reasonable assumption and say so plainly
 BW-0010,blog-writer-agent-installer.md,Run Guards,G3: re-read row; skip if status changed since scan,modes/blog-writer.md,"if its Status changed since the batched read, skip it."
@@ -38,11 +38,11 @@ BW-0036,blog-writer-agent-installer.md,Run Guards,G11: post counts only with a r
 BW-0037,blog-writer-agent-installer.md,Run Guards,G11: Approval post sent line in Notes,DROPPED,Notes line replaced by Slack Thread Link set with Status; see shared/slack.md Confirmed post
 BW-0038,blog-writer-agent-installer.md,Run Guards,"G11: retry a failed post once, then record it",shared/slack.md,"read the error, fix what it names, and retry once"
 BW-0039,blog-writer-agent-installer.md,Run Guards,G12: human send-back gets one pass above the cap,shared/guards.md,do one rework pass for their feedback even if
-BW-0040,blog-writer-agent-installer.md,Run Guards,G12: how to tell a human send-back,modes/blog-writer.md,newest Human Feedback entry is newer than its newest QA verdict
+BW-0040,blog-writer-agent-installer.md,Run Guards,G12: how to tell a human send-back,modes/blog-writer.md,is newer than its newest QA verdict and is marked
 BW-0041,blog-writer-agent-installer.md,Run Guards,G12: tell QA to skip escalation check for that audit,modes/blog-writer.md,G13's instruction to skip QA's escalation check for this one audit
 BW-0042,blog-writer-agent-installer.md,Run Guards,"G12: if QA does not approve, escalate",modes/blog-writer.md,"If that audit doesn't approve it, escalate rather than loop again"
-BW-0043,blog-writer-agent-installer.md,Run Guards,G13: never post a second escalation for the same draft,shared/guards.md,"If one exists, don't post again; just set the Status."
-BW-0044,blog-writer-agent-installer.md,Run Guards,G13: escalation about older draft does not count,shared/guards.md,An escalation about an older document doesn't count
+BW-0043,blog-writer-agent-installer.md,Run Guards,G13: never post a second escalation for the same draft,shared/guards.md,"If a post counts, don't post again; just set the Status."
+BW-0044,blog-writer-agent-installer.md,Run Guards,G13: escalation about older draft does not count,shared/guards.md,It counts only when it names the current document's link
 BW-0045,blog-writer-agent-installer.md,Run Guards,G14: size rejection counts toward three attempts,shared/guards.md,that counts toward the three-attempt budget
 BW-0046,blog-writer-agent-installer.md,Run Guards,G14: never split one draft across several Docs,shared/guards.md,never split one brief or draft across several Docs
 BW-0047,blog-writer-agent-installer.md,Run Guards,G15: in-session QA line marks the draft,modes/blog-writer.md,"the row keeps this run's claim, with Claimed By set to"
@@ -81,7 +81,7 @@ BW-0079,blog-writer-agent-installer.md,Step 0,Never ask for saved setup values,m
 BW-0080,blog-writer-agent-installer.md,Step 0,Connector check first,shared/run-start.md,Check each tool this mode needs with its first real call
 BW-0081,blog-writer-agent-installer.md,Step 0,"Setup check, go to first-time setup",DROPPED,"Setup comes from the base; see shared/run-start.md steps 2, 3 and Loading the rules"
 BW-0082,blog-writer-agent-installer.md,Step 0,"Read all reference files, check dates per G9",modes/blog-writer.md,Read every reference file fully before writing a word
-BW-0083,blog-writer-agent-installer.md,Step 0,Decide attended or unattended,shared/run-start.md,An unattended run never asks a question and never enters setup
+BW-0083,blog-writer-agent-installer.md,Step 0,Decide attended or unattended,shared/run-start.md,An unattended run never asks in chat and never enters setup
 BW-0084,blog-writer-agent-installer.md,Step 0,"Hold tone, claims, terms, audience, source rules",modes/blog-writer.md,"brand tone descriptors and hard prohibitions, approved and banned claims"
 BW-0085,blog-writer-agent-installer.md,Step 0,Write to clear the QA scoring categories,modes/blog-writer.md,since this draft is written to already clear them
 BW-0086,blog-writer-agent-installer.md,Step 0.5,Same Airtable mechanism as Brief Agent,DROPPED,Shared mechanism now lives in shared/airtable.md
@@ -124,7 +124,7 @@ BW-0122,blog-writer-agent-installer.md,Step 0.6b,Honest audit of the current dra
 BW-0123,blog-writer-agent-installer.md,Step 0.6b,"Tag each feedback item by type, target, action",modes/blog-writer.md,each one tagged with what kind of feedback it is
 BW-0124,blog-writer-agent-installer.md,Step 0.6b,No checklist item silently dropped,modes/blog-writer.md,Nothing on this checklist gets silently dropped later for seeming minor
 BW-0125,blog-writer-agent-installer.md,Step 0.6b,Write a one-sentence refinement mission,modes/blog-writer.md,Write the refinement mission in one sentence
-BW-0126,blog-writer-agent-installer.md,Step 0.6c,"Conflict order: brief, structural, then stylistic",modes/blog-writer.md,"The Content Brief's own strategy comes first, then structural or strategic feedback"
+BW-0126,blog-writer-agent-installer.md,Step 0.6c,"Conflict order: brief, structural, then stylistic",modes/blog-writer.md,"the Content Brief's own strategy comes first, then structural or strategic feedback"
 BW-0127,blog-writer-agent-installer.md,Step 0.6c,Style never overrides a strategic brief requirement,modes/blog-writer.md,Never let a stylistic preference override a strategic requirement from the brief
 BW-0128,blog-writer-agent-installer.md,Step 0.6c,"Flag conflicts in notes, never pick silently",modes/blog-writer.md,flag the conflict in the writer notes in Agent Notes
 BW-0129,blog-writer-agent-installer.md,Step 0.6d,Work out the draft pass count first,modes/blog-writer.md,Work out this item's draft pass count (G6)
@@ -247,7 +247,7 @@ BW-0245,blog-writer-agent-installer.md,Step 2b,No automatic rhetorical-question 
 BW-0246,blog-writer-agent-installer.md,Step 2b,No long bullet list without lead-in,shared/base-rules/writing.md,No bullet list longer than six items without a prose lead-in
 BW-0247,blog-writer-agent-installer.md,Step 2b,No three bullet lists in a row,shared/base-rules/writing.md,no three consecutive bullet lists with no paragraph text between them
 BW-0248,blog-writer-agent-installer.md,Step 2b,No three sentences starting with same word,shared/base-rules/writing.md,no three consecutive sentences starting with the same word
-BW-0249,blog-writer-agent-installer.md,Step 2b,No em dashes ever,shared/base-rules/writing.md,"Punctuation: no em dashes anywhere, ever"
+BW-0249,blog-writer-agent-installer.md,Step 2b,No em dashes unless an Exception rule allows them,shared/base-rules/writing.md,"Punctuation: no em dashes anywhere, unless the product's Exception rule allows them"
 BW-0250,blog-writer-agent-installer.md,Step 2b,No semicolons in explanatory prose,shared/base-rules/writing.md,"No semicolons in explanatory prose, use two sentences instead."
 BW-0251,blog-writer-agent-installer.md,Step 2b,No dramatic ellipses,shared/base-rules/writing.md,No ellipses for dramatic effect.
 BW-0252,blog-writer-agent-installer.md,Step 2c,Talk to the reader as you,shared/base-rules/writing.md,"Talk to the reader as ""you."""

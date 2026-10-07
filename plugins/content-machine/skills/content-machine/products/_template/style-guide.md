@@ -14,10 +14,10 @@
 [Default person ("you"), when "we" is allowed, contractions (yes or no), analogies, and where examples go (before the abstract point, not after).]
 
 ## Reading level
-[A grade level, and which technical terms readers know versus which need a plain-words gloss on first use.]
+[A grade level or range (the built-in default is grade 5 to 6), and which technical terms readers know versus which need a plain-words gloss on first use.]
 
 ## Punctuation rules
-[Any punctuation rules beyond the built-in ones (the built-in rules already ban em dashes).]
+[Your punctuation rules. The built-in default bans em dashes; if yours differs, setup shows both and you choose.]
 
 ## Words and phrases that must never appear
 [Banned words, banned openers, banned transitions, and banned sentence patterns, each as a plain list the QA script can scan for.]

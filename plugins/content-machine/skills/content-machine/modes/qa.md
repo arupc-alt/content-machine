@@ -37,8 +37,8 @@ Settings never come from a person in chat. The product, its reference files and 
 
 Do shared/run-start.md steps 1 to 6.
 
-- **Connectors (G1).** Airtable and the piece's document home (Drive or Notion) are required. Slack is needed only on an Approved or Escalated verdict. Google Calendar is optional (G20). A shell or code tool runs scripts/measure.py; without one, measure by hand (Step 1.5).
-- **Work queue,** in this order. Within each step: Priority High first, then the oldest (Last Updated At). Every step is limited to rows of one product at a time, by the Product field (G4), and skips the rows run-start step 6 skips (Needs Fix, Duplicate Decision Pending, Escalated, a live claim).
+- **Connectors (G1).** Airtable and the piece's document home (Drive or Notion) are required. Slack is needed only on an Approved or Escalated verdict, or for a "Can't open a document" post (G24). Google Calendar is optional (G20). A shell or code tool runs scripts/measure.py; without one, measure by hand (Step 1.5).
+- **Work queue,** in this order. Within each step: Priority High first, then the oldest (Last Updated At). Every step is limited to rows of one product at a time, by the Product field (G4), and skips the rows run-start step 6 skips (Needs Fix, Duplicate Decision Pending, an Open Question waiting, Escalated, a live claim).
   1. `In QA` rows with no live claim whose QA verdict for the current draft is already saved (Last Saved Step reads `QA round [n] verdict saved: [verdict]` for this draft's round) but whose close-out didn't finish: finish it from Step 5 without auditing again (G17, G21).
   2. `In QA` rows whose claim is stale (shared/airtable.md, Claims): take them over per shared/run-start.md step 4 (add 1 to Stall Count, resume from Last Saved Step; at Stall Count 2, escalate instead).
   3. `In QA` rows with empty claim fields.
@@ -52,7 +52,7 @@ Do shared/run-start.md steps 1 to 6.
 
 In the loop, use what the Blog Writer loaded. On its own, load per shared/run-start.md (Loading the rules): the base rules this mode's load map names (shared/base-rules/qa.md), then this product's Active Reference rows (files, product rules, learned rules). Print the Rules Loaded line and save it in the row's Rules Loaded field, with Reference Version, in the claim update.
 
-Read all of the product's reference files fully: the Reference rows of Type Brand guide, Style guide, Quality checks, and Product knowledge, plus Links and CTAs, Competitors, and Best past posts when present. This mode leans on the quality checks more heavily than any other mode in the pipeline, since they are the actual rubric this audit is built to enforce. How the product's own quality checks combine with the base dimensions (senior authority, added dimensions, the reading-level exception, and their own score bands or retry limits) is in shared/base-rules/qa.md, The product's own quality checks.
+Read all of the product's reference files fully: the Reference rows of Type Brand guide, Style guide (the writing profile included), Quality checks, and Product knowledge, plus Links and CTAs, Competitors, and Best past posts when present, leaving out the supplementary rows (Section starting with `Supplementary:`). Then read every supplementary row the piece's topic needs, found by its section name in the index row (shared/run-start.md, Loading the rules). This mode leans on the quality checks more heavily than any other mode in the pipeline, since they are the actual rubric this audit is built to enforce. How the product's own quality checks combine with the base dimensions (senior authority, added dimensions, the exceptions for reading level and for lines that are looser than a base rule or different in kind from it, and their own score bands or retry limits) is in shared/base-rules/qa.md, The product's own quality checks. How an Active Exception rule replaces a base rule is in shared/base-rules/qa.md, Company exceptions.
 
 If a stale-file notice applies (G9), say it once in the run output and carry on.
 
@@ -62,7 +62,7 @@ If a stale-file notice applies (G9), say it once in the run output and carry on.
 
 **Locate this item's record.** Use the record ID the Blog Writer handed over, or filter Content Items on Item ID, or match the Blog Doc Link if the trigger was a pasted document link with no ID. Keep the record ID; every later update reuses it. If a pasted link matches no row, say so in chat and stop: QA only scores pieces the base tracks.
 
-**Check the links are in the document home.** If a stored link isn't a document in the piece's Doc Home (a Google Doc for Drive, a Notion page for Notion), for example a claude.ai link, don't open it with Claude Docs or any other tool. Stop work on that item, say in the run output that it needs copying into its document home first, and add one Agent Notes block saying the same if this run holds the claim.
+**Check the links are in the document home.** If a stored link isn't a document in the piece's Doc Home (a Google Doc for Drive, a Notion page for Notion), for example a claude.ai link, don't open it with Claude Docs or any other tool. Stop work on that item, say in the run output that it needs copying into its document home first, and handle it per G24. In the loop, the Blog Writer already did this (its Reading a document link). In a standalone run, check before claiming: if the newest Agent Notes block is already a can't-open block for the current link, skip the row quietly. Otherwise claim the row first (Claim it, below), and check the row as read back the same way: if another run wrote that block in between, put the row back and clear the claim, with no new block and no post. Otherwise, in one update, add one Agent Notes block naming the link, put the row back where it was, and clear the claim, and post once with the "Can't open a document" message, in its wording for a link outside the document home (shared/slack.md).
 
 **Claim it (standalone only).** Re-read the row right before starting (G3). If its Status is no longer `In QA`, or another run holds a live claim, skip it. An attended run on a pasted link audits only a row in `In QA`, `Needs Rework` (blog stage), or `QA Passed - Awaiting Publish Review` with no live claim; any other status: say why in chat and stop. If a QA verdict already exists for its current draft (G17), don't audit again: act on that verdict (Step 5). Otherwise claim it per shared/airtable.md (Claims): Claimed By `QA, scheduled` or `QA, [person's name]`, Claimed At, Claim Token, Status `In QA` (an attended run on a pasted link sets it here, for a row in one of the statuses above), Last Saved Step `QA round [n] started`, Rules Loaded, Reference Version, and Last Updated At, in one update. A blank Owner gets the Team row's Schedule Host in the same update. Read the row back, and go ahead only if the Claim Token is this run's own.
 
@@ -70,7 +70,7 @@ If a stale-file notice applies (G9), say it once in the run output and carry on.
 
 **The round number.** This audit's QA round `[n]` is the one the Blog Writer hands over. In a standalone run it is the draft pass count plus 1. The report and its title call round 1 "v1" and later rounds "rework [N]", where N is the draft pass count.
 
-**Apply the product and learned rules.** Read every Active product rule and learned rule for this product before auditing anything. If a rule directly bears on one of the dimensions in shared/base-rules/qa.md (a past correction about CTA copy, keyword placement, tone, or anything else this audit checks), hold it as part of that dimension's standard for this audit, not just as something the Blog Writer was supposed to apply. A draft that violates a standing rule fails the matching dimension, even if it would otherwise pass. Then add one check per Active product rule and learned rule whose Agents include QA (shared/base-rules/qa.md, Product and learned rule checks). A failed Must rule sends the draft back, whatever the score (shared/rule-extraction.md). Learned rules apply only to their own product (G4).
+**Apply the product and learned rules.** Read every Active product rule and learned rule for this product before auditing anything. If a rule directly bears on one of the dimensions in shared/base-rules/qa.md (a past correction about CTA copy, keyword placement, tone, or anything else this audit checks), hold it as part of that dimension's standard for this audit, not just as something the Blog Writer was supposed to apply. A draft that violates a standing rule fails the matching dimension, even if it would otherwise pass, except a Should rule whose miss the writer notes explain, which is a Polish item (shared/base-rules/qa.md, Product and learned rule checks). Then add one check per Active product rule and learned rule whose Agents include QA, other than Exception rules (shared/base-rules/qa.md, Product and learned rule checks). A failed Must rule sends the draft back, whatever the score (shared/rule-extraction.md). An Active Exception rule, which the company chose over a base rule after a short warning, is the bar in place of the one base rule it names, in every dimension and blocker that checks it (shared/base-rules/qa.md, Company exceptions). It's applied only there: the per-rule checks skip rows with Category Exception, so an Exception rule is never also checked or scored as a standalone Must rule, and it isn't counted in Product Rules Result. Learned rules apply only to their own product (G4).
 
 ---
 
@@ -100,11 +100,12 @@ Save the exports in the run's working folder, then run the script (it needs only
 
 Options, filled from the brief and the base:
 
-- `--keyword "[primary keyword]"` from the brief.
+- `--keyword "[primary keyword]"` from the brief, or the keyword in the writer notes' "Primary keyword changed by" line when there is one.
 - `--target-words [N]` from the brief's target word count.
 - `--spelling US` or `UK` from the product's Settings row (Spelling).
 - `--site [Website URL]` from the product's Settings row, so links split into internal and external.
-- `--banned [file]`: a file with one word or phrase per line: the Blog Writer's Step 2b banned words and constructions, the style guide's own never-use list, and the words any Script product rule bans. A hit on this list is a failure on any use.
+- `--banned [file]`: a file with one word or phrase per line: only the words and phrases Step 2b (shared/base-rules/writing.md) bans outright (its transitions, filler, and the openers it bans in any use), the style guide's own never-use list, and the words any Script product rule bans. A hit on this list is a failure on any use, so leave out Step 2b's conditional words, the ones banned only in some uses ("just," "simply," "obviously," "clearly," "explore," "discover," "learn," an unsupported "best" or "fastest"): those are judged by reading, in their dimension.
+- `--grade-target [N]` and `--grade-ceiling [N]`, only when the product has an Active Exception rule for reading level: the top of its target range, and its ceiling (the top of the range plus 1), from the rule's Content. Without one, leave both out; the defaults are grade 6 and grade 7 (shared/base-rules/writing.md, Step 2a).
 - `--check-links` to fetch every link and report its status. If the session's network can't reach the web from the shell, check each link with the session's web fetch tool instead. A dead citation link is a Blocker.
 
 The script prints one JSON report. The numbers it prints are evidence for the report, and every hit it lists goes into the matching dimension with its location. What it measures, and where each part goes:
@@ -115,7 +116,7 @@ The script prints one JSON report. The numbers it prints are evidence for the re
 | `punctuation` (semicolons, "...", exclamation marks, arrows) | 14 |
 | `raw_markup_in_text` (raw Markdown links, `**`, `#`, dividers, `>`, backslash escapes, HTML entities or tags shown as text) | 19 |
 | `spacing` (Drive: blocks back to back with no empty paragraph, two empty paragraphs in a row; Notion: two empty blocks in a row) | 19 |
-| `reading` (words, sentences, average sentence, share over 20 words, spread, Flesch-Kincaid grade, long sentences, repeated openings) | 17 and 18 |
+| `reading` (words, sentences, average sentence, share over 20 words, spread, Flesch-Kincaid grade, the grade target and ceiling used, `grade_over_target` and `grade_over_ceiling_blocker`, long sentences, repeated openings) | 17 and 18 |
 | `length` (words against the brief's target, within 10%) | 17 |
 | `structure` (headings, Title Case, words per H2 section and share, sections far shorter than the rest, visual elements per section, the longest stretch with no list, table, bolded key line, or callout, long paragraphs, FAQ questions and answer lengths, tables with header rows and borders) | 9, 12, 17, 19, 20 |
 | `tags` (`[VERIFY]` and `[FRESHNESS_FLAG]` tags with locations, image suggestions) | 10 and 15 |
@@ -125,15 +126,15 @@ The script prints one JSON report. The numbers it prints are evidence for the re
 | `spelling` (the other spelling's forms) | 14 |
 | `links` (every link's URL and anchor text, internal or external, weak anchors, bare URLs that aren't clickable, status when checked) | 2, 15, 19 |
 | `keyword` (H1, first paragraph, first 100 words, H2s, body count, density, conclusion, SEO title, meta description, slug) | 1 |
-| `blocker_candidates` | a list to confirm by reading, never a verdict on its own |
+| `blocker_candidates` (em dashes, a word count more than 10 percent under the target, a reading level above the grade ceiling, the keyword missing from the H1 or first paragraph, rendering problems, dead links) | a list to confirm by reading, never a verdict on its own |
 
-Adapt as needed: if a dimension needs a count the script doesn't make, measure it with a short extra script and keep its output with the rest. The script finds candidates; judging them is still QA's job (an AI-tell hit is a flag to review in context, and a bare year may be reader-useful).
+Adapt as needed: if a dimension needs a count the script doesn't make, measure it with a short extra script and keep its output with the rest. The script finds candidates; judging them is still QA's job (an AI-tell hit is a flag to review in context, and a bare year may be reader-useful). A hit that conflicts only with an Active Exception rule is ignored for that rule, for example `headings_not_in_title_case` when the product's Exception rule asks for sentence-case headings, or the em dash count when it allows em dashes (shared/base-rules/qa.md, Company exceptions).
 
 ---
 
 ## Step 2: The audit, each dimension a clear pass or fail, with a severity
 
-Audit the draft against every dimension in shared/base-rules/qa.md, plus any dimension the product's quality checks add, plus one check per Active product rule and learned rule for QA. Follow that file exactly: how every dimension is judged, the severities (Blocker, Standard, Polish), the blocker list, and each dimension's bar. Every dimension gets a clear pass or fail; every failure gets a severity, its exact location, what's wrong, and the concrete fix; repeated instances are listed one per line.
+Audit the draft against every dimension in shared/base-rules/qa.md, plus any dimension the product's quality checks add, plus one check per Active product rule and learned rule for QA, other than Exception rules, which are judged only inside the dimension or blocker they move (shared/base-rules/qa.md, Product and learned rule checks). Follow that file exactly: how every dimension is judged, the severities (Blocker, Standard, Polish), the blocker list, and each dimension's bar. Every dimension gets a clear pass or fail; every failure gets a severity, its exact location, what's wrong, and the concrete fix; repeated instances are listed one per line.
 
 On a rework, check every issue from the previous QA report and mark it fixed or not fixed.
 
@@ -164,7 +165,7 @@ Words: [count] of [brief target] ([percent]) | Reading level: grade [X] | Averag
 ## Issues
 For each failed dimension, most severe first:
 - **[Dimension name] ([Blocker or Standard]):** [Exact location]. [What's wrong, specifically]. [The concrete fix.]
-For each failed product or learned rule:
+For each failed product or learned rule (a Should rule whose miss the writer notes explain, or one that bears on no dimension, goes under Polish before publish instead):
 - **[Rule ID] ([Must or Should]):** "[the exact line that broke it]". [What's wrong, specifically]. [The concrete fix.]
 
 ## Earlier issues
@@ -178,7 +179,7 @@ One or two lines on the draft's real strengths, briefly. A rework pass that only
 ```
 
 - If measurements were taken by hand, or from `read_file_content` instead of an export, add one line under Measurements saying so.
-- Leave out "Earlier issues" on v1, and leave out the product rules lines when no product or learned rule applies to QA.
+- Leave out "Earlier issues" on v1, and leave out the product rules lines when no product or learned rule other than an Exception rule applies to QA.
 - The QA Score written to Airtable is the passed count over the total, for example `21/23`, not a percentage (shared/base-rules/qa.md, Scoring).
 - The report itself follows the house rules it checks: plain words, no em dashes, no AI-tell phrasing.
 - In the saved document, the headings are real headings and the lists are real lists, in both document homes (the storage files say how).
@@ -209,7 +210,7 @@ Otherwise, route normally per Step 5.
 **5b. Update the record.** One `update_records_for_table` call on Content Items, per shared/airtable.md (Writing rules):
 
 - QA Score: the passed count over the total, as text, like `21/23`. Use this audit's real total.
-- Product Rules Result: passed of checked, as text, like `11 of 12`. Leave it blank when no product or learned rule applies to QA.
+- Product Rules Result: passed of checked, as text, like `11 of 12`, leaving out Exception rules (they're judged inside the dimensions they move). Leave it blank when no product or learned rule other than an Exception rule applies to QA.
 - QA Report Link: the report's link.
 - QA Round: `[n]`.
 - Last Saved Step: `QA round [n] verdict saved: [verdict]` (Approved, Needs Rework, or Escalated).
@@ -222,19 +223,19 @@ QA never changes Draft Rework Count or Brief Rework Count; it only reads them (S
 
 On a Needs Rework verdict, that Agent Notes block and the report are the entire handoff to the Blog Writer: its rework step (or, in the same session, its Step 14) reads Agent Notes directly and reworks the draft itself. There is no Slack post for this case, not even a short one.
 
-**The order for Approved and Escalated** (shared/slack.md, Confirmed post). Write every field above now, leaving Status at `In QA`. Post next (5c). Then write, in one update: Status (`QA Passed - Awaiting Publish Review` or `Escalated - Needs Human Input`), Slack Thread Link set to the post's link, Stall Count 0, an Agent Notes line `QA [ISO time]: [Approval or Escalation] post sent: [link]`, Last Updated At, and, in a standalone run, the cleared claim fields. A status that says a person must act, with no post that person can see, must never happen. If the post fails twice, still write the Status, leave Slack Thread Link empty, add `QA [ISO time]: [Approval or Escalation] post NOT sent: [error]` to Agent Notes with the full message you would have sent, and say so in the run output. The next run's Recovery step (shared/run-start.md, step 4), or the Blog Writer's Step 14 in this same session, finishes it.
+**The order for Approved and Escalated** (shared/slack.md, Confirmed post). Write every field above now, leaving Status at `In QA`. Post next (5c). Then write, in one update: Status (`QA Passed - Awaiting Publish Review` or `Escalated - Needs Human Input`), Slack Thread Link set to the post's link, Stall Count 0, an Agent Notes line `QA [ISO time]: [Approval or Escalation] post sent: [link]`, Last Updated At, and, in a standalone run, the cleared claim fields. A status that says a person must act, with no post that person can see, must never happen. If the post fails twice, still write the Status, clear Slack Thread Link (it may still hold the brief's or an earlier draft's post), add `QA [ISO time]: [Approval or Escalation] post NOT sent: [error]` to Agent Notes with the full message you would have sent, and say so in the run output. The next run's Recovery step (shared/run-start.md, step 4), or the Blog Writer's Step 14 in this same session, finishes it.
 
 **5c. Post to the product's Slack channel, only for Approved or Escalated.** Never for Needs Rework. A Needs Rework verdict ends at 5b; do not send anything to Slack for it, under any circumstance, even a brief status ping.
 
 Post per shared/slack.md: the product's Slack Channel ID from its Settings row, every approver for this product from Members tagged by Slack ID (G11), the plain-words rules in "How every message reads," and the `(Content Machine)` marker as the last line.
 
 - **If approved:** use the "Blog passed its checks" template. Its content:
-  - The Score line carries the base score and, when product rules applied, the product rules result. Add the key measurements to the same line: "[N] words, grade [X] reading level."
+  - The Score line carries the base score and, when a product or learned rule other than an Exception rule applied to QA, the product rules result. Add the key measurements to the same line: "[N] words, grade [X] reading level."
   - "Before you publish" holds up to 3 short lines, in plain words: open `[VERIFY]` items, Polish items, or anything a person should check or recheck. Leave it out when there's nothing to check.
   - Link the draft's document and the QA report.
   - It asks for the final human check without implying the piece is live: the template's last line says what a tick or a reply does.
   - This mode's job ends the moment that message posts; it never comes back to check what the human did with it. The Orchestrator watches `QA Passed - Awaiting Publish Review`, reads the tick, cross, or reply, and writes `Published` or `Needs Rework` back onto this row.
-- **If escalated:** first check for an escalation post about the current Blog Doc Link (G14). If one exists, don't post again; just write the Status. One about an older draft doesn't count. Otherwise use the "Stuck after 3 rounds" template: up to 3 short lines on what still fails after three passes, then the draft and QA report links, so a person isn't starting from zero.
+- **If escalated:** first check for an escalation post about the current draft that still counts under G14. If one exists, don't post again; just write the Status. Otherwise use the "Stuck after 3 rounds" template: up to 3 short lines on what still fails after three passes, then the draft and QA report links, so a person isn't starting from zero.
 - Keep the post short and plain: a summary and the links, never the whole report. Don't use pipeline words (shared/slack.md lists them, including status names, dimension numbers, "rubric," "freshness flags," "Polish items," and "rework 1"), don't mention missing tools, and don't type a "Sent using" line; Slack adds it.
 - The post must agree with the Airtable record: the same score and the same verdict.
 
@@ -253,12 +254,12 @@ Confirm the tool's response returned a message link (G11). Then write that link 
 
 Conditional: if a person corrects this audit directly in chat before the session ends, whether that's disputing a failed dimension, pointing out a check that missed something real, or adding a standard these rules don't currently cover, distill it into a general, reusable rule. This is also the place to log a pattern noticed across multiple items, not just a single one: if the same dimension keeps failing across different drafts for this product for the same underlying reason, that's worth a standing rule even without a person explicitly asking for one; note in What Happened that it's a cross-item pattern, not a single correction.
 
-Save it as Suggested only, with `create_records_for_table`, never an update (shared/airtable.md):
+First check it isn't already there (shared/rule-extraction.md, Approving learned rules): if the same rule exists as Suggested, Active, or Retired, or a base or product rule already says it, don't save it. Otherwise save it as Suggested only, with `create_records_for_table`, never an update (shared/airtable.md):
 
 1. A Reference row: Entry and Rule ID (the product's next free learned-rule ID (shared/rule-extraction.md, Rule IDs), like `ACME-L03`), Product, Type `Rule`, Layer `Learned rule`, Content (the rule, one testable line), Category, Agents, Level (Must or Should), Check Method (Script or Judged), Source Quote (the person's exact words, or the pattern's evidence), Status `Suggested`, Version 1.
 2. A Feedback Log row: Date, Product, Stage `QA`, What Happened, The Rule, Reference Rule ID, Status `Suggested`, and Related Item linked to this row.
 
-Never make a rule Active. Only a person's yes does that (shared/rule-extraction.md); tell the person in chat that the rule is saved as a suggestion and goes live only after an approver says yes. A rule the person's correction would use to lower a quality bar or an honesty rule isn't saved; say why. An unattended run logs only cross-item patterns, since no one corrects it in chat.
+Never make a rule Active. Only a person's yes does that (shared/rule-extraction.md); when a rule was saved, tell the person in chat that it is saved as a suggestion and goes live only after an approver says yes. A correction that would change a rule that never changes (shared/rule-extraction.md, Rules that never change) isn't saved; say why. One that would replace another base rule isn't saved as a learned rule either: say that the company can choose its own guideline for that rule, after a short warning, by adding it to its reference files and typing 'update reference files'. An unattended run logs only cross-item patterns, since no one corrects it in chat.
 
 ---
 
@@ -268,13 +269,13 @@ Never make a rule Active. Only a person's yes does that (shared/rule-extraction.
 - The Step 1.5 measurements were taken with scripts/measure.py where a shell was available, and the numbers in the report came from it
 - Every dimension was actually checked, not assumed; each has a clear pass or fail and a severity for every failure, no split calls
 - Every failure has a specific location, a specific problem, and a specific fix, none vague enough to need a follow-up question
-- Every em dash found in the draft is listed by exact location; the QA report itself contains zero em dashes
-- Word count, reading level, and sentence length were checked against the brief's target and the grade 5 to 6 standard
+- Every em dash found in the draft is listed by exact location (unless an Active Exception rule allows them); the QA report itself contains zero em dashes
+- Word count, reading level, and sentence length were checked against the brief's target and the grade 5 to 6 standard, or the range and ceiling of the product's reading-level Exception rule, passed to the script as `--grade-target` and `--grade-ceiling`; sentence length was checked against Step 2a's bars either way, unless a separate Exception rule replaces them
 - The saved document was checked for spacing, garbled characters, raw Markdown, and emoji
 - AI-tell word, phrase, and structure hits from Dimensions 13 and 23 were judged for whether they're doing real work in context, not auto-failed on sight, except words the Blog Writer or style guide ban outright
 - No claim about a feature, price, or capability is anchored to a date or version number without a reader-useful reason, per Dimension 16
 - On a rework, every issue from the previous QA report was checked and marked fixed or not fixed
-- Every Active product rule and learned rule for this product was applied while auditing, not just read and set aside; each one for QA has its own check, and a failed Must rule sent the draft back whatever the score
+- Every Active product rule and learned rule for this product was applied while auditing, not just read and set aside; each one for QA, other than an Exception rule, has its own check, and a failed Must rule sent the draft back whatever the score
 - The escalation check in Step 4 ran before Status was set, and G13's send-back exception was applied only for that one rework pass
 - The escalation check used the draft pass count (G6), never Brief Rework Count and never the two counts added together
 - The QA report was saved per the piece's storage file (a new Google Doc in the product's Drive Folder, or the piece's QA Report page with the newest round on top), passed the access check (G19), and is linked in QA Report Link
