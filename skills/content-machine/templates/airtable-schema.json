@@ -1168,10 +1168,10 @@
         "name": "Heartbeat Late",
         "type": "formula",
         "options": {
-          "formula": "IF(OR({Paused}, AND({Days}='Weekdays', OR(WEEKDAY(NOW())=0, WEEKDAY(NOW())=6))), 0, IF(OR(IF({Last Run Orchestrator}, DATETIME_DIFF(NOW(), {Last Run Orchestrator}, 'hours') > IF(AND({Days}='Weekdays', WEEKDAY(NOW())=1), 74, 26), 0), IF({Last Run Brief}, DATETIME_DIFF(NOW(), {Last Run Brief}, 'hours') > IF(AND({Days}='Weekdays', WEEKDAY(NOW())=1), 74, 26), 0), IF({Last Run Blog Writer}, DATETIME_DIFF(NOW(), {Last Run Blog Writer}, 'hours') > IF(AND({Days}='Weekdays', WEEKDAY(NOW())=1), 74, 26), 0)), 1, 0))"
+          "formula": "IF(OR({Paused}, AND({Limit Reached}, {API Month}=DATETIME_FORMAT(NOW(), 'YYYY-MM'))), 0, IF(OR(IF({Last Run Orchestrator}, DATETIME_DIFF(NOW(), {Last Run Orchestrator}, 'hours') > IF(AND({Days}='Weekdays', OR(WEEKDAY(NOW())=5, WEEKDAY(NOW())=6, WEEKDAY(NOW())=0, WEEKDAY(NOW())=1)), 78, 30), 0), IF({Last Run Brief}, DATETIME_DIFF(NOW(), {Last Run Brief}, 'hours') > IF(AND({Days}='Weekdays', OR(WEEKDAY(NOW())=5, WEEKDAY(NOW())=6, WEEKDAY(NOW())=0, WEEKDAY(NOW())=1)), 78, 30), 0), IF({Last Run Blog Writer}, DATETIME_DIFF(NOW(), {Last Run Blog Writer}, 'hours') > IF(AND({Days}='Weekdays', OR(WEEKDAY(NOW())=5, WEEKDAY(NOW())=6, WEEKDAY(NOW())=0, WEEKDAY(NOW())=1)), 78, 30), 0)), 1, 0))"
         }
       },
-      "note": "1 means an agent has missed a full run day (26 hours; 74 hours over a weekend in Weekdays mode). Weekend days in Weekdays mode never count, and a blank Last Run never counts. Days are judged in UTC, which is close enough for a 26-hour window."
+      "note": "1 means an agent has missed a full run day: 30 hours, or 78 hours from Friday to Monday (UTC) in Weekdays mode, so a weekend never counts in any time zone. Paused never counts, nor does Limit Reached during the month it was reached, and a blank Last Run never counts."
     }
   ],
   "automations": [

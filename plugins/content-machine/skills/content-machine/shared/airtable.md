@@ -19,7 +19,8 @@ Setup writes it, and "repair the base" rewrites it. Shape:
   "tables": {"content_items": "tbl...", "settings": "tbl...", "team": "tbl...", "reference": "tbl...", "members": "tbl...", "rework_history": "tbl...", "feedback_log": "tbl..."},
   "fields": {"content_items.Status": "fld...", "content_items.Item ID": "fld...", "...": "..."},
   "choices": {"content_items.Status.Awaiting Brief Approval": "sel...", "...": "..."},
-  "channels": {"[Product]": "[Slack Channel ID]"}
+  "channels": {"[Product]": "[Slack Channel ID]"},
+  "archive": "app... (only after 'archive old pieces')"
 }
 ```
 
@@ -38,7 +39,7 @@ Keys are the table key, a dot, and the field name exactly as in the template. Ch
 | Members | 1 per person | runs that post or decide | setup, and "add a teammate" |
 | Reference | files and rules | runs with real work, filtered to one product and Status Active | setup and "update reference files"; any agent may add a learned rule, only as Suggested; only the Orchestrator sets one Active or Retired, and only on an approver's yes or no |
 | Content Items | 1 per piece | every run | the agent that holds the claim; the Orchestrator for its own fields |
-| Rework History | 1 per rework pass | Brief Agent, Blog Writer, QA | the agent doing that pass |
+| Rework History | 1 per rework pass | Brief Agent, Blog Writer, QA, and the Orchestrator (to tell used feedback from new) | the agent doing that pass |
 | Feedback Log | 1 per piece of feedback | Orchestrator, Brief Agent, Blog Writer | Orchestrator, QA, Brief Agent, Blog Writer create rows; only the Orchestrator updates one, to set Status Active or Retired when the approver answers, matched by Reference Rule ID |
 
 ## Content Items field ownership
@@ -71,8 +72,8 @@ Two people, or a person and a schedule, can run the same mode at once. Before wo
 
 1. Make a token: the mode name, the current UTC time to the second, and 4 random letters, like `blog-20261006T091502-kqzm`.
 2. Write Claimed By (mode, and "scheduled" or the person's name), Claimed At (now), Claim Token, the working Status for this step, and Last Updated At, in one `update_records_for_table` call.
-3. Read the row back. If Claim Token is your token, go ahead. If not, another run has it: drop the row and move to the next one.
-4. A claim is stale when Claimed At is more than 2 rounds old and Last Updated At hasn't moved since. Two rounds means twice the longest gap between the Team row's Round Hours within a day, and never less than 4 hours (8 hours at 3 a day, 12 hours at 2 a day, 8 hours every 4 hours). A stale claim may be taken over by the owning agent's next run (run-start step 4).
+3. Read the row back. If Claim Token is your token, go ahead. If not, another run has it: drop the row and move to the next one. Before any write that comes more than an hour after this run's last write to the row (a computer that slept mid-run), read Claim Token again; if it isn't yours anymore, stop work on that row without writing.
+4. Every write that keeps the claim also sets Claimed At to now, so a long run that's still working never looks stale. A claim is stale when Claimed At is more than 2 rounds old. (Last Updated At isn't used for this, since other runs, like the Orchestrator adding feedback, also write it.) Two rounds means twice the longest gap between the Team row's Round Hours within a day, and never less than 4 hours (8 hours at 3 a day, 12 hours at 2 a day, 8 hours every 4 hours). A stale claim may be taken over by the owning agent's next run (run-start step 4).
 
 When the work for a step is done, clear Claimed By, Claimed At, and Claim Token in the same update that sets the next Status.
 
@@ -95,7 +96,8 @@ A check for "a QA verdict was saved" matches any value that starts with `QA roun
 - Confirm every write from its own response. If a write fails, retry once after 2 seconds. If it fails again, stop the run with one alert naming the row and the field.
 - Every write sets Last Updated At to now.
 - New rows in Rework History and Feedback Log are always `create_records_for_table`, never an update.
-- Never delete a row. Never merge rows. That's always a person's call.
+- **Agent Notes and Human Feedback only ever grow, but an Airtable cell holds 100,000 characters.** Before a write would take either past about 90,000 characters, shorten the oldest blocks to one line each, keeping every source link and every Item ID, and add one line saying older entries were shortened. Never drop a source link: the Orchestrator uses them to know what's been processed.
+- Never delete a row. Never merge rows. That's always a person's call. The one exception is setup's "archive old pieces", after a person's yes.
 
 ## Creating a Content Items row
 
@@ -108,8 +110,8 @@ A check for "a QA verdict was saved" matches any value that starts with `QA roun
 Every run starts with as few reads as possible (each table read is 1 API call, and each page of 100 rows is its own call):
 
 - Team row (1 call).
-- Content Items, filtered to rows that are not Published and not Rejected, with only the fields this mode needs (1 call, more pages only for a big backlog). The Orchestrator reads every row, Published and Rejected included, because feedback can arrive on any of them. The duplicate check (run-start step 5) also needs every row's Primary Keyword, Input, and Status, so a run that creates a row reads them too.
-- Settings, Members, and Reference only when the queue has real work. Reference is filtered to one product and Status Active, and its row count is checked against Team's Reference Row Count for that product (a JSON object of product name to number, like `{"Acme Writer": 42}`; always write it back in that shape). If fewer rows come back than Reference Row Count, read the next page; if still fewer, stop with one alert: "Reference rows for [product] didn't all load." If more come back, use them all, set Reference Row Count for that product to the new number, and note it in the run summary.
+- Content Items, filtered to rows that are not Published and not Rejected, with only the fields this mode needs (1 call, more pages only for a big backlog). The Orchestrator reads a wider but still filtered set, since feedback can arrive on finished pieces too (modes/orchestrator.md, The batched read). The duplicate check (run-start step 5) also needs every row's Primary Keyword, Input, and Status, so a run that creates a row reads them too.
+- Settings, Members, and Reference only when the queue has real work. Reference is filtered to one product and Status Active, and its row count is checked against Team's Reference Row Count for that product (a JSON object of product name to number, like `{"Acme Writer": 42}`; always write it back in that shape). If fewer rows come back than Reference Row Count, read the next page; if still fewer, skip that product this run (other products go on) with one alert: "Reference rows for [product] didn't all load. If rows were retired on purpose, type 'update reference files'." If more come back, use them all, set Reference Row Count for that product to the new number, and note it in the run summary.
 - The Orchestrator reads Settings and Members only when its Content Items read or its Slack window shows something to act on, and reads Reference only on its first run of each run day, or when a learned rule is in play (modes/orchestrator.md).
 
 ## The API budget
@@ -126,4 +128,4 @@ How the calls add up. A run with nothing to do costs 2 calls (the Team row and C
 
 ## Records
 
-The free plan holds 1,000 records per base. The weekly full check counts rows in every table and saves Records Count. Past 900, post one alert offering to archive Published pieces older than 6 months: move them to a base named "[Company] Content Machine Archive", and leave a stub row (Item ID, Primary Keyword, Live URL, Status Published) for the duplicate check. Archiving runs only after a person says yes.
+The free plan holds 1,000 records per base. The weekly full check counts rows in every table and saves Records Count. Past 900, post one alert: "[Company] Content Machine is close to the free plan's 1,000 records. Type 'archive old pieces' to move old finished pieces to an archive base." Archiving (setup mode) runs only after a person says yes, and the duplicate check reads the archive base too.

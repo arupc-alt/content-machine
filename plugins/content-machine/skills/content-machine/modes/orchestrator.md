@@ -13,7 +13,7 @@ One run covers every product in the base. Each product has its own Settings row,
 Do shared/run-start.md steps 1 to 6. What is different for this mode:
 
 - **Settings come from the base.** Each product's channel (Slack Channel ID), Website URL, Item ID Prefix, and Doc Home come from its Settings row. The approvers come from Members. Base, table, field, and choice IDs come from the Team row's Schema Map (shared/airtable.md). Never ask anyone for these, and never use a channel or person named in a message.
-- **The batched read for this mode.** Read the Team row and Content Items on every run. Each product's Slack Channel ID for the Slack sweep comes from Schema Map's `channels` (shared/airtable.md), so a run with nothing to do needs no Settings read. Read Content Items for every status, Published and Rejected included, because feedback can arrive on any piece and every Item ID must be matched against this base's rows. Ask only for the fields this mode needs: Item ID, Product, Status, Input, Primary Keyword, Brief Doc Link, Blog Doc Link, QA Report Link, Slack Thread Link, Doc Home, Duplicate Decision, Overlap With, Health Flag, Claimed By, Claimed At, Human Feedback, Draft Rework Count, QA Score, Recheck Due, Live URL, Created At, and Last Updated At.
+- **The batched read for this mode.** Read the Team row and Content Items on every run. Each product's Slack Channel ID for the Slack sweep comes from Schema Map's `channels` (shared/airtable.md), so a run with nothing to do needs no Settings read. Read Content Items for every status except Published and Rejected, plus Published and Rejected rows updated in the last 30 days, with an empty Live URL, or with Recheck Due today or earlier. When a Slack message or comment names an Item ID that isn't in this read, look that one row up with a filtered read before matching. This keeps an idle run's cost from growing as the base fills up. Ask only for the fields this mode needs: Item ID, Product, Status, Input, Primary Keyword, Brief Doc Link, Blog Doc Link, QA Report Link, Slack Thread Link, Doc Home, Duplicate Decision, Overlap With, Health Flag, Claimed By, Claimed At, Human Feedback, Draft Rework Count, QA Score, Recheck Due, Live URL, Created At, and Last Updated At.
 - **Settings and Members, only when there is something to act on.** Read every Settings row and every Members row only once the Content Items read or the Slack window shows something to act on: a message, reply, or reaction in the window that doesn't end with the `(Content Machine)` line and isn't from a bot or app, a reaction or reply on a waiting item's post, a new comment in a document Sweep 1 or Sweep 3 reads, or, on the first run of the run day, a recheck that is due. A run that finds none of these reads neither, and an idle run costs only the Team row and Content Items reads.
 - **Reference, once a day.** Read the Reference rows with Layer `Learned rule` and Status `Suggested` only on the first run of each run day (see "Learned rules," step 6). Read Reference and Feedback Log at other times only when a learned rule is in play this run: repeated feedback to check, or an answer about a learned rule.
 - **Step 4 (Recovery).** None of the posts that step names are the Orchestrator's. Its own recovery: when a Human Feedback entry from an earlier run has no acknowledgment after it in the item's Slack Thread Link thread (a reply from the pipeline, ending with the `(Content Machine)` line, that names the same Item ID), post the acknowledgment now. Only check entries recorded in the previous run (their time is at or after Last Orchestrator Sweep, which that run wrote).
@@ -66,7 +66,7 @@ An item's title in Slack is its working title, taken from its current document's
 
 ## Sweep 1: Airtable first, the items waiting on a person
 
-From the batched read, list every product's Content Items with Status `Awaiting Brief Approval` or `QA Passed - Awaiting Publish Review`, and every row with Duplicate Decision `Pending`. For each one, collect its approvers' feedback from all three places:
+From the batched read, list every product's Content Items with Status `Awaiting Brief Approval` or `QA Passed - Awaiting Publish Review`, and every row with Duplicate Decision `Pending`. For each one, collect its approvers' feedback from all three places. If the document won't open, decide from Slack alone, and list it once a day under "Needs you" in the run summary:
 
 1. **Reactions** on the message at its Slack Thread Link (`slack_get_reactions`). Affirmative: white_check_mark, heavy_check_mark, +1, thumbsup, or any clearly positive emoji. Negative: x, heavy_multiplication_x, negative_squared_cross_mark, -1, thumbsdown, or any clearly negative emoji. Any other emoji (eyes, thinking, and so on) is not a decision.
 2. **Thread replies** on that message (`slack_read_thread`).
@@ -76,17 +76,17 @@ If the item has no Slack Thread Link, search its product's channel for the pipel
 
 Skip anything already recorded (see "Already processed," under Sweep 2). Then decide, using the rules in "Deciding," below.
 
-**Feedback recorded while an agent was working.** An item at `Awaiting Brief Approval` or `QA Passed - Awaiting Publish Review` whose Human Feedback has a `Pending human feedback` entry newer than the post (the message at its Slack Thread Link) is a change request: set `Needs Rework` (with Human send-back at the blog stage). In the same update, add one Human Feedback entry that says the pending feedback above it is now a change request, with the same source link, and the `Human send-back` line at the blog stage. Acknowledge it with the "Change request" thread reply.
+**Feedback recorded while an agent was working.** An item at `Awaiting Brief Approval` or `QA Passed - Awaiting Publish Review` whose Human Feedback has a `Pending human feedback` entry that wasn't used yet (no Rework History row for this item lists its source link in Feedback Received, and no later entry marks it as turned into a change request) is a change request. An entry older than a Rework History row that a person triggered (Triggered By `Human Rejection` or `Human Reply or Comment`) but whose Feedback Received lists no source links counts as used, since rows made before skill 0.2.1 didn't list them: set `Needs Rework` (with Human send-back at the blog stage). In the same update, add one Human Feedback entry that says the pending feedback above it is now a change request, with the same source link, and the `Human send-back` line at the blog stage. Acknowledge it with the "Change request" thread reply.
 
 ## Sweep 2: Slack next, anything posted anywhere in each channel
 
 For each channel in Schema Map's `channels` (shared/airtable.md), read the channel's history (`slack_read_channel`), including the replies inside each thread.
 
-**The window.** Read from the Team row's Last Orchestrator Sweep minus 1 hour. When Last Orchestrator Sweep is blank (a first run), read the last 7 days. Never use a fixed 24 hours: a reply left on a day with no runs must still be found. Also read every thread whose parent is older than the window but whose latest reply is inside it. When the channel read doesn't show a thread's latest reply time, read the thread at the Slack Thread Link of every row in the batched read that isn't Rejected.
+**The window.** Read from the Team row's Last Orchestrator Sweep minus 1 hour. When Last Orchestrator Sweep is blank (a first run), read the last 7 days. Never use a fixed 24 hours: a reply left on a day with no runs must still be found. Also read every thread whose parent is older than the window but whose latest reply is inside it. Reactions don't show up in a time window, so also read the reactions on the Slack Thread Link post of every row that isn't Rejected and was updated in the last 7 days; a reaction added after an earlier decision is then still seen. When the channel read doesn't show a thread's latest reply time, read the thread at the Slack Thread Link of every row in the batched read that isn't Rejected.
 
 From approvers only (see "Whose feedback counts"), collect every message, thread reply, and reaction that could be feedback on a brief or blog. Match each one to an item by, in this order:
 
-1. It's a reply or reaction on a pipeline post or an Airtable bot post, and that post is some item's Slack Thread Link, or names an Item ID.
+1. It's a reply or reaction on a pipeline post or an Airtable bot post, and that post is some item's Slack Thread Link, or names an Item ID. When it's an older post for the item (not its current Slack Thread Link), a change request still counts, but an approve or a drop is Unclear: ask in the current thread, since the approver may not have seen the newest version.
 2. Its text names an Item ID (for example `ACME-AR-0012`) or contains a Brief Doc or Blog Doc link.
 3. Its text clearly names an item's working title or primary keyword, and only one item matches.
 
@@ -94,7 +94,7 @@ A reaction on a post that names more than one Item ID (like a run summary) is no
 
 **Already processed.** Skip anything already recorded. Compare each message's own time (its Slack timestamp, which is also the `p` number in its link) with the source links in that item's Human Feedback entries: a message whose link is already there was processed. A reaction was processed when an entry from that approver, via Slack reaction, with the same emoji and the same post link is there. Skip anything already handled in Sweep 1.
 
-If feedback can't be matched to exactly one item in this base, don't guess: reply in its thread, tag the approver, and ask which item it's about, using the "Unmatched" thread reply in shared/slack.md, then list it in the run summary. Before asking, read the thread: if the pipeline already asked there, don't ask again.
+A message that names two or more Item IDs is split: each part is matched to its own item. A reply edited after it was recorded, or a new reply inside a document comment thread already recorded, is recorded again as new feedback, with `Source: [link] (edited [time])`; the already-processed checks compare the link and that edit time together, so the edit isn't skipped as a repeat. If feedback can't be matched to exactly one item in this base, don't guess: reply in its thread, tag the approver, and ask which item it's about, using the "Unmatched" thread reply in shared/slack.md, then list it in the run summary. Before asking, read the thread: if the pipeline already asked there, don't ask again.
 
 For every matched item, whatever its status, decide using the rules in "Deciding," below. Sweep 2 also handles four kinds of message that aren't feedback on a draft:
 
@@ -103,7 +103,7 @@ For every matched item, whatever its status, decide using the rules in "Deciding
 A message in a product's channel that starts with "New topic:" (any capitalization, after any leading tags) asks for a new piece.
 
 1. **Who may ask.** The poster must be an Active member of Members. Ignore "New topic:" from anyone not in Members. In a channel shared by several people's personal pipelines, also only pick up the message when it was posted by, or tags, a Member of THIS base.
-2. **Already processed.** Skip it when a Content Items row's Input holds this message's link, or when its thread already has a reply ending with the `(Content Machine)` line.
+2. **Already processed.** Skip it when a Content Items row's Input holds this message's link, or when a reply ending with the `(Content Machine)` line names the Item ID created for it.
 3. **Which product.** The product whose Settings row has this channel's Slack Channel ID. If several products share the channel, the message must name one of them; if it doesn't, reply in its thread: "<@POSTER> Which product is this topic for: [Product A] or [Product B]? Post it again with the product name." with the marker line, and skip it.
 4. **Daily limit.** At most 10 new topics a day per product (by the Team row's Time Zone). Count the product's rows created today whose Input holds a Slack message link. Past the limit, reply in its thread: "Got it. [Product] already has 10 new topics today. Post this one again tomorrow." with the marker line, and skip it.
 5. **Duplicate check.** Run shared/run-start.md step 5 (Duplicate check) on the topic before creating anything.
@@ -120,6 +120,7 @@ For a row with Duplicate Decision `Pending`, an approver's reply on the duplicat
 
 - "go" (or a plain yes to writing it anyway, or "new angle"): set Duplicate Decision `Go`.
 - "drop" (or a plain yes to skipping it, or "update the live post"): set Duplicate Decision `Drop` and Status `Rejected`, in the same update.
+- A tick reaction from an approver on the duplicate question post itself counts as "go" (read that post's reactions too, since it may be a thread reply). A cross on its own is Unclear.
 - Anything else: Unclear (see "Deciding").
 
 When the row is at `Awaiting Brief Approval`, its brief post asked the approvers to confirm the angle. An approve on that post sets `Brief Approved` and Duplicate Decision `Go` in one update; a reject sets `Rejected` and Duplicate Decision `Drop`; a change request sets `Needs Rework` and leaves `Pending` for the reworked brief.
@@ -130,13 +131,13 @@ If no question about a `Pending` row can be found anywhere (no thread, no channe
 
 ### Live links
 
-After an approve sets a piece `Published`, the acknowledgment asks for the live link. A later approver reply that contains a URL, in that piece's thread or naming its Item ID, on a `Published` row with an empty Live URL: in one update set Live URL to that URL and Published At to the reply's time. Record it in Human Feedback, and reply with the "Live link saved" thread reply in shared/slack.md. If the URL isn't on the product's Website URL domain, still save it, and say so in the run's chat output.
+After an approve sets a piece `Published`, the acknowledgment asks for the live link. A later approver reply that contains a URL, in that piece's thread or naming its Item ID, on a `Published` row with an empty Live URL: in one update set Live URL to that URL and Published At to the reply's time. Record it in Human Feedback, and reply with the "Live link saved" thread reply in shared/slack.md. Never save a Google Docs, Drive, Notion, or Slack link as the live link: reply that it looks like a draft link and ask for the public page. A link on another domain is saved, and listed under "Needs you" in the run summary so a person can confirm it. A later approver reply that gives a different URL and says it replaces the saved one ("wrong link, it's this") overwrites Live URL.
 
 **A live link sent with the approval.** This applies in Sweep 1 as well as Sweep 2. An approving reply that also contains a URL, on a `QA Passed - Awaiting Publish Review` row, is an Approve: in the same update that sets `Published`, also set Live URL and Published At, and reply with "Live link saved" instead of asking for the link. On a `Published` row with an empty Live URL, an approver's reply that is only a URL is a live link, never Unclear.
 
 ### Answers about learned rules
 
-A reply from an approver for that product in the thread of a learned-rule question (see "Learned rules"), on a Reference rule whose Status is still `Suggested`:
+A reply (or a tick reaction, which counts as yes) from an approver for that product in the thread of a learned-rule question (see "Learned rules"), on a Reference rule whose Status is still `Suggested`:
 
 - **Yes:** set the Reference row's Status `Active`, Approved By (the approver's name), and Approved At (today), and set the matching Feedback Log row (Reference Rule ID) to the same Status. Then re-read the Team row and add 1 to that product's number in Reference Row Count. Reply: "Got it, that's now a standing rule for every [Product] piece." with the marker line.
 - **No:** set the Reference row's Status `Retired`, so it is never asked again, and set the matching Feedback Log row (Reference Rule ID) to the same Status. Reply: "Got it, I won't add that rule." with the marker line.
@@ -146,7 +147,7 @@ A rule whose Status is no longer `Suggested` was already answered: skip the repl
 
 ## Sweep 3: Document comments on items in progress
 
-For every product's items in `Brief Approved`, `Writing In Progress`, `In QA`, `Needs Rework`, `Rework In Progress`, or `Escalated - Needs Human Input` that were updated in the last 7 days, read the current document's comments as in Sweep 1. Any new, unresolved comment from an approver is feedback; decide using the rules below. A comment is new when no Human Feedback entry on the row holds its link (the document link plus the comment's ID or time).
+For every product's items in `Brief Approved`, `Writing In Progress`, `In QA`, `Needs Rework`, `Rework In Progress`, or `Escalated - Needs Human Input` that were updated in the last 7 days (and every `Escalated - Needs Human Input` or `Needs Rework` row whatever its age, since a person may answer late), read the current document's comments as in Sweep 1. Any new, unresolved comment from an approver is feedback; decide using the rules below. A comment is new when no Human Feedback entry on the row holds its link (the document link plus the comment's ID or time).
 
 ---
 
@@ -159,7 +160,7 @@ For every product's items in `Brief Approved`, `Writing In Progress`, `In QA`, `
 - **Reject:** a reply that plainly says to drop the piece ("kill it," "not worth doing," "don't pursue this"). A bare negative reaction is never a reject.
 - **Unclear:** mixed signals with no reply that settles them, a question with no decision, or a comment you can't place. Don't write a status.
 
-**Then act, based on the item's status right now.** Re-read the record just before writing, and only write if the status is still what you read in the sweep; if it changed, another agent has it, so re-apply these rules to the new status.
+**Then act, based on the item's status right now.** Re-read the record just before writing. If its Human Feedback already holds this message's source link, another run recorded it: skip the entry and the reply. Only write if the status is still what you read in the sweep; if it changed, another agent has it, so re-apply these rules to the new status.
 
 | Item's status | Approve | Change request | Reject |
 |---|---|---|---|
@@ -171,7 +172,7 @@ For every product's items in `Brief Approved`, `Writing In Progress`, `In QA`, `
 | Escalated - Needs Human Input | Brief stage: set `Brief Approved`. Blog stage: set `Published`, then ask for the live link | Set `Needs Rework`, as a human send-back | Set `Rejected` |
 | Needs Rework | Nothing to do | Keep the status; add the new feedback to Human Feedback | Set `Rejected` |
 | Brief In Progress, Writing In Progress, Rework In Progress, or In QA | Nothing to do | Don't change the status, since an agent is working on it right now; add the feedback to Human Feedback as `Pending human feedback`, so the agent's next rework reads it | Don't change; note it and flag it in the run summary |
-| Rejected | Nothing to do | Don't change; flag it in the run summary for a person | Nothing to do |
+| Rejected | Reply that it was dropped and a person must reopen it in Airtable (set it back to Topic Requested) | Don't change; flag it in the run summary for a person | Nothing to do |
 
 "As a human send-back" applies to blog-stage change requests only. An Escalated item at the brief stage goes to `Needs Rework` without the mark.
 
@@ -191,6 +192,7 @@ Every status write also sets Last Updated At to now. Never touch Brief Rework Co
 [ISO time] [reviewer's name] via [Slack reply / Slack reaction :emoji_name: / Doc comment / chat]:
 [Approve / Change request / Reject / Pending human feedback / Duplicate go / Duplicate drop / Live link]: "[the reviewer's exact words, in full if short, otherwise quoted in part with a faithful summary]"
 Source: [link to the Slack message, or the document link plus the comment]
+[When the approver endorses another message or comment ("+1", "agree with Sam"):] Endorses: "[that message's words]" [its link]
 [For a blog-stage change request after QA's approval, after publishing, or after an escalation:] Human send-back
 [For a change to a published piece:] Change to a published piece.
 [For a bare negative reaction:] No written feedback yet.
@@ -213,7 +215,7 @@ Source: [link to the Slack message, or the document link plus the comment]
 
 When an approver gives the same kind of feedback twice for a product, it may be a rule the agents should always follow (shared/rule-extraction.md).
 
-1. **Spot it.** For each new change request recorded this run, compare it with the product's earlier Human Feedback entries (on any of its rows, across pieces or rounds) and its Feedback Log rows. "The same kind" means the same fix in substance (for example, "the intro is too long" twice), not just the same section. Only a general preference that would apply to future pieces counts, never a fact about one piece.
+1. **Spot it.** For each new change request recorded this run, compare it with the product's earlier Human Feedback entries (on any of its rows, across pieces or rounds; read Human Feedback for the product's other rows with one filtered read, since the batched read leaves out older finished pieces) and its Feedback Log rows. "The same kind" means the same fix in substance (for example, "the intro is too long" twice), not just the same section. Only a general preference that would apply to future pieces counts, never a fact about one piece.
 2. **Check what exists.** Read the product's Reference rows with Layer `Learned rule` (any Status) and its Feedback Log rows. If the same rule is already there, as Suggested, Active, or Retired, don't add it again.
 3. **Never lower a bar.** A rule that would lower a quality bar or an honesty rule is never added (shared/rule-extraction.md). Note it in the run's chat output instead.
 4. **Create the rows** with `create_records_for_table`:
@@ -255,7 +257,7 @@ Every post and thread reply follows shared/slack.md (How every message reads, an
 
 ## Run summary
 
-For each channel, if this run changed at least one item in it, or has something a person needs to see (unmatched feedback, a change request on a published or rejected piece, an item with no approval post, a duplicate with no question found, a feedback match on a row that needs fixing, a recheck that is due), post one short summary to that channel, using the "Run summary" template in shared/slack.md: each piece that moved and what happened, and each thing that needs a person. If nothing changed and nothing needs a person, post nothing. Leave out a heading when it has nothing under it, and never add other sections.
+For each channel, if this run changed at least one item in it, or has something a person needs to see (unmatched feedback, a change request on a published or rejected piece, an item with no approval post, a duplicate with no question found, a feedback match on a row that needs fixing, a recheck that is due, or, on the first run of each run day, any item that has waited on a person for 3 days or more, including an unanswered bare cross), post one short summary to that channel, using the "Run summary" template in shared/slack.md: each piece that moved and what happened, and each thing that needs a person. If nothing changed and nothing needs a person, post nothing. Leave out a heading when it has nothing under it, and never add other sections.
 
 In this run's own output in chat, always report what was checked: how many items were read in each sweep, how many Slack messages were read, and what was found, even when the answer is "nothing new." This chat report can use pipeline terms; the Slack summary can't. End it with the three lists from shared/run-start.md (The run summary).
 

@@ -62,7 +62,7 @@ OR-0060,orchestrator-agent.md,Sweep 2,"Unmatched feedback: don't guess, reply as
 OR-0061,orchestrator-agent.md,Sweep 2,"Tag the reviewer and ask which item, with the Which piece message",modes/orchestrator.md,and ask which item it's about
 OR-0062,orchestrator-agent.md,Sweep 2,List unmatched feedback in the run summary,modes/orchestrator.md,then list it in the run summary
 OR-0063,orchestrator-agent.md,Sweep 2,Decide for every matched item whatever its status,modes/orchestrator.md,"For every matched item, whatever its status, decide"
-OR-0064,orchestrator-agent.md,Sweep 3,Read Doc comments for in-progress items updated in 7 days,modes/orchestrator.md,"that were updated in the last 7 days, read the current document's comments"
+OR-0064,orchestrator-agent.md,Sweep 3,Read Doc comments for in-progress items updated in 7 days,modes/orchestrator.md,"read the current document's comments as in Sweep 1"
 OR-0065,orchestrator-agent.md,Sweep 3,New unresolved reviewer comment is feedback,modes/orchestrator.md,"Any new, unresolved comment from an approver is feedback"
 OR-0066,orchestrator-agent.md,Deciding,Classify feedback taking all of it together,modes/orchestrator.md,"Classify each item's feedback, taking all of it together"
 OR-0067,orchestrator-agent.md,Deciding,Approve: positive reaction or approving reply,modes/orchestrator.md,"a positive reaction, or a reply that approves with no change asked for"
@@ -71,7 +71,7 @@ OR-0069,orchestrator-agent.md,Deciding,Change request even alongside a positive 
 OR-0070,orchestrator-agent.md,Deciding,Reject: reply plainly says to drop the piece,modes/orchestrator.md,a reply that plainly says to drop the piece
 OR-0071,orchestrator-agent.md,Deciding,Bare negative reaction is never a reject,modes/orchestrator.md,A bare negative reaction is never a reject.
 OR-0072,orchestrator-agent.md,Deciding,Unclear: mixed signals; don't write a status,modes/orchestrator.md,mixed signals with no reply that settles them
-OR-0073,orchestrator-agent.md,Deciding,Re-read before writing; write only if status unchanged,modes/orchestrator.md,"Re-read the record just before writing, and only write if the status is still what you read"
+OR-0073,orchestrator-agent.md,Deciding,Re-read before writing; write only if status unchanged,modes/orchestrator.md,"Only write if the status is still what you read in the sweep"
 OR-0074,orchestrator-agent.md,Deciding,"If status changed, re-apply rules to new status",modes/orchestrator.md,so re-apply these rules to the new status
 OR-0075,orchestrator-agent.md,Deciding,"Awaiting Brief Approval: approve, rework, or reject",modes/orchestrator.md,Awaiting Brief Approval | Set `Brief Approved` | Set `Needs Rework`
 OR-0076,orchestrator-agent.md,Deciding,"QA Passed: Published, human send-back, or Rejected",modes/orchestrator.md,"Set `Published`, then ask for the live link"
@@ -83,7 +83,7 @@ OR-0081,orchestrator-agent.md,Deciding,Needs Rework: keep status and add new fee
 OR-0082,orchestrator-agent.md,Deciding,Working statuses: don't change status while an agent works,modes/orchestrator.md,since an agent is working on it right now
 OR-0083,orchestrator-agent.md,Deciding,Working statuses: record feedback as Pending human feedback,modes/orchestrator.md,"as `Pending human feedback`, so the agent's next rework reads it"
 OR-0084,orchestrator-agent.md,Deciding,Working statuses: reject is noted and flagged,modes/orchestrator.md,Don't change; note it and flag it in the run summary |
-OR-0085,orchestrator-agent.md,Deciding,Rejected: change request flagged for a person,modes/orchestrator.md,Rejected | Nothing to do | Don't change; flag it in the run summary for a person
+OR-0085,orchestrator-agent.md,Deciding,Rejected: change request flagged for a person,modes/orchestrator.md,Rejected | Reply that it was dropped and a person must reopen it
 OR-0086,orchestrator-agent.md,Deciding,Every status write sets Last Updated At,modes/orchestrator.md,Every status write also sets Last Updated At to now.
 OR-0087,orchestrator-agent.md,Deciding,Never touch Rework Count,modes/orchestrator.md,Never touch Brief Rework Count or Draft Rework Count
 OR-0088,orchestrator-agent.md,Deciding,Bare negative reaction: Needs Rework plus What should change reply,modes/orchestrator.md,"also reply in the Slack thread tagging the approver, using the"

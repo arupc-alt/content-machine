@@ -27,6 +27,7 @@ Work out which job this is from the person's words:
 | "repair the base", "update the base" | Repair the base |
 | "repair schedules", "change how often it runs" | Repair schedules |
 | "move host" | Move host |
+| "archive old pieces" | Archive old pieces |
 | "pause content machine", "resume content machine" | Pause and resume |
 
 If they said "set up content machine" but a base already exists for them (Step 1 finds it), say so and offer: finish a setup that stopped partway, add a product, or repair.
@@ -77,7 +78,7 @@ Slack inside Airtable (for the optional bot) is checked in Step 7. Google Calend
 
 **What a person needs, said plainly once the checklist passes:** "You'll need: a Claude plan that includes connectors and scheduled tasks, so the agents can run on their own (or the Codex app left open on a computer that stays on); free Airtable, Slack, and Google Drive or Notion accounts. Airtable's free plan allows 5 editors per base and 1,000 automated reads and writes a month per workspace, which is enough for about 7 blog posts a month at 3 rounds a day, or about 12 at 2 rounds a day."
 
-**Another skill with the same job.** If this session's tools can list installed skills, look for another skill whose description says it writes briefs or blogs, or another skill named content-machine whose description lacks "github.com/arupc-alt/content-machine". Name what you find and ask whether to switch the others off. If another skill already has the name content-machine and isn't this one, tell the person to install this repo's `content-machine-pipeline.zip` instead (it's the same skill under another name), and save that name in the Team row's Skill Name in Step 3.
+**Another skill with the same job.** If this session's tools can list installed skills, look for another skill whose description says it writes briefs or blogs, or another skill named content-machine whose description lacks "github.com/arupc-alt/content-machine". Name what you find and ask whether to switch the others off. If more than one installed skill carries this repo's link (for example the plugin and an older uploaded zip), ask the person to keep only the newest and switch the others off, so a schedule never runs an old copy. If another skill already has the name content-machine and isn't this one, tell the person to install this repo's `content-machine-pipeline.zip` instead (it's the same skill under another name), and save that name in the Team row's Skill Name in Step 3.
 
 ## Step 1: Own setup or join?
 
@@ -165,7 +166,7 @@ You can upload files (PDF, Word, Markdown, or text), paste text, or share Google
 Don't have something? Type 'draft them' and I'll draft what's missing from [website], for you to review.
 ```
 
-2. **Wait for the files, then say what they cover.** Read what they shared and say, in a short list, which of the areas it covers (product truth, brand and voice, writing rules, quality bar) and which are missing. For a missing required area (the first three), ask once more, or offer to draft it. If they type 'draft them', draft only what's missing, from the website and docs URL, marked "Draft, please review," and show it for a yes. The quality bar is optional: without it, the built-in 23 QA checks apply.
+2. **Wait for the files, then say what they cover.** Read what they shared and say, in a short list, which of the areas it covers (product truth, brand and voice, writing rules, quality bar) and which are missing. For a missing required area (the first three), ask once more, or offer to draft it. If they type 'draft them', draft only what's missing, from the website and docs URL, marked "Draft, please review," and show it for a yes. If the website can't be read (it blocks reading, or has almost no text), say so and ask the person to paste the text of their home, pricing, and features pages, or to answer five short questions: what you sell, who it's for, what it costs, how you sound, and what you must never say. Never draft from guesses. A file that isn't in English is flagged: version 1 writes in English only, so ask for an English version or a translation. The quality bar is optional: without it, the built-in 23 QA checks apply.
 3. **Then follow shared/rule-extraction.md** from Saving the content to the end: save the content as Reference rows after a yes, pull out the product rules, show them grouped with their source quotes, and save only what the person approves. Update the Team row's Reference Row Count.
 4. **Gate.** Go on to Step 6 only when the product has approved, Active Reference rows of Type Product knowledge, Brand guide, and Style guide (from their files or an approved draft). If the person wants to stop here, stop, and say: "Type 'set up content machine' when you have the files. I'll pick up at this step." Nothing drafted goes live until it's approved.
 
@@ -190,7 +191,7 @@ The chosen tool was checked in Step 4. Build what's missing.
 
 ## Step 7: Airtable automations
 
-**The heartbeat alert (always, when the formula exists).** After a yes, `create_automation` named "Content Machine: heartbeat alert": trigger `recordMatchesConditions` on the Team table where Heartbeat Late = 1, action `sendEmail` to the Schedule Host and every Approver's email, subject "Your content machine has stopped running," body: "One of the content machine's agents hasn't run for over a day. Check that the schedules are on and that the computer or account running them is working. Base: [base link]." Save its ID in the Team row (Heartbeat Automation ID).
+**The heartbeat alert (always, when the formula exists, except when scheduled tasks were waived in Step 0, since the agents then run only when asked).** After a yes, `create_automation` named "Content Machine: heartbeat alert": trigger `recordMatchesConditions` on the Team table where Heartbeat Late = 1, action `sendEmail` to the Schedule Host and every Approver's email, subject "Your content machine has stopped running," body: "One of the content machine's agents hasn't run for over a day. Check that the schedules are on and that the computer or account running them is working. Base: [base link]." Save its ID in the Team row (Heartbeat Automation ID).
 
 **The Slack bot (optional).** Explain it first: "Slack never pings you about your own posts. Since the agents post from your Slack account, you won't get pinged when a brief or blog needs you. An optional Airtable bot fixes that: it sends a second message, from 'Content Machine,' that pings everyone. It's free and takes one click."
 
@@ -203,6 +204,8 @@ The chosen tool was checked in Step 4. Build what's missing.
 If the person skips the bot, or anything here fails, show the fallback message from shared/slack.md, keep Bot Status Off, and go on.
 
 ## Step 8: Schedules
+
+**If scheduled tasks were waived in Step 0,** show the three schedules (name, times, days, and prompt) for the person to add by hand later, say plainly that the agents run only when someone asks until then, skip the rest of this step, and go to Step 9.
 
 **Make them last,** after every connector the runs need is connected: a schedule only gets the connectors that existed when it was made, and they can't be added later.
 
@@ -261,15 +264,15 @@ Prove each part works before calling setup finished. Explain what's about to hap
 2. **A test document.** Create a short document in the product's document home, titled `[prefix]TEST: Setup test`, using the storage file's normal steps (including the access check).
 3. **A test row.** Create a Content Items row for the test (Product, Input "Setup test," Item ID `[prefix]TEST`, Brief Doc Link set to the test document), then set Slack Thread Link to the test post's link and Status to `Awaiting Brief Approval` in one update.
 4. **The bot test** (only if the bot was built and switched on): wait about a minute, then read the channel's newest messages for a post from "Content Machine" naming `[prefix]TEST`. Ask the host: "Did you get a Slack notification from Content Machine just now?" If the post arrived and they got the ping, set Bot Status On. If not, set Bot Status `Failed test`, show the automation link, and ask the person to switch it off in Airtable; wait for 'done' and check with `list_automations`. Then show the fallback message from shared/slack.md.
-5. **Clean up the test row:** set its Status `Rejected` and Notes "Setup test." (Rows are never deleted.) Leave the test document; say the person can delete it.
-6. **Fire each schedule once** (Claude: `fire_trigger`, or `run_scheduled_task`; Codex: ask the person to click Run now on each automation). Each run will find no real work. Wait a few minutes, then read the Team row: each agent's Last Run field should now be set. Check up to 3 times, about 3 minutes apart. Any agent that didn't run gets named, with the likely cause (approvals, a missing connector, or the account) and "repair schedules."
+5. **Clean up the test row:** set its Status `Rejected` and Notes "Setup test." (Only "archive old pieces" ever deletes rows.) Leave the test document; say the person can delete it.
+6. **Fire each schedule once** (skip this part when scheduled tasks were waived in Step 0). First clear the Team row's three Last Run fields, so each run writes a fresh one (Claude: `fire_trigger`, or `run_scheduled_task`; Codex: ask the person to click Run now on each automation). Each run will find no real work. Wait a few minutes, then read the Team row: each agent's Last Run field should now be set. Check up to 3 times, about 3 minutes apart. Any agent that didn't run gets named, with the likely cause (approvals, a missing connector, or the account) and "repair schedules."
 
-If any step fails, name it, fix what can be fixed, and run that step again. Setup isn't finished until every step here passes or the person chooses to go on without the bot.
+If any step fails, name it, fix what can be fixed, and run that step again. Setup isn't finished until every step here passes, apart from the bot when the person chose to go on without it, and part 6 when scheduled tasks were waived.
 
 ## Step 10: Finish
 
 1. Post a setup note in the channel and ask the person to pin it, so teammates can find the base: "The content machine for [Company] is set up. Base: [base link]. To use it, type 'write a brief for [topic or keyword]' in Claude, or post 'New topic: [topic]' here. To run your own, install the skill and type 'set up content machine'." with the marker line. Save its link in the Team row (Setup Post Link).
-2. Tell the person, in one short message: the base link, the channel and the approvers, the document home link, the reference files and rules saved (counts), the schedule times, Bot Status, and how to try it: "Type 'write a brief for [a keyword]', or post 'New topic: [topic]' in #[channel]."
+2. Tell the person, in one short message: the base link, the channel and the approvers, the document home link, the reference files and rules saved (counts), the schedule times (or, if scheduled tasks were waived, that none exist yet and the agents run only when asked), Bot Status, and how to try it: "Type 'write a brief for [a keyword]', or post 'New topic: [topic]' in #[channel]."
 
 ## Join a teammate's base
 
@@ -284,7 +287,7 @@ For someone who wants to share a teammate's queue instead of running their own.
 
 ## Add a product
 
-Steps 2 (one product), 4 (only the product's channel, prefix, and Doc Home; reuse the rest), 5, and 6 for the new product, adding a Settings row and the product's channel to Schema Map's `channels`. Then update the bot automation's recipients with `update_automation` if the new product has a different channel (one automation can only post to the channels it names; add a branch per channel). Changes to a live automation stay in draft until a person publishes them, so show the automation link (`https://airtable.com/[base ID]/[automation ID]`) and ask the person to open it and click Update, then type 'done'. Schedules don't change: each run covers every product.
+Steps 2 (one product), 4 (only the product's channel, prefix, and Doc Home; reuse the rest), 5, and 6 for the new product, adding a Settings row and the product's channel to Schema Map's `channels`. Then update the bot automation's recipients with `update_automation` if the new product has a different channel (one automation can only post to the channels it names; add a branch per channel). Changes to a live automation stay in draft until a person publishes them, so show the automation link (`https://airtable.com/[base ID]/[automation ID]`) and ask the person to open it and click Update, then type 'done'. Schedules don't change: each run covers every product. But if the new product's Doc Home uses a tool (Drive or Notion) that wasn't connected when the schedules were made, the schedules can't use it: run Repair schedules after this.
 
 ## Add a teammate
 
@@ -298,7 +301,8 @@ shared/rule-extraction.md, "Keeping them right over time": read the new or chang
 
 1. Read every table with `get_table_schema` and compare with the template and with Schema Map.
 2. List what's missing or changed (a deleted field, a renamed table, a missing choice). Renamed things are fine; only IDs matter.
-3. After a yes, add only what's missing (never delete or rename), apply any waiting migrations (shared/migrations.md), and rewrite Schema Map, with `channels` taken from Settings. Set Last Full Check.
+3. After a yes, add only what's missing (never delete or rename), apply any waiting migrations (shared/migrations.md), and rewrite Schema Map, with `channels` taken from Settings and any `archive` kept as it was. Set Last Full Check.
+4. If the Heartbeat Late formula differs from the template's, offer the by-hand formula update in shared/migrations.md.
 
 ## Repair schedules
 
@@ -306,16 +310,26 @@ For "change how often it runs": ask Step 4's question 6, show the cost, and afte
 
 1. `list_triggers` (or `list_scheduled_tasks`; on Codex, the automations) and find this base's three schedules by their prompts' base ID. Their times must match Round Hours (Step 8).
 2. A schedule made before a connector was connected can't gain it. After a yes, delete those schedules (`delete_trigger`; desktop scheduled tasks are switched off with `update_scheduled_task` and enabled false) and create them again (Step 8). Others just get their time and prompt corrected (`update_trigger`, `update_scheduled_task`, or on Codex `automation_update`). A missing schedule is created as Step 8 says.
-3. Fire each once and check Last Run (Step 9, part 6).
+3. If Heartbeat Automation ID is empty (for example, schedules were waived at setup and added later), build the heartbeat alert now (Step 7).
+4. Clear the Team row's three Last Run fields, then fire each schedule once and check that each Last Run is set again (Step 9, part 6). A run writes Last Run only once per run day, so without clearing them the check proves nothing.
 
 ## Move host
 
 Hands the schedules and documents to another account, for example when someone leaves. Run it from the new host's account:
 
-1. The new host runs the connections check (Step 0) and is added to Members with Role Host.
+1. The new host runs the connections check (Step 0) and is added to Members with Role Host. They need creator access to the base, not just editor, because repairs and automation changes need it: ask the old host (or a workspace admin) to give it in Airtable's Share menu, or to move the base into a workspace the new host owns. Check by reading the automations with `list_automations`. The base's Airtable call budget belongs to its workspace, so say which workspace it's in.
 2. Create the three schedules from this account (Step 8). Ask the old host (or an admin) to switch off the old ones.
 3. Drive: the old host transfers ownership of the folder (or it's already in a Shared Drive). Notion: duplicate the top page into the new host's workspace, then update every Notion link in Content Items and Settings.
 4. Update the Team row's Schedule Host, and the heartbeat email's recipients with `update_automation`. Changes to a live automation stay in draft until a person publishes them, so show the automation link (`https://airtable.com/[base ID]/[automation ID]`) and ask the person to open it and click Update, then type 'done'.
+
+## Archive old pieces
+
+Airtable's free plan holds 1,000 records per base, and new rows fail past that. This is the one job that removes rows, and only after a yes.
+
+1. Find or create (after a yes) a base named "[Company] Content Machine Archive" with the same tables (templates/airtable-schema.json), and save its ID in Schema Map as `archive`.
+2. List the pieces to move: Published or Rejected rows last updated more than 6 months ago (or an age the person picks), with their Rework History and Feedback Log rows. Show the count and wait for a yes.
+3. Copy each piece and its linked rows into the archive base, read each copy back, then delete the originals. A piece whose copy didn't read back is left where it is.
+4. Update Records Count and say how many rows were moved.
 
 ## Pause and resume
 

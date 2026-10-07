@@ -100,7 +100,7 @@ Save the exports in the run's working folder, then run the script (it needs only
 
 Options, filled from the brief and the base:
 
-- `--keyword "[primary keyword]"` from the brief.
+- `--keyword "[primary keyword]"` from the brief, or the keyword in the writer notes' "Primary keyword changed by" line when there is one.
 - `--target-words [N]` from the brief's target word count.
 - `--spelling US` or `UK` from the product's Settings row (Spelling).
 - `--site [Website URL]` from the product's Settings row, so links split into internal and external.

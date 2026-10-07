@@ -2,7 +2,7 @@
 name: content-machine
 description: "Content Machine pipeline (github.com/arupc-alt/content-machine). Runs a team's blog content pipeline end to end: researched SEO briefs, drafts with a built-in quality check and rework loop, Slack approvals, and an Airtable tracker, with documents in Google Drive or Notion. Use when someone says 'set up content machine', 'write a brief for [topic or keyword]', 'write the next approved blog', 'run the orchestrator', 'check this draft', 'update reference files', 'repair the base', 'pause content machine', or when a scheduled run names this skill. Not for one-off writing outside this pipeline: a quick blog post, an email, or social copy with no brief, tracker, or approval flow."
 metadata:
-  version: "0.2.0"
+  version: "0.2.1"
   schema_version: "2"
 ---
 
@@ -14,7 +14,7 @@ One skill, five modes. This file only picks the mode and loads its files. It nev
 
 | The request | Mode | Load |
 |---|---|---|
-| "set up content machine", "join a teammate's content machine", "add a product", "update reference files", "repair the base", "repair schedules", "change how often it runs", "update the base", "move host", "add a teammate" | Setup | modes/setup.md |
+| "set up content machine", "join a teammate's content machine", "add a product", "update reference files", "repair the base", "repair schedules", "change how often it runs", "archive old pieces", "update the base", "move host", "add a teammate" | Setup | modes/setup.md |
 | A topic or keyword to brief, "write a brief", a schedule saying Mode: Brief | Brief | modes/brief.md |
 | "write the next approved blog", a brief pasted in chat, a schedule saying Mode: Blog Writer | Blog Writer | modes/blog-writer.md |
 | "check this draft", a document link to audit, a schedule saying Mode: QA | QA | modes/qa.md |

@@ -30,9 +30,10 @@ These are areas, not file names: a company's files rarely match them one to one.
 2. Sort the content into the standard sections from `products/_template/`, so every product's files have the shape the agents expect. Keep the company's own words. Never summarize, shorten, or rewrite a rule.
 3. Show a short summary of each file, plus three lists: gaps ("no words-to-avoid list found"), conflicts ("style guide says sentence case, brand guide says title case"), and anything that looks private (emails, prices marked internal).
 4. Fill gaps only with permission, from the public docs site, marked "Draft, please review." Never invent product claims.
-5. Save only after an explicit yes. Silence is not approval. Each section is one Reference row (Entry, Product, Type, Layer `File`, Section, Content, Status `Active`, Version, Approved By, Approved At). A long-text cell holds up to 100,000 characters; a longer section is split into numbered parts.
-6. Facts that change (prices, limits, plan names) also get Source URL set to their live page. Agents read that page fresh when they use the fact.
-7. Update the Team row's Reference Row Count for this product.
+5. If one product's saved content would pass about 150,000 characters in all, say so and ask which parts matter most for writing. Save those in full. For the rest (long docs pages, changelogs, old posts), save a short summary row with its Source URL, which an agent opens only when a piece needs it.
+6. Save only after an explicit yes. Silence is not approval. Each section is one Reference row (Entry, Product, Type, Layer `File`, Section, Content, Status `Active`, Version, Approved By, Approved At). A long-text cell holds up to 100,000 characters; a longer section is split into numbered parts.
+7. Facts that change (prices, limits, plan names) also get Source URL set to their live page. Agents read that page fresh when they use the fact.
+8. Update the Team row's Reference Row Count for this product.
 
 ## Pulling out the rules
 
@@ -67,5 +68,5 @@ Any mode may save a learned rule, always as Suggested. The Orchestrator asks the
 ## Keeping them right over time
 
 - "update reference files" runs the extraction again and shows what's new, changed, or removed before anything goes live. The Version goes up by 1.
-- Edits made straight in Airtable are checked on the next run. A changed number of Active rows is handled as shared/airtable.md says (The batched read): more rows are used and the count is updated, fewer rows stop the run with one alert. A rule with missing fields or vague wording ("make it engaging") is flagged in the run summary and skipped until it's fixed.
+- Edits made straight in Airtable are checked on the next run. A changed number of Active rows is handled as shared/airtable.md says (The batched read): more rows are used and the count is updated, fewer rows skip that product for the run with one alert. A rule with missing fields or vague wording ("make it engaging") is flagged in the run summary and skipped until it's fixed.
 - Every brief and QA report records the reference version it used (Reference Version and Rules Loaded on the row).

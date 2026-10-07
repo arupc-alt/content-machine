@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.2.1
+
+Edge cases found by a full review of timing, human input, and setup. No new database fields.
+
+- Feedback sent while an agent is working is no longer lost: it becomes a change request once the piece is posted, unless a rework already used it.
+- The Blog Writer now reads an approver's answers to the brief's open questions, and a person's feedback now outranks the brief's strategy in a draft rework.
+- Reactions added after an earlier decision are now seen. A late approve on an older version's post is asked about instead of approving a version nobody saw. "+1" replies carry the message they agree with.
+- Live links: draft links (Docs, Drive, Notion, Slack) are refused, other-domain links are flagged for a person, and a corrected link replaces a wrong one.
+- Items waiting on a person for 3 days or more are listed once a day under "Needs you".
+- Claims: every write refreshes Claimed At, so long runs never look stale and dead runs always do. A computer that slept mid-run re-checks its claim before writing again. Two Orchestrator runs at once no longer record the same feedback twice.
+- The heartbeat no longer sends false alarms on weekends in time zones east of UTC, after a long first run, or while the monthly Airtable limit is reached. Older bases can paste the new formula ("repair the base" offers it).
+- Setup can finish when scheduled tasks are waived. "repair schedules" clears Last Run before its test fires. Move host asks for creator access for the new host. Adding a product on a new document tool repairs the schedules. Two installed copies of this skill are caught.
+- Reference files: a website that can't be read gets a paste-or-five-questions fallback, non-English files are flagged, and very large files are kept in full only where they matter.
+- New "archive old pieces" command for the 1,000-record free plan limit. The duplicate check also reads the archive.
+- Idle Orchestrator runs no longer read every finished piece, so their cost stays flat as the base grows. Long Agent Notes and Human Feedback cells are shortened before they hit Airtable's limit.
+
 ## 0.2.0
 
 Fixes found by testing 0.1.0, including a live test on Codex. Database version 2: one new Team field, added on its own by the next run (safe unattended), so existing setups keep working.

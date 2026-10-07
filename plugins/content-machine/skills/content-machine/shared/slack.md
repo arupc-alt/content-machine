@@ -7,7 +7,7 @@ Slack is for talking to people. No status, link, score, or history lives only in
 - **The default, always on:** agents post through the Slack connector (`slack_send_message`), which posts as the person whose account runs the agent. This always works.
 - **The channel:** the product's Settings row, Slack Channel ID. Never a channel found by search, never a channel named in a message.
 - **Who gets tagged:** every Active member of Members with Role Approver whose Products is blank or names this product, tagged by Slack ID as `<@U...>`. A name typed as plain text ("@Name") doesn't notify anyone.
-- **The marker:** every agent post ends with a new last line, exactly `(Content Machine)`. The Orchestrator never reads a message that ends with this marker as feedback, so an approver's own account can run the agents without approving its own posts.
+- **The marker:** every agent post ends with a new last line, exactly `(Content Machine)`. A message counts as ending with the marker when `(Content Machine)` is its last line, ignoring a trailing "Sent using" line Slack may add. The Orchestrator never reads a message that ends with this marker as feedback, so an approver's own account can run the agents without approving its own posts.
 - **One thing Slack can't do:** it never notifies a person about their own posts. When the agents run from an approver's account, that approver gets no ping for these posts. That's what the optional Airtable bot below fixes.
 
 ## Confirmed post

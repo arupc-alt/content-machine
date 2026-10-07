@@ -145,6 +145,7 @@ Only people set up as **approvers** can approve, send back, or drop a piece. Onl
 | Pause everything | "pause content machine" ("resume content machine" to start again) |
 | Fix a broken base or schedule | "repair the base", "repair schedules" |
 | Run more or less often | "change how often it runs" |
+| Free up Airtable records (the free plan holds 1,000 per base) | "archive old pieces" |
 | Hand the schedules to someone else | "move host", from the new host's account |
 
 The agents run on their own in rounds. In each round the Orchestrator reads your Slack replies and document comments first, then the Brief Agent runs, then the Blog Writer, 20 minutes apart. You choose how often in setup:
