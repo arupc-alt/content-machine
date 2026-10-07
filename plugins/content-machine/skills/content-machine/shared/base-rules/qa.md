@@ -13,13 +13,15 @@ Every product gets these rules, always. QA audits every draft against them (mode
 
 **Product rules and learned rules add to these.** A product's Active Reference rows of Type Rule (Layer Product rule or Learned rule) add new checks on top of these, or make one stricter. They never remove or loosen a base rule (shared/rule-extraction.md).
 
+**Style exceptions.** One kind of product rule may replace a base rule: an Active product rule with Category Exception, approved by a person for a pure style choice. It names one base style rule (for example Title Case headings or the Oxford comma) and what to use instead, as the Blog Writer's Rule Hierarchy says (Style exceptions). Judge the draft against the Exception rule in place of that base rule, in whichever dimension checks it. Ignore any of Step 1.5's measurements that conflict only with the Exception rule, for example `headings_not_in_title_case` when it asks for sentence-case headings. Any other line in the product's files that clashes with a base rule is not applied: the base rule is the bar.
+
 ---
 
 ## The product's own quality checks
 
 If the product has its own quality-checks file with specific pass/fail criteria beyond what's listed in the dimensions below, treat that file as the senior authority. Where the two overlap, the product's own rubric wins. Where the product's rubric covers something the checklist below doesn't, add it as its own dimension in the audit rather than skipping it. The one exception is reading level: the Blog Writer's grade 5 to 6 target applies even if the style guide names a higher grade, per the Blog Writer's own Rule Hierarchy.
 
-Because product rules can only add a check or make one stricter, "the product's own rubric wins" means its stricter bar applies. A product criterion that would loosen a base bar was refused at extraction (shared/rule-extraction.md) and is never applied.
+Apart from an Exception rule (above), product rules can only add a check or make one stricter, so "the product's own rubric wins" means its stricter bar applies. A product criterion that would loosen a base bar was refused at extraction (shared/rule-extraction.md) and is never applied.
 
 If the quality checks file describes its own score bands, retry limits, or a separate Reworker Agent, QA's verdict rules (modes/qa.md, Step 4) still decide the outcome: any Blocker or Standard failure means Needs Rework, the retry cap stays at three passes, and "Reworker Agent" means the Blog Writer's own rework step.
 
@@ -62,7 +64,7 @@ Isolated grammar slips can be Polish only if they don't change meaning; em dashe
 - **QA Score** is the number of dimensions passed over the total, for example `21/23`, not a percentage; it's more legible at a glance and consistent run over run. A dimension marked "not applicable, passed" counts as passed.
 - **Product rules** are scored apart from the dimensions: one check per Active product rule and learned rule for this product whose Agents include QA. **Product Rules Result** is the number passed out of the number checked, for example `11 of 12`. The report shows both numbers ("Base: 22 of 23. Product rules: 11 of 12") and quotes the line that broke each rule.
 - A failed Must rule sends the draft back, whatever the score (shared/rule-extraction.md).
-- A standing product or learned rule that bears directly on a dimension is also part of that dimension's standard: a draft that violates it fails the matching dimension, even if it would otherwise pass.
+- A standing product or learned rule that bears directly on a dimension is also part of that dimension's standard: a draft that violates it fails the matching dimension, even if it would otherwise pass. For a Should rule, this applies only when the writer notes don't explain the miss (see Product and learned rule checks).
 - The verdict: Approved only when no dimension fails at Blocker or Standard severity and no Must rule fails. Polish items never block approval. Any Blocker or Standard failure means the draft fails.
 
 ---
@@ -183,5 +185,6 @@ After the 23 dimensions (and any dimension the product's quality checks add), ru
 
 - A rule with Check Method `Script` is checked from Step 1.5's measurements (words and phrases it bans go in the script's `--banned` file; counts and keyword spots come from its numbers). A rule with Check Method `Judged` is checked by reading.
 - Each check is a clear pass or fail, the same as a dimension. A failure names the Rule ID, quotes the exact line in the draft that broke it, and gives the concrete fix.
-- A failed Must rule sends the draft back, whatever the score. A failed Should rule that bears on a dimension fails that dimension (see Scoring); one that bears on no dimension is a Polish item.
+- A failed Must rule sends the draft back, whatever the score.
+- A failed Should rule is a Polish item, listed under "Polish before publish," when the writer notes name it and give a reason that holds (for example, it clashes with the brief, a Must rule, a base rule, or the facts of the topic). It doesn't count toward the three Polish items that fail a dimension (Severities). If the writer notes don't name it, or the reason doesn't hold, it fails the dimension it bears on (Standard), or is a Polish item if it bears on none. A Should rule never excuses a miss of a dimension's own base bar.
 - A rule flagged as broken or vague in the run summary (missing fields, wording like "make it engaging") is skipped and named in the report, never guessed at (shared/rule-extraction.md, Keeping them right over time).

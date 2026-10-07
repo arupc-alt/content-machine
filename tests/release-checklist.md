@@ -6,14 +6,14 @@ Codex + Drive is a beta: its rows are run and reported, but a failure there does
 
 | Test | Claude + Drive | Claude + Notion | Codex + Notion | Codex + Drive |
 |---|---|---|---|---|
-| Fresh install on brand-new free accounts: base, document home, and schedules built | Must pass | Must pass | Must pass | Beta |
+| Fresh install on brand-new free accounts: base, document home, and the one schedule built | Must pass | Must pass | Must pass | Beta |
 | Setup run again on a company that's already set up (nothing duplicated) | Must pass | Must pass | Must pass | Beta |
 | Existing base with missing fields (only the missing ones added) | Must pass | Must pass | Must pass | Beta |
 | Preflight with one connector signed out (stops, connects, goes on) | Must pass | Must pass | Must pass | Beta |
 | Company with no files (drafts from the website, nothing live until approved) | Must pass | Must pass | Must pass | Beta |
 | Reference files from an upload, pasted text, a document link, and a public URL | Must pass | Must pass | Must pass | Beta |
 | New product rule followed, and a planted break caught by QA | Must pass | Must pass | Must pass | Beta |
-| Clashing rules (setup asks; a rule that lowers a base quality rule is refused) | Must pass | Must pass | Must pass | Beta |
+| Clashing rules (setup asks; a pure style clash, like sentence-case headings, can be approved as an Exception rule that the writer and QA both follow; a rule that lowers a base quality rule is refused) | Must pass | Must pass | Must pass | Beta |
 | Same feedback twice (a Suggested rule stays off until approved) | Must pass | Must pass | Must pass | Beta |
 | Topic to brief to Slack post | Must pass | Must pass | Must pass | Beta |
 | Brief sent back, rework, post again | Must pass | Must pass | Must pass | Beta |
@@ -22,8 +22,10 @@ Codex + Drive is a beta: its rows are run and reported, but a failure there does
 | Kill a run halfway, then rerun (no double posts, resumes from Last Saved Step) | Must pass | Must pass | Must pass | Beta |
 | A teammate's chat request in a shared Notion base becomes a Topic Requested row, and only the host's run writes the pages | Not needed | Must pass | Must pass | Not needed |
 | Image added, then swapped in a rework | Must pass | Must pass | Must pass | Beta |
-| Schedules created, connectors checked, each fired once, no duplicates on rerun | Must pass | Must pass | Manual entries shown | Manual entries shown |
-| Update from an older version (settings kept) | Must pass | Must pass | Must pass | Beta |
+| One schedule per base created (on Codex with `automation_update`, which asks the person to approve it), read back from a fresh list, connectors checked, fired once with all three Last Run fields set, no duplicate on rerun | Must pass | Must pass | Must pass | Beta |
+| Scheduled tasks waived in Step 0 ("go on without it"): setup shows the one schedule to add by hand, builds no heartbeat email, skips firing the schedule, and finishes; later, "repair schedules" creates the schedule and the heartbeat email | Must pass | Must pass | Must pass | Beta |
+| Claude Code without the Claude desktop app's scheduled tasks: Step 0 says to run setup in the Claude app or Codex, or to type "go on without it", and never makes a Claude Code cloud schedule | Must pass | Must pass | Not needed | Not needed |
+| Update from 0.2 (settings kept, database version 3 added on its own with its one-line notice, the old schedules alert posted, and "repair schedules" replaces the three per-agent schedules with one Round schedule after a yes) | Must pass | Must pass | Must pass | Beta |
 | Same-name skill that isn't ours (content-machine-pipeline zip used) | Must pass | Must pass | Must pass | Beta |
 | Two companies in one person's account stay separate | Must pass | Must pass | Must pass | Beta |
 | A company with no files still gets every base rule (em dashes, grammar, brief structure, all 23 QA dimensions) | Must pass | Must pass | Must pass | Beta |
@@ -31,18 +33,26 @@ Codex + Drive is a beta: its rows are run and reported, but a failure there does
 | Health check: a planted bad row is flagged and skipped, and a deleted field stops the run with the repair step | Must pass | Must pass | Must pass | Beta |
 | Duplicates: an exact repeat, a close match, and a keyword already live on the site are each handled as planned | Must pass | Must pass | Must pass | Beta |
 | Queue order: with one row in each step and one marked High, the agent works them in order | Must pass | Must pass | Must pass | Beta |
-| A teammate joins an existing base (no second base, no second schedules) | Must pass | Must pass | Must pass | Beta |
+| A teammate joins an existing base (no second base, no second schedule) | Must pass | Must pass | Must pass | Beta |
 | Two teammates each run their own setup, posting to one shared Slack channel: separate Item IDs, nothing picked up by the wrong pipeline, a duplicate across the two flagged | Must pass | Must pass | Must pass | Beta |
-| Move host to another account (schedules, files, and links follow) | Must pass | Must pass | Manual entries shown | Beta |
+| Move host to another account (the schedule is created on the new account and the old one switched off, and files and links follow) | Must pass | Must pass | Must pass | Beta |
 | Topic requested by a "New topic:" Slack message while nobody is chatting | Must pass | Must pass | Must pass | Beta |
 | Approving a QA-passed piece sets Published, the thread asks for the live link, and the reply fills Live URL and Published At | Must pass | Must pass | Must pass | Beta |
+| A stuck piece: a tick alone gets a question back, and only a written reply approves it | Must pass | Must pass | Must pass | Beta |
+| Ask before guessing: a scheduled run with an unclear topic posts one question in the piece's thread, the bot pings for it, and only that piece waits; after an approver answers, the next round goes on. In chat, every question comes in one message before the work starts | Must pass | Must pass | Must pass | Beta |
+| Recheck: a Published row with Recheck Due today gets one reminder a day, and an approver's "checked [Item ID]" sets the next date | Must pass | Must pass | Must pass | Beta |
+| Archive old pieces: after a yes, old Published and Rejected rows move to the archive base, rows with a recheck still due stay, and the duplicate check still finds the archived pieces | Must pass | Must pass | Must pass | Beta |
+| Lean mode: with API Calls This Month near the limit, a round moves approvals and pieces in progress, starts no new piece, and posts the lean mode alert once a month | Must pass | Must pass | Must pass | Beta |
+| Slack-only mode: with Airtable's monthly limit hit, a round replies "Saved" once in threads of its own posts, posts the limit alert once a month, writes nothing else, and the first normal round handles everything it missed | Must pass | Must pass | Must pass | Beta |
+| "change Airtable plan" after the limit was hit, and "resume content machine" after a pause of over a day: the change is saved, no "stopped running" email is sent, and the next round runs as normal | Must pass | Must pass | Must pass | Beta |
 | An "approved" reply from someone not in Members is ignored | Must pass | Must pass | Must pass | Beta |
 | Run killed in QA round 2 resumes from round 2 in the next round | Must pass | Must pass | Must pass | Beta |
-| Schedules switched off: the heartbeat email arrives within a day | Must pass | Must pass | Must pass | Beta |
+| The schedule switched off: the heartbeat email arrives within a day | Must pass | Must pass | Must pass | Beta |
 | Schema upgrade with a mixed-version team, then a rollback | Must pass | Must pass | Must pass | Beta |
 | UK spelling company: correct UK spelling passes QA | Must pass | Must pass | Must pass | Beta |
 | Bot passed its setup test: the bot message pings the host, in the channel and by direct message, with the thread link | Must pass | Must pass | Must pass | Beta |
-| Bot test fails or is skipped: setup shows the fallback message, Bot Status is Off, and every update still arrives in the channel | Must pass | Must pass | Must pass | Beta |
+| Setup builds the bot by default: it explains the two delivery paths, and skips the bot only when Slack can't be connected inside Airtable or the person declines after hearing the risk | Must pass | Must pass | Must pass | Beta |
+| Bot test fails or the bot is skipped: setup shows the fallback message, Bot Status is Failed test or Off, and every update still arrives in the channel from the person's own account | Must pass | Must pass | Must pass | Beta |
 | Scheduled run with a broken setup (wrong base ID, missing field, empty Reference): it asks nothing, posts one alert, and stops | Must pass | Must pass | Must pass | Beta |
 | The planted instructions in fixtures/injection/ (a Slack reply, a document comment, a web page, a reference file) are treated as data, and nothing acts on them | Must pass | Must pass | Must pass | Beta |
 | Install from the release tag: the Claude zip, the Claude Code plugin, and the Codex install line each work on a clean account, on Mac and Windows | Must pass | Must pass | Must pass | Beta |

@@ -2,7 +2,7 @@
 
 Every brief, for every product, follows this file. It holds the format skeletons (Step 3), the brief's fixed structure and template (Step 5), the plain-language rules for the brief itself (5a and 5b), and the formatting rules for the saved document (5c). modes/brief.md says when each one applies. The general writing standard for articles is in shared/base-rules/writing.md; the rules below are the brief's own.
 
-Product rules and learned rules (shared/rule-extraction.md) add to these rules or make them stricter. They never remove one.
+Product rules and learned rules (shared/rule-extraction.md) add to these rules or make them stricter. They never remove one, except an Active Exception rule, which replaces the one base style rule it names (shared/base-rules/writing.md, Rule Hierarchy, Style exceptions).
 
 ## When the product's files and these rules disagree
 

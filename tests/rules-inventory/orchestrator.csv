@@ -44,7 +44,7 @@ OR-0042,orchestrator-agent.md,Sweep 1,Read thread replies with slack_read_thread
 OR-0043,orchestrator-agent.md,Sweep 1,Read comments in the item's current Doc,modes/orchestrator.md,Comments in the item's current document.
 OR-0044,orchestrator-agent.md,Sweep 1,Take file ID from link; read_file_content with includeComments,shared/storage-drive.md,call `read_file_content` with `includeComments: true`
 OR-0045,orchestrator-agent.md,Sweep 1,Only unresolved reviewer comments after Doc creation count,modes/orchestrator.md,"Only unresolved comments from an approver, left after the document was created, count."
-OR-0046,orchestrator-agent.md,Sweep 1,No Slack Thread Link: search channel for post naming Item ID,modes/orchestrator.md,search its product's channel for the pipeline's post that names its Item ID
+OR-0046,orchestrator-agent.md,Sweep 1,No Slack Thread Link: search channel for post naming Item ID,modes/orchestrator.md,search its product's channel for the pipeline's post about the current document
 OR-0047,orchestrator-agent.md,Sweep 1,No post found: list item as having no approval post,modes/orchestrator.md,list the item in the run summary as having no approval post
 OR-0048,orchestrator-agent.md,Sweep 1,Then decide using the Deciding rules,modes/orchestrator.md,"Then decide the rest, using the rules in"
 OR-0049,orchestrator-agent.md,Sweep 2,Read the channel history with slack_read_channel,modes/orchestrator.md,read the channel's history (`slack_read_channel`)
@@ -78,7 +78,7 @@ OR-0076,orchestrator-agent.md,Deciding,"QA Passed: Published, human send-back, o
 OR-0077,orchestrator-agent.md,Deciding,Brief Approved: change request sets Needs Rework (brief stage),modes/orchestrator.md,Set `Needs Rework` (brief stage)
 OR-0078,orchestrator-agent.md,Deciding,Published: change request is human send-back on published piece,modes/orchestrator.md,and say in Human Feedback it's a change to a published piece
 OR-0079,orchestrator-agent.md,Deciding,Published: reject is noted and flagged for a person,modes/orchestrator.md,Don't change; note it and flag it in the run summary for a person
-OR-0080,orchestrator-agent.md,Deciding,Escalated: change request is human send-back; reject sets Rejected,modes/orchestrator.md,"Blog stage: set `Published`, then ask for the live link | Set `Needs Rework`, as a human send-back | Set `Rejected`"
+OR-0080,orchestrator-agent.md,Deciding,Escalated: change request is human send-back; reject sets Rejected,modes/orchestrator.md,"Blog stage: set `Published`, then ask for the live link | Set `Needs Rework`, as a human send-back. A draft that stalled before it was saved: set `Brief Approved` | Set `Rejected`"
 OR-0081,orchestrator-agent.md,Deciding,Needs Rework: keep status and add new feedback,modes/orchestrator.md,Needs Rework | Nothing to do | Keep the status
 OR-0082,orchestrator-agent.md,Deciding,Working statuses: don't change status while an agent works,modes/orchestrator.md,since an agent is working on it right now
 OR-0083,orchestrator-agent.md,Deciding,Working statuses: record feedback as Pending human feedback,modes/orchestrator.md,"as `Pending human feedback`, so the agent's next rework reads it"

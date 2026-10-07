@@ -2,6 +2,12 @@
 
 One section per release. For each row in release-checklist.md: pass or fail, the date, the platform, and a one-line note (a link to the test item, or what failed).
 
+## 0.3.0 (not released yet)
+
+Automatic checks, 2026-10-07: pass (scripts/check.py, measure.py self-test, run_fixture_checks.py).
+
+Live checks: not run yet, including the rows new in 0.3.0 (the one Round schedule, the update from 0.2, ask before guessing, lean and Slack-only mode, style exceptions, and the bot built by default).
+
 ## 0.2.0
 
 Codex plugin install, 2026-10-07, Mac, clean CODEX_HOME: `codex plugin marketplace add arupc-alt/content-machine`, `codex plugin add content-machine@content-machine` (listed as installed, enabled), and `codex plugin marketplace upgrade` all passed.

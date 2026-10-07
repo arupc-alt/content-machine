@@ -46,7 +46,7 @@ QA-0044,qa-agent.md,Reading a Doc link,Claude.ai link: never open with Claude Do
 QA-0045,qa-agent.md,Reading a Doc link,Stop work on that item; say it needs copying first,modes/qa.md,"Stop work on that item, say in the run output that it"
 QA-0046,qa-agent.md,Run Guards,Guards apply on top of steps; guard wins on conflict,shared/guards.md,"Where a step and a guard disagree, the guard wins."
 QA-0047,qa-agent.md,G1 Connectors,Airtable and document tools required before real work,modes/qa.md,Airtable and the piece's document home (Drive or Notion) are required.
-QA-0048,qa-agent.md,G1 Connectors,Slack needed only on Approved or Escalated verdict,modes/qa.md,Slack is needed only on an Approved or Escalated verdict.
+QA-0048,qa-agent.md,G1 Connectors,Slack needed only on Approved or Escalated verdict,modes/qa.md,"Slack is needed only on an Approved or Escalated verdict, or for"
 QA-0049,qa-agent.md,G1 Connectors,Slack missing: write post into Notes and say so,modes/qa.md,and put the post you would have sent into the Agent Notes
 QA-0050,qa-agent.md,G1 Connectors,"Calendar optional: one notes line with recheck dates, no mention",modes/qa.md,"add one Agent Notes line with the recheck dates, and don't mention"
 QA-0051,qa-agent.md,G2 Never audit twice,In-session Notes marker on drafts audited by Blog Writer,shared/guards.md,"it keeps its claim, with Claimed By `Blog Writer (QA in-session)`"
@@ -324,11 +324,11 @@ QA-0322,qa-agent.md,Step 5b,"No Slack post for Needs Rework, not even short",mod
 QA-0323,qa-agent.md,Step 5b order,"Approved/Escalated: write fields first, Status later",modes/qa.md,"Write every field above now, leaving Status at `In QA`."
 QA-0324,qa-agent.md,Step 5b order,"Then Status, thread link, and post-sent line in one update",modes/qa.md,"Then write, in one update: Status"
 QA-0325,qa-agent.md,Step 5b order,Never a must-act status with no visible post,modes/qa.md,"A status that says a person must act, with no post that"
-QA-0326,qa-agent.md,Step 5b order,"Post fails twice: still write Status, log NOT sent",modes/qa.md,"If the post fails twice, still write the Status, leave Slack Thread"
+QA-0326,qa-agent.md,Step 5b order,"Post fails twice: still write Status, log NOT sent",modes/qa.md,"If the post fails twice, still write the Status, clear Slack Thread"
 QA-0327,qa-agent.md,Step 5b order,Recovery or Step 14 finishes an unsent post,modes/qa.md,"or the Blog Writer's Step 14 in this same session, finishes it"
 QA-0328,qa-agent.md,Step 5c,Post only for Approved or Escalated,modes/qa.md,"Post to the product's Slack channel, only for Approved or Escalated."
 QA-0329,qa-agent.md,Step 5c,Never anything to Slack for Needs Rework,modes/qa.md,"do not send anything to Slack for it, under any circumstance, even"
-QA-0330,qa-agent.md,Step 5c,Check for existing escalation post on current doc,modes/qa.md,first check for an escalation post about the current Blog Doc Link
+QA-0330,qa-agent.md,Step 5c,Check for existing escalation post on current doc,modes/qa.md,first check for an escalation post about the current draft
 QA-0331,qa-agent.md,Step 5c,Escalation about older draft doesn't count,modes/qa.md,One about an older draft doesn't count.
 QA-0332,qa-agent.md,Step 5c,Approved: tag everyone on the approver list,modes/qa.md,every approver for this product from Members tagged by Slack ID (G11)
 QA-0333,qa-agent.md,Step 5c,Approved: include score and key measurements,modes/qa.md,Add the key measurements to the same line
@@ -364,7 +364,7 @@ QA-0362,qa-agent.md,Step 5d,Skip when no flags or routing elsewhere,modes/qa.md,
 QA-0363,qa-agent.md,Step 5d,Freshness recheck works without Calendar,modes/qa.md,"to the soonest recheck date, in the 5b update"
 QA-0364,qa-agent.md,Step 6,User correction in chat: distill a reusable rule,modes/qa.md,"distill it into a general, reusable rule"
 QA-0365,qa-agent.md,Step 6,Kinds of correction to capture,modes/qa.md,"disputing a failed dimension, pointing out a check that missed something real"
-QA-0366,qa-agent.md,Step 6,Create Feedback Log row with Status Active,modes/qa.md,"Save it as Suggested only, with `create_records_for_table`, never an update"
+QA-0366,qa-agent.md,Step 6,Create Feedback Log row with Status Active,modes/qa.md,"save it as Suggested only, with `create_records_for_table`, never an update"
 QA-0367,qa-agent.md,Step 6,"Feedback Log fields: Date, Stage QA, What Happened, Rule, Related Item",modes/qa.md,"A Feedback Log row: Date, Product, Stage `QA`, What Happened"
 QA-0368,qa-agent.md,Step 6,Log cross-item patterns without being asked,modes/qa.md,if the same dimension keeps failing across different drafts for this product
 QA-0369,qa-agent.md,Step 6,Note cross-item pattern in What Happened,modes/qa.md,"note in What Happened that it's a cross-item pattern, not a single"

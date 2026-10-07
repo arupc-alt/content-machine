@@ -612,7 +612,7 @@
         {
           "name": "Schema Map",
           "type": "multilineText",
-          "description": "JSON. Every table, field, and choice ID, plus each product's Slack Channel ID. Written by setup and by 'repair the base'."
+          "description": "JSON. Every table, field, and choice ID, plus each product's Slack Channel ID and Item ID Prefix. Written by setup and by 'repair the base'."
         },
         {
           "name": "Schema Version",
@@ -821,6 +821,9 @@
               },
               {
                 "name": "Visuals"
+              },
+              {
+                "name": "Exception"
               }
             ]
           }
@@ -1181,10 +1184,10 @@
         "name": "Heartbeat Late",
         "type": "formula",
         "options": {
-          "formula": "IF(OR({Paused}, AND({Limit Reached}, {API Month}=DATETIME_FORMAT(NOW(), 'YYYY-MM'))), 0, IF(OR(IF({Last Run Orchestrator}, DATETIME_DIFF(NOW(), {Last Run Orchestrator}, 'hours') > IF(AND({Days}='Weekdays', OR(WEEKDAY(NOW())=5, WEEKDAY(NOW())=6, WEEKDAY(NOW())=0, WEEKDAY(NOW())=1)), 78, 30), 0), IF({Last Run Brief}, DATETIME_DIFF(NOW(), {Last Run Brief}, 'hours') > IF(AND({Days}='Weekdays', OR(WEEKDAY(NOW())=5, WEEKDAY(NOW())=6, WEEKDAY(NOW())=0, WEEKDAY(NOW())=1)), 78, 30), 0), IF({Last Run Blog Writer}, DATETIME_DIFF(NOW(), {Last Run Blog Writer}, 'hours') > IF(AND({Days}='Weekdays', OR(WEEKDAY(NOW())=5, WEEKDAY(NOW())=6, WEEKDAY(NOW())=0, WEEKDAY(NOW())=1)), 78, 30), 0)), 1, 0))"
+          "formula": "IF(OR({Paused}, AND({Limit Reached}, OR({API Month}=DATETIME_FORMAT(NOW(), 'YYYY-MM'), {API Month}=DATETIME_FORMAT(DATEADD(NOW(), -4, 'days'), 'YYYY-MM')))), 0, IF(OR(IF({Last Run Orchestrator}, DATETIME_DIFF(NOW(), {Last Run Orchestrator}, 'hours') > IF(AND({Days}='Weekdays', OR(WEEKDAY(NOW())=5, WEEKDAY(NOW())=6, WEEKDAY(NOW())=0, WEEKDAY(NOW())=1)), 78, 30), 0), IF({Last Run Brief}, DATETIME_DIFF(NOW(), {Last Run Brief}, 'hours') > IF(AND({Days}='Weekdays', OR(WEEKDAY(NOW())=5, WEEKDAY(NOW())=6, WEEKDAY(NOW())=0, WEEKDAY(NOW())=1)), 78, 30), 0), IF({Last Run Blog Writer}, DATETIME_DIFF(NOW(), {Last Run Blog Writer}, 'hours') > IF(AND({Days}='Weekdays', OR(WEEKDAY(NOW())=5, WEEKDAY(NOW())=6, WEEKDAY(NOW())=0, WEEKDAY(NOW())=1)), 78, 30), 0)), 1, 0))"
         }
       },
-      "note": "1 means an agent has missed a full run day: 30 hours, or 78 hours from Friday to Monday (UTC) in Weekdays mode, so a weekend never counts in any time zone. Paused never counts, nor does Limit Reached during the month it was reached, and a blank Last Run never counts."
+      "note": "1 means an agent has missed a full run day: 30 hours, or 78 hours from Friday to Monday (UTC) in Weekdays mode, so a weekend never counts in any time zone. Paused never counts, nor does Limit Reached during the month it was reached or the first 4 days (UTC) of the next month, until the new month's first round turns it off, and a blank Last Run never counts."
     }
   ],
   "automations": [
@@ -1200,11 +1203,12 @@
     {
       "key": "bot",
       "name": "Content Machine: notify reviewers",
-      "always": false,
-      "onlyIf": "Slack is connected inside Airtable (list_external_accounts shows a Slack account)",
-      "trigger": "Content Items row whose Status is any of Awaiting Brief Approval, QA Passed - Awaiting Publish Review, Escalated - Needs Human Input",
+      "always": true,
+      "purpose": "The second delivery path: every waiting update and every posted question also goes out from this bot, next to the agent's own post (shared/slack.md, Who posts, and where)",
+      "skippedOnlyIf": "Slack can't be connected inside Airtable (list_external_accounts still shows no Slack account after the one-click step), or the person declines it after hearing the risk (modes/setup.md, Step 7)",
+      "trigger": "Content Items row whose Status is any of Awaiting Brief Approval, QA Passed - Awaiting Publish Review, Escalated - Needs Human Input, or whose Open Question is not empty",
       "actions": [
-        "sendToSlack, username 'Content Machine', to the channel plus up to 9 approvers by Slack ID, two branches per status, by whether Slack Thread Link is empty (see shared/slack.md, The optional Airtable bot)"
+        "sendToSlack, username 'Content Machine', to the channel plus up to 9 approvers by Slack ID: first one branch for a question (Open Question not empty), then two branches per status, by whether Slack Thread Link is empty (see shared/slack.md, The Airtable bot)"
       ]
     }
   ]
