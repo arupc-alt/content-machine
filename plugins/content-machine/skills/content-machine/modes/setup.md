@@ -31,6 +31,8 @@ Work out which job this is from the person's words:
 | "archive old pieces" | Archive old pieces |
 | "pause content machine", "resume content machine" | Pause and resume |
 
+If the person asks about schedules before Step 8 ("is the schedule working?"), say this base has no schedule yet: setup makes it last, in Step 8. Schedules whose prompts don't name this base ID aren't this base's schedule (Step 8, Only touch this base's schedule); never inspect, repair, or count them. Then go on with the current step.
+
 If they said "set up content machine" but a base already exists for them (Step 1 finds it), say so and offer: finish a setup that stopped partway, add a product, or repair.
 
 ## Step 0: Connections first (critical)
@@ -79,7 +81,7 @@ Slack inside Airtable (for the optional bot) is checked in Step 7. Google Calend
 
 **What a person needs, said plainly once the checklist passes:** "You'll need: a Claude plan that includes connectors and scheduled tasks, so the agents can run on their own (or the Codex app left open on a computer that stays on); free Airtable, Slack, and Google Drive or Notion accounts. Airtable's free plan allows 5 editors per base and 1,000 automated reads and writes a month per workspace, which is enough for about 18 blog posts a month at the default 3 rounds a day."
 
-**Another skill with the same job.** If this session's tools can list installed skills, look for another skill whose description says it writes briefs or blogs, or another skill named content-machine whose description lacks "github.com/arupc-alt/content-machine". Name what you find and ask whether to switch the others off. If more than one installed skill carries this repo's link (for example the plugin and an older uploaded zip), ask the person to keep only the newest and switch the others off, so a schedule never runs an old copy. If another skill already has the name content-machine and isn't this one, tell the person to install this repo's `content-machine-pipeline.zip` instead (it's the same skill under another name), and save that name in the Team row's Skill Name in Step 3.
+**Another skill with the same job.** If this session's tools can list installed skills, look for another skill whose description says it writes briefs or blogs, or another skill named content-machine whose description lacks "github.com/arupc-alt/content-machine". Name what you find and ask whether to switch the others off. If the person's own schedules still use one of them, say so, and leave the choice to them: never switch off a skill or a schedule yourself. If more than one installed skill carries this repo's link (for example the plugin and an older uploaded zip), ask the person to keep only the newest and switch the others off, so a schedule never runs an old copy. If another skill already has the name content-machine and isn't this one, tell the person to install this repo's `content-machine-pipeline.zip` instead (it's the same skill under another name), and save that name in the Team row's Skill Name in Step 3.
 
 ## Step 1: Own setup or join?
 
@@ -107,7 +109,7 @@ Read the answers back. Wait for a yes. Nothing is saved yet; it's saved in Step 
 ## Step 3: Build the Airtable base
 
 1. **Find a workspace.** `list_workspaces`. If there's more than one where they can create bases, ask which. Recommend a personal workspace, not one shared with other bases, because Airtable's free 1,000 calls a month are shared by every base in a workspace. If they can't create bases anywhere, stop and explain how to make a free workspace at airtable.com.
-2. **Look for an existing base** named "[Company] Content Machine" with `search_bases`. If one exists, ask whether to use it. Using it adds only what's missing (tables, fields, choices) and never deletes or renames anything.
+2. **Look for an existing base** named "[Company] Content Machine" with `search_bases`. If one exists, ask whether to use it, unless the person already said yes to it in Step 1. Using it adds only what's missing (tables, fields, choices) and never deletes or renames anything. For an existing base, also apply every waiting migration (shared/migrations.md) and set the Team row's Schema Version to the template's, so the first round doesn't have to.
 3. **Say what will be built, and wait for a yes:** "I'll create a base called [Company] Content Machine in [workspace] with 7 tables: Content Items, Settings, Team, Reference, Members, Rework History, and Feedback Log."
 4. **Create it in one call.** `create_base` with the `tables` from `templates/airtable-schema.json`, in order, with every field (drop the template's `key` and `description` keys where the tool doesn't take them; field descriptions may be kept). If the call fails for one field, read the error, fix that field, and retry the whole call once. If a brand-new account can't create a base through the connector, ask the person to create an empty base with that name by hand, paste its link, and go on by adding the tables with `create_table`.
 5. **Add the fields that need the tables to exist,** from `addAfterCreate`: the two link fields on Content Items (`create_field`, type `multipleRecordLinks`, linked to Rework History and Feedback Log), then rename the matching fields Airtable adds on those tables to "Item" and "Related Item" (`update_field`). Then the Heartbeat Late formula on Team. If the formula is rejected, read the error and fix it once; if it's still rejected, skip it and say the heartbeat alert won't be built.
@@ -123,7 +125,7 @@ If anything fails partway, say what was done and what wasn't. Running setup agai
 Ask only what Settings, Team, and Members don't already have:
 
 1. **The Slack channel** for updates and approvals. Find it with `slack_search_channels` (private channels too); confirm it exists, isn't archived, and that the person's Slack account can post in it. Save Slack Channel Name and Slack Channel ID in Settings.
-2. **Who approves.** One or more people, by name or work email. Find each with `slack_search_users` and read back their name and email for a yes. When a search finds several people, list them; if the person's reply picks one (by name, or by excluding the others), that's the choice: read the final list back once, not each name again. They need no accounts beyond Slack; they review in Slack and open document links.
+2. **Who approves.** One or more people, by name or work email. Find each with `slack_search_users`. When a search finds several people, list them; if the person's reply picks one (by name, or by excluding the others), that's the choice. Don't read each name back separately: the Step 4 read-back below is the one confirmation for the whole list. They need no accounts beyond Slack; they review in Slack and open document links.
 3. **Who else runs it,** if anyone shares this base (most own setups: nobody). Runners need the skill, Airtable, Slack, and the document tool. Airtable's free plan allows 5 editors per base.
 4. **This person.** Their Slack ID and email (from their own Slack profile) and time zone (ask, and suggest the one their Slack profile shows).
 5. **Item ID prefix.** Suggest one from the product's initials plus the person's initials, like `ACME-AR-`, and check no row in this base already uses it. People sharing one Slack channel with other personal content machines need different prefixes, which the initials give them.
@@ -251,7 +253,7 @@ Use this same prompt on Claude and on Codex. It names the skill in plain words, 
 
 **On Codex:** create the schedule with the Codex app's `automation_update` tool (part of Codex's built-in app tools; read its parameters in this session and fill them as below). Don't just show an entry to paste when the tool is there.
 
-1. Look for an automation this base already has (its prompt names this base ID). Update it instead of adding another. If this base has the three older per-agent automations from skill 0.2, say so, and after a yes replace them with the one Round automation (switch the old ones off, or delete them, with the same tool).
+1. Look for an automation this base already has (its prompt names this base ID). Update it instead of adding another. If this base has the three older per-agent automations from skill 0.2 (prompts naming this base ID, with Mode: Orchestrator, Mode: Brief, and Mode: Blog Writer), say so, and after a yes replace them with the one Round automation (switch the old ones off, or delete them, with the same tool).
 2. Say the name, times, days, and prompt, and wait for a yes.
 3. Create it: the name; kind `cron`; the prompt above; run locally, not tied to one chat; notify on failed runs only; and the schedule as a repeat rule, which runs on the computer's own clock (see Time zones on this computer, below):
    - Every day: `RRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA;BYHOUR=[Round Hours];BYMINUTE=7`, for example `RRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA;BYHOUR=9,13,17;BYMINUTE=7` at 3 a day. (This is the form the Codex app itself saves for a daily schedule.)
@@ -279,7 +281,7 @@ If any step fails, name it, fix what can be fixed, and run that step again. Setu
 
 ## Step 10: Finish
 
-1. Post a setup note in the channel and ask the person to pin it, so teammates can find the base: "The content machine for [Company] is set up. Base: [base link]. To use it, type 'write a brief for [topic or keyword]' in Claude, or post 'New topic: [topic]' here. To run your own, install the skill and type 'set up content machine'." with the marker line. Save its link in the Team row (Setup Post Link).
+1. Post a setup note in the channel and ask the person to pin it, so teammates can find the base: "The content machine for [Company] is set up. Base: [base link]. To use it, type 'write a brief for [topic or keyword]' in Claude or Codex, or post 'New topic: [topic]' here. To run your own, install the skill and type 'set up content machine'." with the marker line. Save its link in the Team row (Setup Post Link).
 2. Tell the person, in one short message: the base link, the channel and the approvers, the document home link, the reference files and rules saved (counts), the schedule times (or, if scheduled tasks were waived, that none exist yet and the agents run only when asked), Bot Status, and how to try it: "Type 'write a brief for [a keyword]', or post 'New topic: [topic]' in #[channel]."
 
 ## Join a teammate's base
@@ -295,7 +297,7 @@ For someone who wants to share a teammate's queue instead of running their own.
 
 ## Add a product
 
-Steps 2 (one product), 4 (only the product's channel, prefix, and Doc Home; reuse the rest), 5, and 6 for the new product, adding a Settings row and the product's channel to Schema Map's `channels`. Then update the bot automation's recipients with `update_automation` if the new product has a different channel (one automation can only post to the channels it names; add a branch per channel). Changes to a live automation stay in draft until a person publishes them, so show the automation link (`https://airtable.com/[base ID]/[automation ID]`) and ask the person to open it and click Update, then type 'done'. Schedules don't change: each run covers every product. But if the new product's Doc Home uses a tool (Drive or Notion) that wasn't connected when the schedules were made, the schedules can't use it: run Repair schedules after this.
+Steps 2 (one product), 4 (only the product's channel, prefix, and Doc Home; reuse the rest), 5, and 6 for the new product, adding a Settings row and the product's channel to Schema Map's `channels`. Then update the bot automation's recipients with `update_automation` if the new product has a different channel (one automation can only post to the channels it names; add a branch per channel). Changes to a live automation stay in draft until a person publishes them, so show the automation link (`https://airtable.com/[base ID]/[automation ID]`) and ask the person to open it and click Update, then type 'done'. The schedule's prompt lists each product's channel (Step 8), so run Repair schedules to add the new channel to it. Each round covers every product. And if the new product's Doc Home uses a tool (Drive or Notion) that wasn't connected when the schedules were made, the schedules can't use it: run Repair schedules after this.
 
 ## Add a teammate
 
@@ -316,7 +318,7 @@ shared/rule-extraction.md, "Keeping them right over time": read the new or chang
 
 For "change how often it runs": ask Step 4's question 6, show the cost, and after a yes save Rounds Per Day and Round Hours in the Team row. Then go on below, so the schedule moves to the new times.
 
-1. `list_triggers` (or `list_scheduled_tasks`; on Codex, the automations) and find this base's schedule by its prompt's base ID. Its times must match Round Hours (Step 8). Ignore every schedule that doesn't name this base ID (Step 8, Only touch this base's schedule). If this base still has the three per-agent schedules from skill 0.2, replace them with the one Round schedule after a yes (Step 8).
+1. `list_triggers` (or `list_scheduled_tasks`; on Codex, the automations) and find this base's schedule by its prompt's base ID. Its times must match Round Hours, and its prompt's `Channels:` must list every channel in Schema Map's `channels` (Step 8). Ignore every schedule that doesn't name this base ID (Step 8, Only touch this base's schedule). If this base still has the three per-agent schedules from skill 0.2, replace them with the one Round schedule after a yes (Step 8).
 2. A schedule made before a connector was connected can't gain it. After a yes, delete it (`delete_trigger`; desktop scheduled tasks are switched off with `update_scheduled_task` and enabled false) and create it again (Step 8). Otherwise its time and prompt are just corrected (`update_trigger`, `update_scheduled_task`, or on Codex `automation_update`). A missing schedule is created as Step 8 says, and Step 8's check confirms there's exactly one.
 3. If Heartbeat Automation ID is empty (for example, schedules were waived at setup and added later), build the heartbeat alert now (Step 7).
 4. Clear the Team row's three Last Run fields, then fire the schedule once and check that all three Last Run fields are set again (Step 9, part 6). A run writes Last Run only once per run day, so without clearing them the check proves nothing.
@@ -347,5 +349,5 @@ Airtable's free plan holds 1,000 records per base, and new rows fail past that. 
 
 First find the base, as Step 1 does: `search_bases` for a name ending in "Content Machine" (more than one: ask which). If Airtable isn't connected, say: "Airtable isn't connected in this session. Connect it, then type the same words again." If no base is found, say: "I can't find a content machine base on this account. If a teammate hosts it, ask them to pause it." Then:
 
-- "pause content machine": after a yes, set Paused on in the Team row. Every run stops at run-start step 2 until resumed.
-- "resume content machine": after a yes, set Paused off.
+- "pause content machine": after a yes, set Paused on in the Team row, and post "Content machine paused." with the marker line in each product channel. Every run stops at run-start step 2 until resumed.
+- "resume content machine": after a yes, set Paused off, and post "Content machine resumed." with the marker line.

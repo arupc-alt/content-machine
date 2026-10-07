@@ -8,7 +8,7 @@ A scheduled round is unattended (shared/run-start.md, Attended or unattended): i
 
 1. Do shared/run-start.md steps 1 to 3 once, for the whole round: connectors, pause, version and limits, and base health. If any of them stops the run, the whole round stops there, except Airtable's monthly limit, which switches the round to Slack-only mode (shared/airtable.md, When the limit is reached) instead of stopping.
 2. Work out lean mode (shared/airtable.md, The API budget): a lean round skips step 4 of the Brief Agent's queue and step 6 of the Blog Writer's (no new pieces) and does everything else.
-3. Make one batched read (shared/airtable.md): the Team row, and Content Items as modes/orchestrator.md's batched read describes (it covers what the Brief Agent and Blog Writer need too). Settings, Members, and Reference are read only when a part has real work, as each mode file says.
+3. Make one batched read (shared/airtable.md): the Team row, and Content Items as modes/orchestrator.md's batched read describes, plus the fields the Brief Agent and Blog Writer need: Priority, Last Saved Step, QA Round, Stall Count, Claim Token, Brief Rework Count, and Agent Notes. Settings, Members, and Reference are read only when a part has real work, as each mode file says.
 
 ## The three parts, in order
 
@@ -20,11 +20,11 @@ Each part does shared/run-start.md steps 4 to 6 for its own mode (recovery, row 
 
 **Between parts:** if an earlier part changed any Content Items row, read Content Items again before the next part builds its queue (one call), so it sees the new statuses. If nothing changed, reuse the batched read.
 
-**Load each part's files only when that part has work,** from the load map in SKILL.md. A round with nothing to do loads only this file, shared/run-start.md, shared/guards.md, shared/airtable.md, shared/slack.md, and modes/orchestrator.md, and costs 2 Airtable calls.
+**Load each part's files only when that part has work,** from the load map in SKILL.md. A round with nothing to do loads only this file, shared/run-start.md, shared/guards.md, shared/airtable.md, shared/slack.md, and modes/orchestrator.md, and costs 2 Airtable calls (4 on the first round of each run day, which also reads suggested rules and writes the Team row).
 
 **If one part fails,** say why in the run summary and go on to the next part, unless the failure is one that stops every run (shared/run-start.md, steps 1 and 2). A part that runs out of time or room ends cleanly at its next saved step (Last Saved Step), and the next round picks it up.
 
 ## End once
 
-- **One Team write a day.** On the round's first run of each run day, write Last Run Orchestrator, Last Run Brief, and Last Run Blog Writer (all three, even for a part that had nothing to do, since the round ran), Last Orchestrator Sweep, and the API counter, in one update (shared/run-start.md, The heartbeat). On later rounds the same day, write the Team row only when the Orchestrator's own rules need it (modes/orchestrator.md, End of run) or the API counter must be saved.
+- **One Team write a day.** On the round's first run of each run day, write Last Run Orchestrator, Last Run Brief, and Last Run Blog Writer (all three, even for a part that had nothing to do, since the round ran), Last Orchestrator Sweep, and the API counter, in one update (shared/run-start.md, The heartbeat). On later rounds the same day, write the Team row only when the Orchestrator's own rules need it (modes/orchestrator.md, End of run) or this round made more than 2 Airtable calls, in which case add its count to API Calls This Month (shared/airtable.md, The API budget).
 - **One run summary** (shared/run-start.md, The run summary), with a short section per part that did something. The Orchestrator's Slack summary is posted only as modes/orchestrator.md says.

@@ -174,7 +174,7 @@ Weekdays only uses about a quarter fewer calls. To change it later, type "change
 Airtable's free plan allows about 1,000 automated reads and writes a month per workspace. The content machine is built to stay inside that and keep working:
 
 - **Lean mode.** Every run checks how many calls are left for the month. If they're running short, approvals, reworks, and pieces already in progress keep moving, and new pieces wait until next month. You get one Slack message when this starts.
-- **If the limit is hit anyway** (for example, another base in the same workspace used it up), it still answers in Slack: every approval, change request, and new topic is acknowledged as saved, and all of them are handled the moment the limit resets. Nothing is lost.
+- **If the limit is hit anyway** (for example, another base in the same workspace used it up), it still answers in Slack: replies on its posts (approvals, change requests, answers) are acknowledged as saved, and everything, new topics included, is handled the moment the limit resets. Nothing is lost. A "stopped running" email that month means this limit, not a broken schedule.
 - **The notification bot is optional.** Updates always go out from your own Slack account. If the bot isn't set up, fails, or uses up its own 100 automation runs a month, nothing stops; you just don't get the extra ping.
 - **To lift the limits,** move the workspace to an Airtable paid plan, then type "change Airtable plan" so the content machine knows the new limit.
 

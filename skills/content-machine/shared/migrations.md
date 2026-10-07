@@ -25,7 +25,7 @@ When it's added to an existing base, fill it from Rounds Per Day: 1 gives `9`, 2
 
 ### 3: Open Question and API Monthly Limit (safe unattended)
 
-Adds two fields: Open Question (long text) on Content Items, for questions a run asks before going on (G25); and API Monthly Limit (number) on Team, filled with 1,000 when added (the free plan; "change Airtable plan" sets a higher one). Min Skill Version stays the same: older copies ignore both fields.
+Adds two fields: Open Question (long text) on Content Items, for questions a run asks before going on (G25); and API Monthly Limit (number) on Team, filled with 1,000 when added (the free plan; "change Airtable plan" sets a higher one). Raise Min Skill Version to 0.3.0: an older copy would ignore Open Question and work a held row, so it must stop and ask to be updated.
 
 ### Heartbeat formula update (0.2.1, by hand, optional)
 

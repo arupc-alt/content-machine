@@ -6,7 +6,7 @@ Brief, Blog Writer, QA (when run on its own), and Orchestrator all start here, i
 
 A run is **unattended** when the message that started it is a schedule's prompt (it says "Unattended run"). A prompt that names a Mode but reads like a schedule's (no person asking in a chat) counts as unattended too; when unsure, treat the run as unattended (G2). Everything else is attended.
 
-- An unattended run never asks a question and never enters setup. When something needs a person, it posts one alert (shared/slack.md, Alerts) and stops, or skips that row and lists it in the run summary.
+- An unattended run never asks in chat and never enters setup. When a piece needs an answer, it asks in Slack and holds that row (G25). When something else needs a person, it posts one alert (shared/slack.md, Alerts) and stops, or skips that row and lists it in the run summary.
 - An attended run may ask the person in chat, but only about this run's own work. Setup questions only happen in setup mode. Before starting the work, an attended run checks it has every input it needs and asks for anything missing or unclear in one message (G25).
 
 ## Step 1: Connectors
@@ -31,7 +31,7 @@ If Slack itself is the problem, say the message in the run's own output instead 
 From the Team row:
 
 - **Paused** on: stop. Output only "Paused. Type 'resume content machine' to start again."
-- **Limit Reached** on and API Month is still this month: try one Airtable read; if it fails with the limit error, go to Slack-only mode (shared/airtable.md, When the limit is reached).
+- **Limit Reached** on: the Team read just worked, so the limit isn't blocking this run. Turn Limit Reached off in this run's Team write, and go on.
 - **Lean mode:** work out the reserve (shared/airtable.md, The API budget). A lean run starts no new piece.
 - **Min Skill Version** is higher than this skill's own version (in SKILL.md frontmatter, `metadata.version`; compare as numbers, part by part, so 0.10.0 is newer than 0.9.0): post one alert, "[Person]'s copy of the content machine skill is out of date (has [x], needs [y]). Update it from the GitHub release." and stop.
 - **Schema Version** is lower than this skill's schema version: apply only migrations marked 'safe unattended' (shared/migrations.md), then go on; otherwise post the 'A database update is waiting' alert and stop.

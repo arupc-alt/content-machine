@@ -46,7 +46,7 @@ OR-0044,orchestrator-agent.md,Sweep 1,Take file ID from link; read_file_content 
 OR-0045,orchestrator-agent.md,Sweep 1,Only unresolved reviewer comments after Doc creation count,modes/orchestrator.md,"Only unresolved comments from an approver, left after the document was created, count."
 OR-0046,orchestrator-agent.md,Sweep 1,No Slack Thread Link: search channel for post naming Item ID,modes/orchestrator.md,search its product's channel for the pipeline's post that names its Item ID
 OR-0047,orchestrator-agent.md,Sweep 1,No post found: list item as having no approval post,modes/orchestrator.md,list the item in the run summary as having no approval post
-OR-0048,orchestrator-agent.md,Sweep 1,Then decide using the Deciding rules,modes/orchestrator.md,"Then decide, using the rules in"
+OR-0048,orchestrator-agent.md,Sweep 1,Then decide using the Deciding rules,modes/orchestrator.md,"Then decide the rest, using the rules in"
 OR-0049,orchestrator-agent.md,Sweep 2,Read the channel history with slack_read_channel,modes/orchestrator.md,read the channel's history (`slack_read_channel`)
 OR-0050,orchestrator-agent.md,Sweep 2,Read the last 24 hours,modes/orchestrator.md,Read from the Team row's Last Orchestrator Sweep minus 1 hour.
 OR-0051,orchestrator-agent.md,Sweep 2,Read the last 7 days on a first run,modes/orchestrator.md,"When Last Orchestrator Sweep is blank (a first run), read the last 7 days."

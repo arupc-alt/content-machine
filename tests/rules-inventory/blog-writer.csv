@@ -38,7 +38,7 @@ BW-0036,blog-writer-agent-installer.md,Run Guards,G11: post counts only with a r
 BW-0037,blog-writer-agent-installer.md,Run Guards,G11: Approval post sent line in Notes,DROPPED,Notes line replaced by Slack Thread Link set with Status; see shared/slack.md Confirmed post
 BW-0038,blog-writer-agent-installer.md,Run Guards,"G11: retry a failed post once, then record it",shared/slack.md,"read the error, fix what it names, and retry once"
 BW-0039,blog-writer-agent-installer.md,Run Guards,G12: human send-back gets one pass above the cap,shared/guards.md,do one rework pass for their feedback even if
-BW-0040,blog-writer-agent-installer.md,Run Guards,G12: how to tell a human send-back,modes/blog-writer.md,newest Human Feedback entry is newer than its newest QA verdict
+BW-0040,blog-writer-agent-installer.md,Run Guards,G12: how to tell a human send-back,modes/blog-writer.md,is newer than its newest QA verdict and is marked
 BW-0041,blog-writer-agent-installer.md,Run Guards,G12: tell QA to skip escalation check for that audit,modes/blog-writer.md,G13's instruction to skip QA's escalation check for this one audit
 BW-0042,blog-writer-agent-installer.md,Run Guards,"G12: if QA does not approve, escalate",modes/blog-writer.md,"If that audit doesn't approve it, escalate rather than loop again"
 BW-0043,blog-writer-agent-installer.md,Run Guards,G13: never post a second escalation for the same draft,shared/guards.md,"If one exists, don't post again; just set the Status."
@@ -81,7 +81,7 @@ BW-0079,blog-writer-agent-installer.md,Step 0,Never ask for saved setup values,m
 BW-0080,blog-writer-agent-installer.md,Step 0,Connector check first,shared/run-start.md,Check each tool this mode needs with its first real call
 BW-0081,blog-writer-agent-installer.md,Step 0,"Setup check, go to first-time setup",DROPPED,"Setup comes from the base; see shared/run-start.md steps 2, 3 and Loading the rules"
 BW-0082,blog-writer-agent-installer.md,Step 0,"Read all reference files, check dates per G9",modes/blog-writer.md,Read every reference file fully before writing a word
-BW-0083,blog-writer-agent-installer.md,Step 0,Decide attended or unattended,shared/run-start.md,An unattended run never asks a question and never enters setup
+BW-0083,blog-writer-agent-installer.md,Step 0,Decide attended or unattended,shared/run-start.md,An unattended run never asks in chat and never enters setup
 BW-0084,blog-writer-agent-installer.md,Step 0,"Hold tone, claims, terms, audience, source rules",modes/blog-writer.md,"brand tone descriptors and hard prohibitions, approved and banned claims"
 BW-0085,blog-writer-agent-installer.md,Step 0,Write to clear the QA scoring categories,modes/blog-writer.md,since this draft is written to already clear them
 BW-0086,blog-writer-agent-installer.md,Step 0.5,Same Airtable mechanism as Brief Agent,DROPPED,Shared mechanism now lives in shared/airtable.md
