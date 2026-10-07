@@ -230,7 +230,7 @@ On a Needs Rework verdict, that Agent Notes block and the report are the entire 
 Post per shared/slack.md: the product's Slack Channel ID from its Settings row, every approver for this product from Members tagged by Slack ID (G11), the plain-words rules in "How every message reads," and the `(Content Machine)` marker as the last line.
 
 - **If approved:** use the "Blog passed its checks" template. Its content:
-  - The Score line carries the base score and, when product rules applied, the product rules result. Add the key measurements to the same line: "[N] words, grade [X] reading level."
+  - The Score line carries the base score and, when a product or learned rule other than an Exception rule applied to QA, the product rules result. Add the key measurements to the same line: "[N] words, grade [X] reading level."
   - "Before you publish" holds up to 3 short lines, in plain words: open `[VERIFY]` items, Polish items, or anything a person should check or recheck. Leave it out when there's nothing to check.
   - Link the draft's document and the QA report.
   - It asks for the final human check without implying the piece is live: the template's last line says what a tick or a reply does.

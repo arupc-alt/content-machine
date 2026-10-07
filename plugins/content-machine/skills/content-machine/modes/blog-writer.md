@@ -89,7 +89,7 @@ The Rule Hierarchy in shared/base-rules/writing.md governs every step in this fi
 
 ## Step 0: What to read before writing
 
-Run start already loaded the rules (shared/run-start.md, Loading the rules): the base rules (shared/base-rules/writing.md and shared/base-rules/qa.md), then this product's Active Reference rows. If the product has no Active Brand guide, Style guide, or Product knowledge rows, run start has already stopped work for this product. Check the reference files' age per G9.
+Run start already loaded the rules (shared/run-start.md, Loading the rules): the base rules (shared/base-rules/writing.md and shared/base-rules/qa.md), then this product's Active Reference rows. If the product is missing Active rows of any of Type Brand guide, Style guide, or Product knowledge (counting only content rows, not the index or writing profile row), run start has already stopped work for this product. Check the reference files' age per G9.
 
 Read every reference file fully before writing a word: the product's Reference rows of Type Brand guide, Style guide (the writing profile included), Quality checks, and Product knowledge, plus Links and CTAs, Competitors, and Best past posts when present, leaving out the supplementary rows (Section starting with `Supplementary:`). Then read, in full, every supplementary row this piece's topic needs, found by its section name in the index row (shared/run-start.md, Loading the rules). Hold, internally: brand tone descriptors and hard prohibitions, approved and banned claims, exact terminology, audience segments and their objections, source and freshness rules, and the QA scoring categories from the quality checks file, since this draft is written to already clear them.
 
