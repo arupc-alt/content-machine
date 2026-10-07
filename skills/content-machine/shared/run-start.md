@@ -48,6 +48,7 @@ From the Team row:
 - The document home opens (one read). For a product whose Doc Sharing is Notion web link, open its public link (pasted at setup and saved in Settings, Notion Home) with the web fetch tool; if it no longer opens, post one alert: "The public Notion link for [Product] no longer opens. Publish the top page to the web again from Notion's Share menu."
 - The Airtable bot: if Bot Status is On, `list_automation_runs` for Bot Automation ID shows no failures in the last 7 days. If it does, post one alert: "Bot pings are failing. Updates still arrive in the channel. To fix the pings, reconnect Slack in Airtable." The bot's recipients match the Active Approvers in Members (channel plus up to 9). If not, post one alert: "The bot's list of people to ping is out of date. Type 'add a teammate' to fix it."
 - Count rows in every table and save Records Count (see shared/airtable.md, Records).
+- The schedules: if this session's tools can list schedules (shared/platform-tools.md), check that this base's three schedules (their prompts name this base ID) exist and are on. If one is missing or off, post one alert: "A content machine schedule is missing or switched off: [mode]. Type 'repair schedules'." If the tools can't list them, skip this quietly; the heartbeat email still catches a schedule that stopped.
 
 Save Last Full Check = now. If something's wrong, post one line naming what's missing and its fix, then stop.
 
@@ -76,7 +77,7 @@ Never a failure: a blank count (it's 0), a blank Owner (the claiming agent sets 
 
 **Duplicate check.** Before creating a row for a new topic or keyword, and before writing a draft from an approved brief, compare it with every row in the base (Rejected and Published ones and archive stubs included), the team Slack channel's last 90 days of pipeline posts (other people's personal pipelines post there too), and the company's live site (one web search: `site:[Website URL] [primary keyword]`).
 
-Leave out the row being checked. A row whose Duplicate Decision is already `Go` for the match named in Overlap With passes. The Blog Writer's check on a `Brief Approved` row never changes its Status: on a new match it sets Overlap With and Duplicate Decision `Pending`, keeps `Brief Approved`, posts the question, and skips the row.
+Leave out the row being checked, and Slack posts that name its own Item ID. A row whose Duplicate Decision is already `Go` for the match named in Overlap With passes. The Blog Writer's check on a `Brief Approved` row never changes its Status: on a new match it sets Overlap With and Duplicate Decision `Pending`, keeps `Brief Approved`, posts the question, and skips the row.
 
 A match is any of: the same primary keyword after cleanup (lowercase, singular and plural folded, word order and filler words ignored); a working title or input that says the same thing in other words; the same search intent and format as a piece in progress or published; a live post on the company's site.
 
@@ -97,7 +98,7 @@ Each agent builds its queue from the batched read, in the order its mode file li
 
 ## Loading the rules
 
-A run with real work loads, in this order: the base rules this mode's load map names (SKILL.md), then this product's Active Reference rows (files, product rules, learned rules). It prints one line in its output and saves it in the row's Rules Loaded field: "Rules loaded: base [n], product [n], learned [n], reference version [v]."
+A run with real work loads, in this order: the base rules this mode's load map names (SKILL.md), then this product's Active Reference rows (files, product rules, learned rules). It prints one line in its output and saves it in the row's Rules Loaded field: "Rules loaded: files [n] (brand [n], style [n], product knowledge [n], quality checks [n]), product rules [n], learned rules [n], newest reference version [v]." The reference version is the highest Version among the loaded rows.
 
 If the product has no Active Brand guide, Style guide, or Product knowledge rows, the run doesn't write anything for that product. It posts one alert, "[Product] has no reference files yet. Type 'update reference files'.", and moves on.
 

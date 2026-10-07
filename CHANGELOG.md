@@ -8,6 +8,13 @@ Fixes found by testing 0.1.0, including a live test on Codex. Database version 2
 - Setup now asks for your reference files plainly (brand guide, style guide, product knowledge, plus the optional ones), waits for them, and won't go past that step without them. You can still type 'draft them' to get drafts from your website.
 - Choose how often the agents run: 1 to 6 times a day, or every 2, 3, 4, 6, 8, or 12 hours. Each time, the Orchestrator, Brief Agent, and Blog Writer each run once. Setup shows what each choice costs on Airtable's free plan. The chosen hours are saved in a new Team field, Round Hours (migration 2).
 - On Codex, setup now creates the three schedules itself with Codex's automation tool, instead of only showing entries to paste.
+- After creating the schedules, setup lists them again with a fresh call and shows a table of each agent's times, fixing or flagging any that are missing. The weekly health check also confirms they still exist.
+- Codex installs from this GitHub repo as a plugin, the same way Claude Code does (`codex plugin marketplace add arupc-alt/content-machine`, then `codex plugin add content-machine@content-machine`). No more `$skill-installer`.
+- Reference files: setup and the README now explain what the agents are looking for (product truth, brand and voice, writing rules and best practices, and an optional quality bar), in any format, and offer optional templates with notes on each section.
+- A live link sent together with the approval is now saved instead of lost.
+- Before QA, the Blog Writer now also self-checks the style guide's never-use list, brand voice and terminology, prohibited claims, every rule meant for QA, and the company's own quality checks.
+- Fixed: the QA loop's rework no longer mistakes its own status change for another run; the first draft rework no longer pulls in brief-stage feedback; the duplicate check no longer matches a piece's own Slack posts; "Rules loaded" now counts the reference files.
+- New accuracy rules for every product: when sources disagree the vendor's live page wins, nothing is called "new" without checking the changelog, no promised outcomes the product can't control, and each source is queried once. QA now also fails a piece that doesn't deliver its title's promise or repeats a point.
 
 - Learned rules and product rules are now saved with their rule text (Content), and product rules with their Product. Before, rules approved from feedback were skipped as incomplete, and product rules from setup could fail to load.
 - The "Possible repeat" question for a live post now asks for "go" or "drop", the same answers the Orchestrator reads. Before, an answer like "new angle" left the piece waiting forever.

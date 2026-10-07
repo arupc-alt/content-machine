@@ -4,6 +4,10 @@ One section per release. For each row in release-checklist.md: pass or fail, the
 
 ## 0.2.0
 
+Codex plugin install, 2026-10-07, Mac, clean CODEX_HOME: `codex plugin marketplace add arupc-alt/content-machine`, `codex plugin add content-machine@content-machine` (listed as installed, enabled), and `codex plugin marketplace upgrade` all passed.
+
+Dry runs (agents following the skill with simulated tools): new setup on Codex (connections checklist first, reference-file gate, every-4-hours weekday schedules with correct RRULEs, verified with a calendar-rule parser), and one piece traced from "New topic:" to Published. Problems found were fixed in 0.2.0.
+
 Live test on Codex, 2026-10-07 (by the repo owner): setup didn't ask for reference files, didn't check connections first, and didn't create schedules; the skill wasn't found until it was installed from GitHub. Fixed in 0.2.0; not re-tested live yet.
 
 ## 0.1.1 (not released; folded into 0.2.0)

@@ -92,7 +92,7 @@ OR-0090,orchestrator-agent.md,Deciding,"Unclear: write no status, reply asking y
 OR-0091,orchestrator-agent.md,Recording,"Add to Notes, never overwrite",modes/orchestrator.md,"Human Feedback is the Orchestrator's field, and it is only ever added to."
 OR-0092,orchestrator-agent.md,Recording,Earlier lines are history the other agents read,modes/orchestrator.md,"Earlier entries are the item's history, and the Brief Agent and Blog Writer read them"
 OR-0093,orchestrator-agent.md,Recording,Every change adds one new block at the end,modes/orchestrator.md,"adds one new entry at the end, in the shape from shared/airtable.md"
-OR-0094,orchestrator-agent.md,Recording,"Block header: time, classification, reviewer, source",modes/orchestrator.md,[ISO time] [reviewer's name] via [Slack reply / Slack reaction / Doc comment / chat]:
+OR-0094,orchestrator-agent.md,Recording,"Block header: time, classification, reviewer, source",modes/orchestrator.md,[ISO time] [reviewer's name] via [Slack reply / Slack reaction :emoji_name: / Doc comment / chat]:
 OR-0095,orchestrator-agent.md,Recording,Quote the reviewer's exact words,modes/orchestrator.md,"in full if short, otherwise quoted in part with a faithful summary"
 OR-0096,orchestrator-agent.md,Recording,Include the source link,modes/orchestrator.md,"Source: [link to the Slack message, or the document link plus the comment]"
 OR-0097,orchestrator-agent.md,Recording,"Mark blog send-backs after QA approval, publishing, or escalation",modes/orchestrator.md,"after QA's approval, after publishing, or after an escalation:] Human send-back"

@@ -132,6 +132,8 @@ If no question about a `Pending` row can be found anywhere (no thread, no channe
 
 After an approve sets a piece `Published`, the acknowledgment asks for the live link. A later approver reply that contains a URL, in that piece's thread or naming its Item ID, on a `Published` row with an empty Live URL: in one update set Live URL to that URL and Published At to the reply's time. Record it in Human Feedback, and reply with the "Live link saved" thread reply in shared/slack.md. If the URL isn't on the product's Website URL domain, still save it, and say so in the run's chat output.
 
+**A live link sent with the approval.** This applies in Sweep 1 as well as Sweep 2. An approving reply that also contains a URL, on a `QA Passed - Awaiting Publish Review` row, is an Approve: in the same update that sets `Published`, also set Live URL and Published At, and reply with "Live link saved" instead of asking for the link. On a `Published` row with an empty Live URL, an approver's reply that is only a URL is a live link, never Unclear.
+
 ### Answers about learned rules
 
 A reply from an approver for that product in the thread of a learned-rule question (see "Learned rules"), on a Reference rule whose Status is still `Suggested`:
@@ -186,7 +188,7 @@ Every status write also sets Last Updated At to now. Never touch Brief Rework Co
 **Human Feedback is the Orchestrator's field, and it is only ever added to.** Earlier entries are the item's history, and the Brief Agent and Blog Writer read them (G12). Every processed decision or piece of feedback adds one new entry at the end, in the shape from shared/airtable.md:
 
 ```
-[ISO time] [reviewer's name] via [Slack reply / Slack reaction / Doc comment / chat]:
+[ISO time] [reviewer's name] via [Slack reply / Slack reaction :emoji_name: / Doc comment / chat]:
 [Approve / Change request / Reject / Pending human feedback / Duplicate go / Duplicate drop / Live link]: "[the reviewer's exact words, in full if short, otherwise quoted in part with a faithful summary]"
 Source: [link to the Slack message, or the document link plus the comment]
 [For a blog-stage change request after QA's approval, after publishing, or after an escalation:] Human send-back

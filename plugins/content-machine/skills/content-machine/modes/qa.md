@@ -149,7 +149,7 @@ Write a short, readable report, not a wall of JSON, in this structure:
 ## Score
 [Number of dimensions passed] / [total dimensions] passed
 Base: [passed] of [total]. Product rules: [passed] of [checked]
-Rules loaded: base [n], product [n], learned [n], reference version [v]
+Rules loaded: files [n] (brand [n], style [n], product knowledge [n], quality checks [n]), product rules [n], learned rules [n], newest reference version [v]
 
 ## Verdict
 Approved: ready for publish review

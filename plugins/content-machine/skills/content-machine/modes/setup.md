@@ -142,31 +142,32 @@ Read everything back in one short list. Wait for a yes. Then save:
 
 ## Step 5: Reference files and product rules
 
-This step is never skipped. The agents write nothing for a product without its brand guide, style guide, and product knowledge (shared/run-start.md, Loading the rules).
+This step is never skipped. Reference files are what personalize the writing: they teach the agents the company's product truth, voice, and rules. The agents write nothing for a product until it has approved content for product truth, brand and voice, and writing rules (shared/run-start.md, Loading the rules).
+
+The person's files don't need any set format or names. One file can cover several areas, and a plain list of rules counts. Setup reads whatever they share and sorts it into the sections in `products/_template/` (rule-extraction.md). Never ask them to rewrite their files into a format first.
 
 1. **Ask for the files, in one message, exactly like this** (fill in the product name):
 
 ```
-Step 5: your reference files for [Product]. These teach the agents your brand, so please upload or share them now.
+Step 5: your reference files for [Product]. These personalize the writing, so the agents sound like you and get your facts right. Please share whatever you have.
 
-Required
-1. Brand guide: voice, tone, words to use and avoid
-2. Writing style guide: reading level, sentence rules, formatting
-3. Product knowledge: features, plans, limits, and your docs link
+What I'm looking for (any format, and one file can cover several):
+1. Product truth: what you sell, who it's for, features, plans and prices, and facts that must always be right
+2. Brand and voice: how you sound, how you describe yourselves, and what you may and may never claim
+3. Writing rules and best practices: words to avoid, formatting, SEO habits, anything you always or never do
+4. Quality bar (optional): what makes a draft good enough, and who approves
 
-Optional
-4. Quality checks
-5. Internal links and calls to action
-6. Competitors: who they are and what may be said about them
-7. Best past posts: 2 or 3 links to match for tone
+Also helpful (optional): pages to link to and calls to action, competitors, and 2 or 3 past posts you love.
+
+A brand guide, style guide, product docs, a pitch deck, notes, or a plain list of rules all work.
 
 You can upload files (PDF, Word, Markdown, or text), paste text, or share Google Doc, Notion, or web page links. Mix them however you like.
-No files yet? Type 'draft them' and I'll draft starting files from [website] for you to review.
+Don't have something? Type 'draft them' and I'll draft what's missing from [website], for you to review.
 ```
 
-2. **Wait for the files.** Don't go on until all three required files are in. If some are missing, name them and ask again. If they type 'draft them', draft only the missing required files from the website and docs URL, marked "Draft, please review," and show them for a yes.
+2. **Wait for the files, then say what they cover.** Read what they shared and say, in a short list, which of the areas it covers (product truth, brand and voice, writing rules, quality bar) and which are missing. For a missing required area (the first three), ask once more, or offer to draft it. If they type 'draft them', draft only what's missing, from the website and docs URL, marked "Draft, please review," and show it for a yes. The quality bar is optional: without it, the built-in 23 QA checks apply.
 3. **Then follow shared/rule-extraction.md** from Saving the content to the end: save the content as Reference rows after a yes, pull out the product rules, show them grouped with their source quotes, and save only what the person approves. Update the Team row's Reference Row Count.
-4. **Gate.** Go on to Step 6 only when the product has Active Reference rows of Type Brand guide, Style guide, and Product knowledge. If the person wants to stop here, stop, and say: "Type 'set up content machine' when you have the files. I'll pick up at this step." Nothing drafted goes live until it's approved.
+4. **Gate.** Go on to Step 6 only when the product has approved, Active Reference rows of Type Product knowledge, Brand guide, and Style guide (from their files or an approved draft). If the person wants to stop here, stop, and say: "Type 'set up content machine' when you have the files. I'll pick up at this step." Nothing drafted goes live until it's approved.
 
 ## Step 6: Document home
 
@@ -225,7 +226,7 @@ Each agent has one schedule that fires once per round, so the Orchestrator, the 
 - `Use the [Skill Name] skill. Mode: Brief. Base: [base ID]. Unattended run.`
 - `Use the [Skill Name] skill. Mode: Blog Writer. Base: [base ID]. Unattended run.`
 
-On Codex, name the skill the way Codex calls one, with a `$`: `Use the $[Skill Name] skill. Mode: Brief. Base: [base ID]. Unattended run.`
+Use these same prompts on Claude and on Codex. They name the skill in plain words, which works whether it was installed as a plugin or as a standalone skill.
 
 **On Claude:**
 
@@ -241,12 +242,14 @@ On Codex, name the skill the way Codex calls one, with a `$`: `Use the $[Skill N
 
 1. Look for automations this base already has (their prompts name the base ID). Update those instead of adding more.
 2. Say the three names, times, and prompts, and wait for a yes.
-3. Create each one: name "Content Machine: [mode] ([Company])"; kind `cron`; the Codex prompt (with `$[Skill Name]`); run locally, not tied to one chat; notify on failed runs only; and the schedule as a repeat rule, which runs on the computer's own clock (see Time zones on this computer, below):
-   - Every day: `RRULE:FREQ=DAILY;BYHOUR=[Round Hours];BYMINUTE=[7, 27, or 47]`, for example `RRULE:FREQ=DAILY;BYHOUR=9,13,17;BYMINUTE=27` for the Brief Agent at 3 a day.
+3. Create each one: name "Content Machine: [mode] ([Company])"; kind `cron`; the prompt above; run locally, not tied to one chat; notify on failed runs only; and the schedule as a repeat rule, which runs on the computer's own clock (see Time zones on this computer, below):
+   - Every day: `RRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA;BYHOUR=[Round Hours];BYMINUTE=[7, 27, or 47]`, for example `RRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA;BYHOUR=9,13,17;BYMINUTE=27` for the Brief Agent at 3 a day. (This is the form the Codex app itself saves for a daily schedule.)
    - Weekdays: `RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;BYHOUR=[Round Hours];BYMINUTE=[7, 27, or 47]`.
    Codex asks the person to approve each one.
-4. Read each one back and check its name, prompt, and schedule. Then tell the person: "Codex runs these only while the app is open on a computer that stays on. Make sure Codex can use Airtable, Slack, and [Drive or Notion] in these runs without asking."
+4. Read each one back (see Check that the schedules really exist, below). Codex saves each automation as a file, `automation.toml`, in a folder under `~/.codex/automations/`; read them with a one-line script if the tool can't list them. Then tell the person: "Codex runs these only while the app is open on a computer that stays on. Make sure Codex can use Airtable, Slack, and [Drive or Notion] in these runs without asking."
 5. If this session has no automation tool, or creating one fails, show three ready-to-paste entries for the Automations tab (name, schedule, prompt), with: "Set each one to run locally, with network access on and approvals set so it can use your connected tools without asking." Wait for "done."
+
+**Check that the schedules really exist (every platform).** Creating a schedule isn't proof it's there. After creating or updating them, list the schedules again with a fresh call, not from the create results (Claude: `list_triggers` or `list_scheduled_tasks`; Codex: the saved automation files above). For each of the three agents, confirm: it exists, it's switched on, its prompt names this base ID and the right Mode, and its times are Round Hours at :07 (Orchestrator), :27 (Brief Agent), or :47 (Blog Writer). Show the person one small table: agent, times, days, on or off. If one is missing or wrong, fix it once (create or update) and list again. If it's still wrong, show the exact name, times, and prompt to add by hand, and don't call setup finished until the person types 'done' and a fresh list shows all three.
 
 **Time zones on this computer.** Desktop scheduled tasks and Codex automations run on the computer's clock, not on a set time zone. Before creating them, compare the computer's time zone (run a one-line script, or ask) with the Team row's Time Zone. If they differ, say so and ask, after a yes, to set the Team row's Time Zone to the computer's, so the hours and the weekdays stay right all year. If the person says no, show the schedules to add by hand instead.
 

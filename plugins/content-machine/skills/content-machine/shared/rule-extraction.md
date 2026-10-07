@@ -14,15 +14,15 @@ Every draft must pass all three layers.
 
 | File | Required | What it holds | Reference Type |
 |---|---|---|---|
-| Brand guide | Yes | Voice, tone, words to use and avoid, how to name the product | Brand guide |
-| Writing style guide | Yes | Reading level, sentence rules, formatting, punctuation | Style guide |
-| Product knowledge | Yes | Features, plans, limits, and the public docs URL the agents may cite | Product knowledge |
-| Quality checks | No. The base QA rules apply either way. | What QA scores against | Quality checks |
+| Product truth (knowledge base) | Yes | Audience, what the product does, plans and prices with live sources, trusted sources, proof points, facts that go stale | Product knowledge |
+| Brand and voice | Yes | What the product is, positioning, exact names, claims allowed and prohibited, voice in a few words | Brand guide |
+| Writing rules and best practices | Yes | Voice, point of view, reading level, punctuation, words to avoid, formatting, SEO habits | Style guide |
+| Quality bar | No. The base QA rules apply either way. | What makes a draft good enough, what fails it, who approves | Quality checks |
 | Internal links and CTAs | No | Pages to link to, and the calls to action to use | Links and CTAs |
 | Competitors | No | Who they are, and what may and may not be said about them | Competitors |
 | Best past posts | No | 2 or 3 links the writer can match for tone | Best past posts |
 
-Any of these work, mixed freely: an uploaded file (PDF, Word, Markdown, or text), pasted text, a Google Doc or Notion link, or a public web page. If a company has no files yet, setup can draft starting files from its website and docs URL, marked "Draft, please review." Nothing drafted goes live until a person approves it.
+These are areas, not file names: a company's files rarely match them one to one. One file can cover several areas, and one area can come from several files. Any of these work, mixed freely: an uploaded file (PDF, Word, Markdown, or text), pasted text, a Google Doc or Notion link, or a public web page. If a company has no files yet, setup can draft starting files from its website and docs URL, marked "Draft, please review." Nothing drafted goes live until a person approves it.
 
 ## Saving the content
 

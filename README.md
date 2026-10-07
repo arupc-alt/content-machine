@@ -31,7 +31,7 @@ It works on Claude and on Codex, with free Airtable, Slack, and Google Drive or 
 - **Scheduled runs set to approve on their own.** A scheduled run that stops at an approval prompt waits forever. Setup shows you where to change this.
 - **Airtable free plan limits.** About 1,000 automated reads and writes a month per workspace, shared by every base in that workspace (setup suggests a personal workspace). That's enough for about 7 blog posts a month at 3 rounds a day, or about 12 at 2 rounds a day. The notification bot has its own limit of 100 automation runs a month per base.
 - **Codex only:** a Slack workspace admin approves the Slack connection once. Google Drive on Codex needs an admin to set up a Google Cloud OAuth client once and is a beta, so Notion is the easier pick there.
-- **Your reference files:** a brand guide, a writing style guide, and product knowledge. Quality checks, links and CTAs, competitors, and best past posts are optional. No files yet? Setup can draft them from your website for you to review.
+- **Your reference files:** whatever you have that covers your product, your brand and voice, and your writing rules. Any format works. See [Reference files](#reference-files). Missing some? Setup can draft them from your website for you to review.
 
 ## Install
 
@@ -48,13 +48,17 @@ Pick one. Each one installs the same skill.
 /plugin install content-machine@content-machine
 ```
 
-**Codex (app or CLI).**
+**Codex (app or CLI).** Codex installs it straight from this GitHub repo, the same way Claude Code does. In a terminal:
 
 ```
-$skill-installer install https://github.com/arupc-alt/content-machine/tree/main/skills/content-machine
+codex plugin marketplace add arupc-alt/content-machine
+codex plugin add content-machine@content-machine
 ```
 
-Then restart Codex. The skill shows up as `$content-machine`. If Codex says the skill isn't found, check that the folder `~/.codex/skills/content-machine` exists, then restart Codex again. To update an older copy, run the same line again.
+Then quit and reopen Codex, and start a new chat. Check it worked with `codex plugin list`: it should say `content-machine@content-machine  installed, enabled`.
+
+- **`codex: command not found`?** Paste the two lines into a Codex chat and ask Codex to run them for you, or install the Codex CLI first (`npm install -g @openai/codex`).
+- **Installed an older copy with `$skill-installer`?** Delete the folder `~/.codex/skills/content-machine` first, so Codex doesn't find two copies with the same name.
 
 **Already have a different skill called content-machine?** On Claude, upload `content-machine-pipeline.zip` from the release instead. It's the same skill under another name.
 
@@ -89,7 +93,7 @@ Setup goes step by step, and every change waits for your yes:
 3. Asks about your company and products.
 4. Builds your Airtable base.
 5. Picks your Slack channel, approvers, item ID prefix, how often the agents run, and Google Drive or Notion.
-6. Asks you to upload your reference files (brand guide, writing style guide, product knowledge, plus any optional ones), then pulls out your rules for you to approve. Setup won't go past this step without the three required files; type 'draft them' to get drafts from your website instead.
+6. Asks you to share your [reference files](#reference-files), in any format, then tells you which areas they cover, drafts anything missing if you want, and pulls out your rules for you to approve. Setup won't go past this step until product truth, brand and voice, and writing rules are covered.
 7. Builds your document folder or Notion pages.
 8. Builds the Airtable automations: a heartbeat email if the agents stop running, and the optional notification bot.
 9. Creates the schedules: one each for the Orchestrator, the Brief Agent, and the Blog Writer. On Codex, setup creates them as Codex automations and Codex asks you to approve each one.
@@ -98,6 +102,28 @@ Setup goes step by step, and every change waits for your yes:
 Expect it to take a while (roughly 30 to 45 minutes). You can stop at any point and type `set up content machine` again later; it picks up where it stopped and never makes a second copy.
 
 **Teammates.** Each person can set up their own Content Machine in their own accounts. To share one queue instead: first add your teammate as an editor on your Airtable base, then they type "join a teammate's content machine" and paste the base link. In a shared base, your scheduled runs write the documents; their own chat requests add topics to the queue.
+
+## Reference files
+
+Reference files are what personalize the writing. Without them the agents write well but generically; with them, every brief and blog sounds like your company, uses your facts, and follows your rules. Every agent reads them before it writes or scores anything, on top of the built-in rules every company gets (no em dashes, no invented facts or quotes, real cited sources, 23 quality checks, and more).
+
+**Share whatever you have.** There's no required format and no required file names. A brand guide, a style guide, product docs, a pitch deck, internal notes, a list of do's and don'ts, or a few past posts all work, as uploaded files (PDF, Word, Markdown, or text), pasted text, Google Doc or Notion links, or public web pages. One file can cover several areas below.
+
+**What the agents are looking for:**
+
+| Area | What it covers | Needed? |
+|---|---|---|
+| **Product truth** | What you sell and who it's for, features, plans and prices (with the live page for each), facts that must always be right, sources you trust | Yes |
+| **Brand and voice** | How you sound and describe yourselves, positioning against alternatives, exact product names, what content may and may never claim | Yes |
+| **Writing rules and best practices** | Words to avoid, formatting, SEO habits, anything your writers always or never do | Yes |
+| **Quality bar** | What makes a draft good enough, what should fail it, who approves | Optional: the built-in checks apply anyway |
+| **Extras** | Pages to link to and calls to action, competitors and what may be said about them, 2 or 3 past posts you love | Optional |
+
+**What setup does with them.** It reads everything, tells you which areas your files cover and which are missing, shows conflicts (say, two files disagree on title case), and pulls out the rules ("never call it 'cheapest' without a source") for you to approve. Nothing goes live without your yes. Missing an area? Type "draft them" and setup drafts it from your website for you to review. Keep one set of files per product, since positioning and claims don't carry over between products.
+
+**Tips that make the output better:** write rules that can be checked ("no em dashes" can; "be engaging" can't), give the live page for any fact that changes, like prices, and note who settles facts. When reviewers turn something down, add it to your files, or just tell the agents in Slack: repeated feedback becomes a suggested rule you can approve.
+
+**Want a starting point?** Optional templates with notes on what goes where are in [`products/_template/`](plugins/content-machine/skills/content-machine/products/_template/). You never have to use them; setup maps your own files into the same sections. To change your files later, type "update reference files".
 
 ## Using it
 
@@ -144,7 +170,7 @@ If you pick Notion and share drafts by publishing the top page to the web, anyon
 
 - **Claude:** upload the new zip from the latest release. Your settings live in Airtable, so nothing is lost.
 - **Claude Code:** `/plugin marketplace update content-machine`, then update the plugin (or turn on auto-update).
-- **Codex:** run the install line again.
+- **Codex:** `codex plugin marketplace upgrade`, then `codex plugin add content-machine@content-machine` again, then reopen Codex.
 
 If your copy is older than your base needs, the agents stop and say so, so an old copy never runs the wrong rules.
 
@@ -153,7 +179,7 @@ If your copy is older than your base needs, the agents stop and say so, so an ol
 | Path | What it is |
 |---|---|
 | `plugins/content-machine/skills/content-machine/` | The skill itself. This is the only copy people edit. |
-| `skills/content-machine/` | An exact copy, made by `scripts/sync.py`, so the Codex installer can find it |
+| `skills/content-machine/` | An exact copy, made by `scripts/sync.py`, for tools that install a bare skill folder |
 | `plugins/content-machine/.claude-plugin/`, `.codex-plugin/` | The plugin manifests for Claude Code and Codex |
 | `.claude-plugin/`, `.agents/plugins/` | Marketplace files for Claude Code and Codex |
 | `scripts/` | `check.py` (runs on every push), `sync.py`, `build_zip.py` (builds both release zips) |
