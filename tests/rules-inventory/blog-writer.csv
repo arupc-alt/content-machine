@@ -41,8 +41,8 @@ BW-0039,blog-writer-agent-installer.md,Run Guards,G12: human send-back gets one 
 BW-0040,blog-writer-agent-installer.md,Run Guards,G12: how to tell a human send-back,modes/blog-writer.md,is newer than its newest QA verdict and is marked
 BW-0041,blog-writer-agent-installer.md,Run Guards,G12: tell QA to skip escalation check for that audit,modes/blog-writer.md,G13's instruction to skip QA's escalation check for this one audit
 BW-0042,blog-writer-agent-installer.md,Run Guards,"G12: if QA does not approve, escalate",modes/blog-writer.md,"If that audit doesn't approve it, escalate rather than loop again"
-BW-0043,blog-writer-agent-installer.md,Run Guards,G13: never post a second escalation for the same draft,shared/guards.md,"If one exists, don't post again; just set the Status."
-BW-0044,blog-writer-agent-installer.md,Run Guards,G13: escalation about older draft does not count,shared/guards.md,An escalation about an older document doesn't count
+BW-0043,blog-writer-agent-installer.md,Run Guards,G13: never post a second escalation for the same draft,shared/guards.md,"If a post counts, don't post again; just set the Status."
+BW-0044,blog-writer-agent-installer.md,Run Guards,G13: escalation about older draft does not count,shared/guards.md,It counts only when it names the current document's link
 BW-0045,blog-writer-agent-installer.md,Run Guards,G14: size rejection counts toward three attempts,shared/guards.md,that counts toward the three-attempt budget
 BW-0046,blog-writer-agent-installer.md,Run Guards,G14: never split one draft across several Docs,shared/guards.md,never split one brief or draft across several Docs
 BW-0047,blog-writer-agent-installer.md,Run Guards,G15: in-session QA line marks the draft,modes/blog-writer.md,"the row keeps this run's claim, with Claimed By set to"

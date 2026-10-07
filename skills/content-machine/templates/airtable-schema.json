@@ -556,7 +556,7 @@
         {
           "name": "Round Hours",
           "type": "singleLineText",
-          "description": "Hours each round starts, in Time Zone, comma-separated, like 9,13,17 (setup Step 8)."
+          "description": "Hours each round starts, in Time Zone, comma-separated, like 9,13,17 (setup Step 10)."
         },
         {
           "name": "Days",

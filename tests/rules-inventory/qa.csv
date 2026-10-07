@@ -329,7 +329,7 @@ QA-0327,qa-agent.md,Step 5b order,Recovery or Step 14 finishes an unsent post,mo
 QA-0328,qa-agent.md,Step 5c,Post only for Approved or Escalated,modes/qa.md,"Post to the product's Slack channel, only for Approved or Escalated."
 QA-0329,qa-agent.md,Step 5c,Never anything to Slack for Needs Rework,modes/qa.md,"do not send anything to Slack for it, under any circumstance, even"
 QA-0330,qa-agent.md,Step 5c,Check for existing escalation post on current doc,modes/qa.md,first check for an escalation post about the current draft
-QA-0331,qa-agent.md,Step 5c,Escalation about older draft doesn't count,modes/qa.md,One about an older draft doesn't count.
+QA-0331,qa-agent.md,Step 5c,Escalation about older draft doesn't count,shared/guards.md,It counts only when it names the current document's link
 QA-0332,qa-agent.md,Step 5c,Approved: tag everyone on the approver list,modes/qa.md,every approver for this product from Members tagged by Slack ID (G11)
 QA-0333,qa-agent.md,Step 5c,Approved: include score and key measurements,modes/qa.md,Add the key measurements to the same line
 QA-0334,qa-agent.md,Step 5c,Approved: include polish items and open VERIFY tags,modes/qa.md,"open `[VERIFY]` items, Polish items, or anything a person should check or"

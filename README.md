@@ -27,7 +27,7 @@ It works on Claude and on Codex, with free Airtable, Slack, and Google Drive or 
 
 **Also needed**
 
-- **Claude** with connectors and scheduled tasks, so the agents can run on their own. In the Claude desktop app, scheduled tasks run only while the app is open. Claude Code makes the schedule only when it has the Claude desktop app's scheduled tasks; its own cloud schedules aren't used, since this skill isn't installed where they run. Otherwise run setup in the Claude app or Codex, or add the schedule by hand. On **Codex**, the app must stay open on a computer that stays on.
+- **Claude** with connectors and scheduled tasks, so the agents can run on their own. In the Claude desktop app, scheduled tasks run only while the app is open. Claude Code makes the schedule only when it has the Claude desktop app's scheduled tasks; its own cloud schedules aren't used, since this skill isn't installed where they run. Otherwise setup gives you a one-line prompt that creates the schedule from the Claude desktop app or the Codex app. On **Codex**, the app must stay open on a computer that stays on.
 - **Scheduled runs set to approve on their own.** A scheduled run that stops at an approval prompt waits forever. Setup shows you where to change this.
 - **Airtable's free plan is enough to start.** It allows about 1,000 automated reads and writes a month per workspace, shared by every base in that workspace (setup suggests a personal workspace). At the default 3 rounds a day that's room for about 18 blog posts a month. The content machine paces itself so it never stops (see [Airtable limits](#airtable-limits)). For more volume, Airtable's paid plan raises the limit; after upgrading, type "change Airtable plan".
 - **Codex only:** a Slack workspace admin approves the Slack connection once. Google Drive on Codex needs an admin to set up a Google Cloud OAuth client once and is a beta, so Notion is the easier pick there.
@@ -76,7 +76,7 @@ Then quit and reopen Codex, and start a new chat. Check it worked with `codex pl
   Then type `/mcp` in Claude Code and sign in to each. For Google Drive, connect it in the Claude app.
 - **Codex:** add the same three addresses in Codex's MCP settings (named airtable, slack, and notion), then sign in to each with `codex mcp login [name]` or the sign-in button in Codex's settings. Open a new chat afterwards so Codex picks them up.
 
-Setup's first message is a connections checklist marked **critical**: Airtable, Slack, Google Drive or Notion, web search, and scheduled tasks, each shown as working or missing, with the steps to connect what's missing. Setup doesn't go on until every required one works. The one exception is scheduled tasks: type "go on without it" and setup carries on without a schedule. The agents then run only when you ask, and setup shows you the schedule to add by hand later. Once you've added it, or turned scheduled tasks on, type "repair schedules" in the app that holds the schedule, so it's checked and tested and the heartbeat email is built. In Claude Code, the scheduled tasks line passes only with the Claude desktop app's scheduled tasks. Joining a teammate's base skips that line, since only the host's account runs the schedule.
+Setup's first message is a connections checklist marked **critical**. Airtable, Slack, Google Drive or Notion, and web search are required; scheduled tasks and running code are recommended. Each is shown as working or missing, with the steps to connect what's missing. Setup doesn't go on until every required one works. The recommended ones never stop setup. Scheduled tasks are only needed for the last step, creating the schedule, which you can also do later from the Claude desktop app or Codex. In Claude Code, the scheduled tasks line passes only with the Claude desktop app's scheduled tasks. Someone joining a teammate's base never needs it, since only the host's account runs the schedule.
 
 ## Set up
 
@@ -88,16 +88,22 @@ set up content machine
 
 Setup goes step by step, and every change waits for your yes:
 
-1. Checks your connections and shows the critical checklist. Nothing else happens until the required ones work, except that you can skip scheduled tasks with "go on without it" (see above).
+1. Checks your connections and shows the critical checklist. Nothing else happens until the required ones work (scheduled tasks are only recommended; see above).
 2. Asks whether you want your own content machine or want to join a teammate's.
 3. Asks about your company and products.
 4. Builds your Airtable base.
 5. Picks your Slack channel, approvers, item ID prefix, how often the agents run, your Airtable plan (free or paid), and Google Drive or Notion.
 6. Asks you to share your [reference files](#reference-files), in any format, then tells you which areas they cover, drafts anything missing if you want, and pulls out your rules for you to approve. Setup won't go past this step until product truth, brand and voice, and writing rules are covered.
 7. Builds your document folder or Notion pages.
-8. Builds the Airtable automations: a heartbeat email if the agents stop running (not when you skipped scheduled tasks), and the notification bot, the second way approval requests and questions reach you. Each product gets its own bot, for its own channel and approvers. It skips the bot only if it can't be built on your account (for example, Slack can't be connected inside Airtable), or you say no after hearing what you'd miss.
-9. Creates **one** schedule. Each time it fires, one run does the whole round in order: the Orchestrator, then the Brief Agent, then the Blog Writer. It never touches schedules it didn't make. On Codex, setup creates it as a Codex automation and Codex asks you to approve it. Then it lists your schedules again to prove it's there. If you skipped scheduled tasks, it shows you the schedule to add by hand instead.
-10. Runs a short test: a test post, document, and row, checks that the bot pinged you (when it was built), then fires the schedule once and checks the round ran (not when you skipped scheduled tasks).
+8. Builds the notification bot, the second way approval requests and questions reach you. Each product gets its own bot, for its own channel and approvers. It skips the bot only if it can't be built on your account (for example, Slack can't be connected inside Airtable), or you say no after hearing what you'd miss.
+9. Runs a short test (a test post, document, and row, and checks that the bot pinged you, when it was built), then posts a setup note in your channel and sums up what it built.
+10. Last step: the schedule. Setup says everything is set up and asks whether to create your schedule now. On a yes, it creates **one** schedule. Each time it fires, one run does the whole round in order: the Orchestrator, then the Brief Agent, then the Blog Writer. It never touches schedules it didn't make. On Codex, setup creates it as a Codex automation and Codex asks you to approve it. Then it lists your schedules again to prove it's there, fires it once to check the round ran, and builds the heartbeat email that tells you if the agents stop running. If you'd rather wait, or this app can't make schedules, it gives you one line to paste into a chat in the Claude desktop app or Codex, which runs this last step there:
+
+    ```
+    Create my content machine schedule for base [base ID]
+    ```
+
+    Until the schedule exists, the agents run only when you ask, and no stopped-running email is sent.
 
 Expect it to take a while (roughly 30 to 45 minutes). You can stop at any point and type `set up content machine` again later; it picks up where it stopped and never makes a second copy.
 
@@ -147,6 +153,7 @@ Only people set up as **approvers** can approve, send back, or drop a piece. Onl
 | Update your files or rules | "update reference files" |
 | Add a product or a teammate | "add a product", "add a teammate" |
 | Pause everything | "pause content machine" ("resume content machine" to start again) |
+| Create the schedule later, or from another app | Paste the line setup gave you, "Create my content machine schedule for base [base ID]", into a chat in the Claude desktop app or Codex |
 | Fix a broken base or schedule | "repair the base", "repair schedules" |
 | Run more or less often | "change how often it runs" |
 | Tell it your Airtable plan changed (say, after upgrading) | "change Airtable plan" |
@@ -172,7 +179,7 @@ A part with nothing to do is skipped, so a quiet round is quick and cheap. You c
 
 Weekdays only uses about a quarter fewer calls. To change it later, type "change how often it runs".
 
-**When something is unclear, it asks.** If an agent needs an answer to get a piece right (which product it's for, what an ambiguous topic means, two approvers asking for opposite things, a key fact it can't confirm), it asks in that piece's Slack thread and waits for an approver's reply. Only that piece waits; the rest keep moving. In a chat, it asks all its questions up front, before it starts. Small calls that can't make a piece wrong are made and noted where you'll see them, like a brief's "Needs your call" list, instead of asked.
+**When something is unclear, it asks.** If an agent needs an answer to get a piece right (which product it's for, what an ambiguous topic means, two approvers asking for opposite things, a key fact it can't confirm), it asks in that piece's Slack thread and waits for an approver's reply. Only that piece waits; the rest keep moving. In a chat, it asks all its questions up front, before it starts. Small calls that can't make a piece wrong are made and noted where you'll see them, like a brief's Open Questions, instead of asked.
 
 ## Airtable limits
 
@@ -190,7 +197,7 @@ Every brief or blog waiting for your OK, every stuck piece that needs your help,
 1. **From your own Slack account.** The agents post it in your channel. This needs no Airtable automation, so it keeps working in lean mode and when the monthly call limit is hit.
 2. **From the notification bot.** Each product has its own Airtable bot, named "Content Machine." It sends it again and pings that product's approvers, in the channel and by direct message. A tick or a reply on the bot's post counts the same as one on your own. Slack doesn't notify you about your own posts, so this is the message that pings you. Setup builds it by default.
 
-If the bot's runs are used up or it fails, your own Slack posts still go. A question goes out the second way only once your own post is up; if that post fails, the piece goes back to where it was, and the next round asks again. Everything else, like a "Possible repeat" check, thread replies, and summaries, comes from your own account only. If the agents stop running altogether, the heartbeat email is a third safety net. It shares the base's 100 free automation runs a month with the bots, so once they're used up, the heartbeat email can't go out either until next month. If the bot can't be set up on your account, or you skip it, updates arrive one way only: check the channel, or turn on notifications for every new message in it. Type "repair the base" to add the bot later.
+If the base's automation runs are used up or the bot fails, your own Slack posts still go. A question goes out the second way only once your own post is up; if that post fails, the piece goes back to where it was, and the next round asks again. Everything else, like a "Possible repeat" check, thread replies, and summaries, comes from your own account only. If the agents stop running altogether, the heartbeat email is a third safety net. It shares the base's 100 free automation runs a month with the bots, so once they're used up, the heartbeat email can't go out either until next month. If the bot can't be set up on your account, or you skip it, updates arrive one way only: check the channel, or turn on notifications for every new message in it. Type "repair the base" to add the bot later.
 
 ## Notion sharing
 

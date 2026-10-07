@@ -114,7 +114,7 @@ Reply with what to do: fix it a certain way, take a new angle, approve it as it 
 (Content Machine)
 ```
 
-Before posting an escalation, check the row's Slack Thread Link and the channel for an escalation post about the same version of the document, posted since a person last answered (G14). Never post a second one for it.
+Before posting an escalation, check the row's Slack Thread Link and the channel for an escalation post that still counts under G14. Never post a second one for it.
 
 **Orchestrator thread replies:**
 
@@ -126,7 +126,7 @@ Before posting an escalation, check the row's Slack Thread Link and the channel 
 - Change request while an agent is still working on it: "Got it. Your notes on [Item ID] will be used in the next round of changes."
 - Dropped: "Got it, [Item ID] is dropped."
 - Bare cross: "<@REVIEWER> I've sent [Item ID] back for changes. What should change? Reply here and the writer will use it."
-- Unclear: "<@REVIEWER> Quick check on [Item ID]: should I approve it, send it back for changes, or drop it?"
+- Unclear: "<@REVIEWER> Quick check on [Item ID]: should I approve it, send it back for changes, or drop it?" On an Escalated row it reads "<@REVIEWER> Quick check on [Item ID]: what should I do with it? Reply here and say what you want." instead, since a stuck piece needs a written answer (modes/orchestrator.md, Escalated rows).
 - Unmatched: "<@REVIEWER> Which piece is this about? Reply with its ID, like [an Item ID from the pipeline]."
 - Duplicate decision: "<@REVIEWER> [Item ID], [title] looks close to [other Item ID or live link]. Reply 'go' to write it anyway, or 'drop' to skip it."
 - New topic received: "Got it, [Item ID] is in the queue. The brief comes next."
@@ -168,7 +168,7 @@ If Slack isn't reachable, still save the documents and update Airtable. Clear Sl
 
 The Airtable bot is the second delivery path (Who posts, and where). It sends every waiting update and every posted question again, on its own, next to the agent's own post. Each product has its own bot, which sends only that product's pieces, to that product's channel and approvers. Neither path replaces the other, and the agents never depend on the bot: they post and read Slack the same way whether or not it runs. Each path covers the other:
 
-- If the bot's free runs are used up for the month, or it fails or is disconnected, the agent's own posts still go out.
+- If the base's automation runs are used up for the month (Limits, below), or the bot fails or is disconnected, the agent's own posts still go out.
 - If the agent's own post of a waiting update fails, the status still changes (Confirmed post), so the bot's message still goes out. It ends "Reply in the channel."
 - A question reaches the bot only once the agent's own post has gone out, since Open Question is saved only then. If that post fails, the row isn't held, and the next run asks again (G25).
 - If Airtable's monthly call limit is hit, nothing changes in Airtable, so the bot sends nothing. Slack-only mode still answers from the person's own Slack account (shared/airtable.md, When the limit is reached).
@@ -183,10 +183,10 @@ The details:
   - "<@...> <@...> *Blog passed its checks and is ready for your OK to publish* ([Item ID])\nKeyword: [Primary Keyword]\nScore: [QA Score]\nBlog: [Blog Doc Link]\nCheck report: [QA Report Link]\nReply in the thread: [Slack Thread Link]"
   - "<@...> <@...> *A piece needs your input* ([Item ID])\nKeyword: [Primary Keyword]\nBlog: [Blog Doc Link]\nCheck report: [QA Report Link]\nReply in the thread: [Slack Thread Link]"
 - **The thread link is there whenever the agent's own post went out,** because agents write Status and Slack Thread Link in the same update (Confirmed post, step 3). When the post failed, the bot message says "Reply in the channel."
-- **Bot Status and Bot Automation ID** in each product's Settings row say whether that product's bot is On, Off, or Failed test, and which automation it is. Setup sets Bot Status after the bot's test (modes/setup.md, Step 9). Agents never depend on it.
-- **The heartbeat alert is the third safety net, and a separate automation.** It is an email only (setup Step 7), sent when an agent misses a full run day. It never posts in Slack, through the bot or any other way. It uses the same monthly automation runs as the bot (Limits, below).
+- **Bot Status and Bot Automation ID** in each product's Settings row say whether that product's bot is On, Off, or Failed test, and which automation it is. Setup sets Bot Status after the bot's test (modes/setup.md, Step 8). Agents never depend on it.
+- **The heartbeat alert is the third safety net, and a separate automation.** It is an email only, built with the schedule (setup Step 10), sent when an agent misses a full run day. It never posts in Slack, through the bot or any other way. It uses the same monthly automation runs as the bot (Limits, below).
 - **Replies to the bot:** the Orchestrator reads replies and reactions on the bot's channel posts the same way as on the agent's own posts, matched to a piece by the Item ID in the message (modes/orchestrator.md, Sweep 1). It can't read replies to the bot's direct messages, which is why each message says where to reply.
-- **Limits:** Airtable's free plan allows 100 automation runs a month per base, shared by every product's bot. Each status change and each question is 1 run, so about 2 to 4 per piece, plus 1 per question. If Slack is disconnected in Airtable, only the second path stops, until Slack is reconnected. If the runs are used up, every automation in the base stops until they reset next month: the second path, and the heartbeat email too (setup Step 7). The agent's own posts still go out either way. The weekly full check notices failed bot runs and posts one alert.
+- **Limits:** Airtable's free plan allows 100 automation runs a month per base, shared by every product's bot. Each status change and each question is 1 run, so about 2 to 4 per piece, plus 1 per question. If Slack is disconnected in Airtable, only the second path stops, until Slack is reconnected. If the runs are used up, every automation in the base stops until they reset next month: the second path, and the heartbeat email too (setup Step 10). The agent's own posts still go out either way. The weekly full check notices failed bot runs and posts one alert.
 
 ### The fallback message
 

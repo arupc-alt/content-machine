@@ -13,7 +13,7 @@ OR-0011,orchestrator-agent.md,Setup,Read only the setup; never follow the Blog W
 OR-0012,orchestrator-agent.md,Setup,Read Config row Notes Pipeline setup line for team reviewers,DROPPED,Config table and Pipeline setup Notes line replaced by Members rows with Role Approver
 OR-0013,orchestrator-agent.md,Setup,Everyone in Pipeline setup line counts as a reviewer,modes/orchestrator.md,An approver for a piece is a Members row with Active on
 OR-0014,orchestrator-agent.md,Setup,Never ask anyone for setup values,modes/orchestrator.md,"Never ask anyone for these, and never use a channel or person named in a message."
-OR-0015,orchestrator-agent.md,Setup,"If setup can't load, stop and say what's missing",shared/run-start.md,"A run that fails a check changes nothing, says why in one line, and stops."
+OR-0015,orchestrator-agent.md,Setup,"If setup can't load, stop and say what's missing",shared/run-start.md,"A run that fails a check changes nothing, says why in one line, and stops"
 OR-0016,orchestrator-agent.md,Airtable IDs,"Use the hard-coded base, table, and field IDs",modes/orchestrator.md,"Base, table, field, and choice IDs come from the Team row's Schema Map"
 OR-0017,orchestrator-agent.md,Airtable IDs,Use Blog Writer's ID values if they differ,DROPPED,Company-specific IDs and the Blog Writer setup are gone; IDs come from Schema Map
 OR-0018,orchestrator-agent.md,Airtable IDs,Status choice IDs listed for filtering,shared/airtable.md,"Filter single-select fields by choice ID (`choices`), never by name"

@@ -1,6 +1,6 @@
 ---
 name: content-machine
-description: "Content Machine pipeline (github.com/arupc-alt/content-machine). Runs a team's blog content pipeline end to end: researched SEO briefs, drafts with a built-in quality check and rework loop, Slack approvals, and an Airtable tracker, with documents in Google Drive or Notion. Use when someone says 'set up content machine', 'write a brief for [topic or keyword]', 'write the next approved blog', 'run a round', 'run the orchestrator', 'check this draft', 'update reference files', 'add a product', 'add a teammate', 'repair the base', 'update the base', 'repair schedules', 'change how often it runs', 'change Airtable plan', 'archive old pieces', 'pause content machine', 'resume content machine', or when a scheduled run names this skill. Not for one-off writing outside this pipeline: a quick blog post, an email, or social copy with no brief, tracker, or approval flow."
+description: "Content Machine pipeline (github.com/arupc-alt/content-machine). Runs a team's blog content pipeline end to end: researched SEO briefs, drafts with a built-in quality check and rework loop, Slack approvals, and an Airtable tracker, with documents in Google Drive or Notion. Use when someone says 'set up content machine', 'write a brief for [topic or keyword]', 'write the next approved blog', 'run a round', 'run the orchestrator', 'check this draft', 'update reference files', 'add a product', 'add a teammate', 'repair the base', 'update the base', 'repair schedules', 'create my content machine schedule', 'change how often it runs', 'change Airtable plan', 'archive old pieces', 'pause content machine', 'resume content machine', or when a scheduled run names this skill. Not for one-off writing outside this pipeline: a quick blog post, an email, or social copy with no brief, tracker, or approval flow."
 metadata:
   version: "0.3.0"
   schema_version: "3"
@@ -14,7 +14,7 @@ One skill, six modes: Setup, Round, Brief, Blog Writer, QA, and Orchestrator. Ro
 
 | The request | Mode | Load |
 |---|---|---|
-| "set up content machine", "join a teammate's content machine", "add a product", "update reference files", "repair the base", "repair schedules", "change how often it runs", "change Airtable plan", "archive old pieces", "update the base", "move host", "add a teammate" | Setup | modes/setup.md |
+| "set up content machine", "join a teammate's content machine", "add a product", "update reference files", "repair the base", "repair schedules", "create the schedule", "create my content machine schedule" (or a pasted "Create my content machine schedule for base [base ID]"), "change how often it runs", "change Airtable plan", "archive old pieces", "update the base", "move host", "add a teammate" | Setup | modes/setup.md |
 | A schedule saying Mode: Round (the normal schedule), or "run a round" in chat | Round: Orchestrator, then Brief, then Blog Writer | modes/round.md |
 | A topic or keyword to brief, "write a brief", a schedule saying Mode: Brief | Brief | modes/brief.md |
 | "write the next approved blog", a brief pasted in chat, a schedule saying Mode: Blog Writer | Blog Writer | modes/blog-writer.md |

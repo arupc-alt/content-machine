@@ -9,7 +9,7 @@ Codex + Drive is a beta: its rows are run and reported, but a failure there does
 | Fresh install on brand-new free accounts: base, document home, and the one schedule built | Must pass | Must pass | Must pass | Beta |
 | Setup run again on a company that's already set up (nothing duplicated) | Must pass | Must pass | Must pass | Beta |
 | Existing base with missing fields (only the missing ones added) | Must pass | Must pass | Must pass | Beta |
-| Preflight with one connector signed out (stops, connects, goes on) | Must pass | Must pass | Must pass | Beta |
+| Preflight with one required connector signed out (stops, connects, goes on) | Must pass | Must pass | Must pass | Beta |
 | Company with no files (drafts from the website, nothing live until approved) | Must pass | Must pass | Must pass | Beta |
 | Reference files from an upload, pasted text, a document link, and a public URL | Must pass | Must pass | Must pass | Beta |
 | New product rule followed, and a planted break caught by QA | Must pass | Must pass | Must pass | Beta |
@@ -22,9 +22,9 @@ Codex + Drive is a beta: its rows are run and reported, but a failure there does
 | Kill a run halfway, then rerun (no double posts, resumes from Last Saved Step) | Must pass | Must pass | Must pass | Beta |
 | A teammate's chat request in a shared Notion base becomes a Topic Requested row, and only the host's run writes the pages | Not needed | Must pass | Must pass | Not needed |
 | Image added, then swapped in a rework | Must pass | Must pass | Must pass | Beta |
-| One schedule per base created (on Codex with `automation_update`, which asks the person to approve it), read back from a fresh list, connectors checked, fired once with all three Last Run fields set, no duplicate on rerun | Must pass | Must pass | Must pass | Beta |
-| Scheduled tasks waived in Step 0 ("go on without it"): setup shows the one schedule to add by hand, builds no heartbeat email, skips firing the schedule, and finishes; later, "repair schedules" creates the schedule and the heartbeat email | Must pass | Must pass | Must pass | Beta |
-| Claude Code without the Claude desktop app's scheduled tasks: Step 0 says to run setup in the Claude app or Codex, or to type "go on without it", and never makes a Claude Code cloud schedule, even when the cloud schedule tools are there | Must pass | Must pass | Not needed | Not needed |
+| One schedule per base created as setup's last step, after the test run and the summary (on Codex with `automation_update`, which asks the person to approve it), read back from a fresh list, connectors checked, fired once with all three Last Run fields set, heartbeat email built, no duplicate on rerun | Must pass | Must pass | Must pass | Beta |
+| Schedule later: at the last step the person says later (or the app can't make schedules), and setup gives the paste prompt with the base ID and builds no schedule or heartbeat email; pasting "Create my content machine schedule for base [base ID]" into a new chat in the Claude desktop app or Codex creates the schedule, test-fires it, and builds the heartbeat email | Must pass | Must pass | Must pass | Beta |
+| Claude Code without the Claude desktop app's scheduled tasks: Step 0 marks Scheduled tasks as failed under Recommended and goes on; the last step gives the paste prompt and never makes a Claude Code cloud schedule, even when the cloud schedule tools are there | Must pass | Must pass | Not needed | Not needed |
 | Update from 0.2 (settings kept, database version 3 added on its own with its one-line notice, the old schedules alert posted, and "repair schedules" replaces the three per-agent schedules with one Round schedule after a yes) | Must pass | Must pass | Must pass | Beta |
 | Same-name skill that isn't ours (content-machine-pipeline zip used) | Must pass | Must pass | Must pass | Beta |
 | Two companies in one person's account stay separate | Must pass | Must pass | Must pass | Beta |
@@ -33,7 +33,7 @@ Codex + Drive is a beta: its rows are run and reported, but a failure there does
 | Health check: a planted bad row is flagged and skipped, and a deleted field stops the run with the repair step | Must pass | Must pass | Must pass | Beta |
 | Duplicates: an exact repeat, a close match, and a keyword already live on the site are each handled as planned | Must pass | Must pass | Must pass | Beta |
 | Queue order: with one row in each step and one marked High, the agent works them in order | Must pass | Must pass | Must pass | Beta |
-| A teammate joins an existing base (no scheduled tasks line, no second base, no second schedule), and "set up content machine" or "repair schedules" from their account makes no schedule and tells them to ask the host | Must pass | Must pass | Must pass | Beta |
+| A teammate joins an existing base, whether they say so first or pick it at Step 1 (the scheduled tasks line never stops them, no second base, no second schedule), and "set up content machine", the paste prompt, or "repair schedules" from their account makes no schedule and tells them to ask the host | Must pass | Must pass | Must pass | Beta |
 | Two teammates each run their own setup, posting to one shared Slack channel: separate Item IDs, nothing picked up by the wrong pipeline, a duplicate across the two flagged | Must pass | Must pass | Must pass | Beta |
 | Move host to another account (the schedule is created on the new account and the old one switched off, and files and links follow) | Must pass | Must pass | Must pass | Beta |
 | Topic requested by a "New topic:" Slack message while nobody is chatting | Must pass | Must pass | Must pass | Beta |
@@ -41,7 +41,7 @@ Codex + Drive is a beta: its rows are run and reported, but a failure there does
 | A stuck piece: a tick or a cross alone gets a question back, and only a written reply approves it or sends it back (a draft that stalled before it was saved goes back to the Blog Writer, not to the brief) | Must pass | Must pass | Must pass | Beta |
 | Ask before guessing: a scheduled run with an unclear topic posts one question in the piece's thread, the bot pings for it, and only that piece waits; after an approver answers, the next round goes on, and a "drop it" reply there drops the piece. In chat, every question comes in one message before the work starts | Must pass | Must pass | Must pass | Beta |
 | Recheck: a Published row with Recheck Due today gets one reminder a day, and an approver's "checked [Item ID]" sets the next date | Must pass | Must pass | Must pass | Beta |
-| Archive old pieces: after a yes, old Published and Rejected rows move to the archive base, rows with any Recheck Due date stay, and the duplicate check still finds the archived pieces | Must pass | Must pass | Must pass | Beta |
+| Archive old pieces: after a yes, old Published and Rejected rows move to the archive base, Published rows with any Recheck Due date stay, and the duplicate check still finds the archived pieces | Must pass | Must pass | Must pass | Beta |
 | Lean mode: with API Calls This Month near the limit, a round moves approvals and pieces in progress, starts no new piece, and posts the lean mode alert once a month | Must pass | Must pass | Must pass | Beta |
 | Slack-only mode: with Airtable's monthly limit hit, a round replies "Saved" once in threads of its own posts, posts the limit alert once a month, writes nothing else, and the first normal round handles everything it missed | Must pass | Must pass | Must pass | Beta |
 | "change Airtable plan" after the limit was hit, and "resume content machine" after a pause of over a day, each tried both before a run day's first round and after its last: the change is saved, no "stopped running" email is sent, and the next round runs as normal; with the schedule switched off afterwards, the heartbeat email still arrives | Must pass | Must pass | Must pass | Beta |

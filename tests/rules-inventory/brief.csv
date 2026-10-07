@@ -57,7 +57,7 @@ BR-0055,brief-agent-installer.md,G12,"Feedback comes from Slack, Doc comments, c
 BR-0056,brief-agent-installer.md,G12,Step 0.6a reads all feedback sources,modes/brief.md,"Pull every piece of feedback, from all the sources in G12"
 BR-0057,brief-agent-installer.md,G12,Blog Writer send-back is the newest Blog Writer note,modes/brief.md,the newest Agent Notes block starting `Blog Writer [time]: Brief send-back:`
 BR-0058,brief-agent-installer.md,G13,Check for an existing escalation post first,shared/guards.md,"Before posting an escalation, check Slack Thread Link and the channel"
-BR-0059,brief-agent-installer.md,G13,"If one exists, just set the Status",shared/guards.md,"If one exists, don't post again; just set the Status."
+BR-0059,brief-agent-installer.md,G13,"If one exists, just set the Status",shared/guards.md,"If a post counts, don't post again; just set the Status."
 BR-0060,brief-agent-installer.md,G14,Out of save attempts: put the row back,shared/guards.md,put the row back where it was
 BR-0061,brief-agent-installer.md,G14,"New item stays Brief In Progress, rework goes to Needs Rework",shared/guards.md,`Brief In Progress` for a new brief
 BR-0062,brief-agent-installer.md,G14,"Write error and time to Notes, clear the claim",shared/guards.md,"write the error and time into Agent Notes, clear the claim"
