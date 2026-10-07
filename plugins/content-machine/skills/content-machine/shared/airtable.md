@@ -21,11 +21,12 @@ Setup writes it, and "repair the base" rewrites it. Shape:
   "choices": {"content_items.Status.Awaiting Brief Approval": "sel...", "...": "..."},
   "channels": {"[Product]": "[Slack Channel ID]"},
   "prefixes": {"[Product]": "[Item ID Prefix]"},
-  "archive": "app... (only after 'archive old pieces')"
+  "archive": "app... (only after 'archive old pieces')",
+  "schedule": {"app": "Claude, Claude desktop, or Codex", "name": "Content Machine ([Company])"}
 }
 ```
 
-Keys are the table key, a dot, and the field name exactly as in the template. Choices add a dot and the choice name. `channels` copies each product's Slack Channel ID from its Settings row, so the Orchestrator can read Slack without reading Settings on a run with nothing to do. `prefixes` copies each product's Item ID Prefix the same way, so the Orchestrator can tell another pipeline's Item ID without a lookup. Setup writes both, "add a product" and "repair the base" rewrite them from Settings, and the weekly full check sets them right when they differ from Settings.
+Keys are the table key, a dot, and the field name exactly as in the template. Choices add a dot and the choice name. `channels` copies each product's Slack Channel ID from its Settings row, so the Orchestrator can read Slack without reading Settings on a run with nothing to do. `prefixes` copies each product's Item ID Prefix the same way, so the Orchestrator can tell another pipeline's Item ID without a lookup. Setup writes both, "add a product" and "repair the base" rewrite them from Settings, and the weekly full check sets them right when they differ from Settings. `schedule` says which app holds the base's one schedule, and its name. Setup Step 10 writes it once the schedule is checked, and "repair the base" keeps it, like `archive`.
 
 - Filter single-select fields by choice ID (`choices`), never by name: a wrong name can quietly return zero rows instead of an error.
 - Write single-select values by their plain name.

@@ -21,13 +21,13 @@ It works on Claude and on Codex, with free Airtable, Slack, and Google Drive or 
 | Google Drive or Notion | Where briefs, drafts, and QA reports are saved. You pick one. |
 | Web search and page reading | Briefs are researched on the live web. |
 
-**Recommended:** a code or shell tool, so QA can measure drafts with its script. Without one, QA measures by careful reading, which is less exact. Also Slack connected inside Airtable, so the notification bot can send approval requests and questions a second way (see [Notifications](#notifications)). Setup walks you through it in one click.
+**Recommended:** scheduled tasks, so the agents run on their own. Only the person who hosts the schedule needs them. Setup creates the schedule as its last step, or later from a one-line prompt you paste into any app where scheduled tasks work and the content machine skill is installed: Claude with scheduled tasks, the Claude desktop app, or the Codex app. Also a code or shell tool, so QA can measure drafts with its script. Without one, QA measures by careful reading, which is less exact. Also Slack connected inside Airtable, so the notification bot can send approval requests and questions a second way (see [Notifications](#notifications)). Setup walks you through it in one click.
 
 **Optional:** Google Calendar (for reminders).
 
 **Also needed**
 
-- **Claude** with connectors and scheduled tasks, so the agents can run on their own. In the Claude desktop app, scheduled tasks run only while the app is open. Claude Code makes the schedule only when it has the Claude desktop app's scheduled tasks; its own cloud schedules aren't used, since this skill isn't installed where they run. Otherwise setup gives you a one-line prompt that creates the schedule from the Claude desktop app or the Codex app. On **Codex**, the app must stay open on a computer that stays on.
+- **Claude** with connectors, or **Codex**. In the Claude desktop app, scheduled tasks run only while the app is open. Claude Code makes the schedule only when it has the Claude desktop app's scheduled tasks; its own cloud schedules aren't used, since this skill isn't installed where they run. On Codex, only the Codex app makes the schedule, not the Codex CLI, and the app must stay open on a computer that stays on.
 - **Scheduled runs set to approve on their own.** A scheduled run that stops at an approval prompt waits forever. Setup shows you where to change this.
 - **Airtable's free plan is enough to start.** It allows about 1,000 automated reads and writes a month per workspace, shared by every base in that workspace (setup suggests a personal workspace). At the default 3 rounds a day that's room for about 18 blog posts a month. The content machine paces itself so it never stops (see [Airtable limits](#airtable-limits)). For more volume, Airtable's paid plan raises the limit; after upgrading, type "change Airtable plan".
 - **Codex only:** a Slack workspace admin approves the Slack connection once. Google Drive on Codex needs an admin to set up a Google Cloud OAuth client once and is a beta, so Notion is the easier pick there.
@@ -76,7 +76,7 @@ Then quit and reopen Codex, and start a new chat. Check it worked with `codex pl
   Then type `/mcp` in Claude Code and sign in to each. For Google Drive, connect it in the Claude app.
 - **Codex:** add the same three addresses in Codex's MCP settings (named airtable, slack, and notion), then sign in to each with `codex mcp login [name]` or the sign-in button in Codex's settings. Open a new chat afterwards so Codex picks them up.
 
-Setup's first message is a connections checklist marked **critical**. Airtable, Slack, Google Drive or Notion, and web search are required; scheduled tasks and running code are recommended. Each is shown as working or missing, with the steps to connect what's missing. Setup doesn't go on until every required one works. The recommended ones never stop setup. Scheduled tasks are only needed for the last step, creating the schedule, which you can also do later from the Claude desktop app or Codex. In Claude Code, the scheduled tasks line passes only with the Claude desktop app's scheduled tasks. Someone joining a teammate's base never needs it, since only the host's account runs the schedule.
+Setup's first message is a connections checklist marked **critical**. Airtable, Slack, Google Drive or Notion, and web search are required; scheduled tasks and running code are recommended. Each is shown as working or missing, with the steps to connect what's missing. Setup doesn't go on until every required one works. The recommended ones never stop setup. Scheduled tasks are only needed by whoever hosts the schedule, for the last step, creating it, which can also be done later in any app where scheduled tasks work and the content machine skill is installed. In Claude Code, the scheduled tasks line passes only with the Claude desktop app's scheduled tasks. Someone joining a teammate's base can ignore that line, since only the host's account runs the schedule.
 
 ## Set up
 
@@ -96,14 +96,14 @@ Setup goes step by step, and every change waits for your yes:
 6. Asks you to share your [reference files](#reference-files), in any format, then tells you which areas they cover, drafts anything missing if you want, and pulls out your rules for you to approve. Setup won't go past this step until product truth, brand and voice, and writing rules are covered.
 7. Builds your document folder or Notion pages.
 8. Builds the notification bot, the second way approval requests and questions reach you. Each product gets its own bot, for its own channel and approvers. It skips the bot only if it can't be built on your account (for example, Slack can't be connected inside Airtable), or you say no after hearing what you'd miss.
-9. Runs a short test (a test post, document, and row, and checks that the bot pinged you, when it was built), then posts a setup note in your channel and sums up what it built.
-10. Last step: the schedule. Setup says everything is set up and asks whether to create your schedule now. On a yes, it creates **one** schedule. Each time it fires, one run does the whole round in order: the Orchestrator, then the Brief Agent, then the Blog Writer. It never touches schedules it didn't make. On Codex, setup creates it as a Codex automation and Codex asks you to approve it. Then it lists your schedules again to prove it's there, fires it once to check the round ran, and builds the heartbeat email that tells you if the agents stop running. If you'd rather wait, or this app can't make schedules, it gives you one line to paste into a chat in the Claude desktop app or Codex, which runs this last step there:
+9. Runs a short test (a test post, document, and row, and checks that the bot pinged you, when it was built), then sums up what it built.
+10. Last step: the schedule. Setup says everything else is set up and asks whether to create your schedule now. On a yes, it creates **one** schedule. Each time it fires, one run does the whole round in order: the Orchestrator, then the Brief Agent, then the Blog Writer. It never touches schedules it didn't make. On Codex, setup creates it as a Codex automation and Codex asks you to approve it. Then it lists your schedules again to prove it's there, remembers which app holds it, and fires it once to check the round ran. Only once that test passes does it say the schedule is set up, build the heartbeat email that tells you if the agents stop running, and post a setup note in your channel for you to pin. If you'd rather wait, or this app can't make schedules, it gives you one line to paste into a new chat on your account, in any app where scheduled tasks work and the content machine skill is installed (Claude with scheduled tasks, the Claude desktop app, or the Codex app), which runs this last step there:
 
     ```
     Create my content machine schedule for base [base ID]
     ```
 
-    Until the schedule exists, the agents run only when you ask, and no stopped-running email is sent.
+    Until the schedule runs, the agents run only when you ask: Slack messages wait for a round, and nothing is lost, since the first round reads them. Type "run a round" to process them sooner. No stopped-running email is sent until then.
 
 Expect it to take a while (roughly 30 to 45 minutes). You can stop at any point and type `set up content machine` again later; it picks up where it stopped and never makes a second copy.
 
@@ -153,14 +153,14 @@ Only people set up as **approvers** can approve, send back, or drop a piece. Onl
 | Update your files or rules | "update reference files" |
 | Add a product or a teammate | "add a product", "add a teammate" |
 | Pause everything | "pause content machine" ("resume content machine" to start again) |
-| Create the schedule later, or from another app | Paste the line setup gave you, "Create my content machine schedule for base [base ID]", into a chat in the Claude desktop app or Codex |
+| Create the schedule later, or from another app | Paste the line setup gave you, "Create my content machine schedule for base [base ID]", into a new chat in any app where scheduled tasks work and the content machine skill is installed |
 | Fix a broken base or schedule | "repair the base", "repair schedules" |
 | Run more or less often | "change how often it runs" |
 | Tell it your Airtable plan changed (say, after upgrading) | "change Airtable plan" |
 | Free up Airtable records (the free plan holds 1,000 per base) | "archive old pieces" (published pieces with a recheck date stay, since their reminders come from this base) |
 | Hand the schedules to someone else | "move host", from the new host's account |
 
-Only the host, whose account runs the schedule, can make the schedule or use "repair schedules" and "change how often it runs". Anyone else is told to ask the host, or to type "move host" to take it over.
+Only the host, whose account runs the schedule, can make the schedule or use "repair schedules" and "change how often it runs". Anyone else is told to ask the host, or to type "move host" to take it over. The base remembers which app holds the schedule, so typed in another app, these say where to type them instead.
 
 The content machine runs on **one schedule**. Each time it fires, one run does the whole round in a fixed order:
 
@@ -211,7 +211,7 @@ If you pick Notion and share drafts by publishing the top page to the web, anyon
 
 If your copy is older than your base needs, the agents stop and say so, so an old copy never runs the wrong rules. In a shared base, the host updates first: a new version can add database fields, and only an account with creator access to the base can add them.
 
-Updating from 0.2? Afterwards, the host types "repair schedules" once to replace the three per-agent schedules with the one Round schedule. Until then, each round costs about three times the Airtable calls and can't answer in Slack when the monthly limit is used up. A reminder is posted in Slack after the update, and once a week until then. If the workspace is on a paid Airtable plan, also type "change Airtable plan" once, or new pieces may wait. If you had the notification bot, the host also types "repair the base" once, so it pings for questions too and each product gets its own bot.
+Updating from 0.2? Afterwards, the host types "repair schedules" once to replace the three per-agent schedules with the one Round schedule. Type it in the app that runs the old ones. Until then, each round costs about three times the Airtable calls and can't answer in Slack when the monthly limit is used up. A reminder is posted in Slack after the update, and once a week until then. If the workspace is on a paid Airtable plan, also type "change Airtable plan" once, or new pieces may wait. If you had the notification bot, the host also types "repair the base" once, so it pings for questions too and each product gets its own bot.
 
 ## What's in this repo
 
