@@ -49,7 +49,7 @@ OR-0047,orchestrator-agent.md,Sweep 1,No post found: list item as having no appr
 OR-0048,orchestrator-agent.md,Sweep 1,Then decide using the Deciding rules,modes/orchestrator.md,"Then decide the rest, using the rules in"
 OR-0049,orchestrator-agent.md,Sweep 2,Read the channel history with slack_read_channel,modes/orchestrator.md,read the channel's history (`slack_read_channel`)
 OR-0050,orchestrator-agent.md,Sweep 2,Read the last 24 hours,modes/orchestrator.md,Read from the Team row's Last Orchestrator Sweep minus 1 hour.
-OR-0051,orchestrator-agent.md,Sweep 2,Read the last 7 days on a first run,modes/orchestrator.md,"When Last Orchestrator Sweep is blank (a first run), read the last 7 days."
+OR-0051,orchestrator-agent.md,Sweep 2,Read the last 7 days on a first run,modes/orchestrator.md,"When Last Orchestrator Sweep is blank (an older base that never finished a sweep"
 OR-0052,orchestrator-agent.md,Sweep 2,7 days when no earlier Orchestrator line in any Notes,DROPPED,Notes lines replaced by the Team row's Last Orchestrator Sweep (modes/orchestrator.md Sweep 2)
 OR-0053,orchestrator-agent.md,Sweep 2,Include the replies inside each thread,modes/orchestrator.md,including the replies inside each thread
 OR-0054,orchestrator-agent.md,Sweep 2,Collect possible feedback from approvers only,modes/orchestrator.md,From approvers only (see

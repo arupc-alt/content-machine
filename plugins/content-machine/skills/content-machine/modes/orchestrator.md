@@ -90,7 +90,7 @@ Skip anything already recorded (see "Already processed," under Sweep 2). A reply
 
 For each channel in Schema Map's `channels` (shared/airtable.md), read the channel's history (`slack_read_channel`), including the replies inside each thread.
 
-**The window.** Read from the Team row's Last Orchestrator Sweep minus 1 hour. When Last Orchestrator Sweep is blank (a first run), read the last 7 days. Never use a fixed 24 hours: a reply left on a day with no runs must still be found. Also read every thread whose parent is older than the window but whose latest reply is inside it. Reactions don't show up in a time window, so also read the reactions on the Slack Thread Link post, and on the bot's post for the same update (Sweep 1, never its question post), of every row that isn't Rejected and was updated in the last 7 days; a reaction added after an earlier decision is then still seen. When the channel read doesn't show a thread's latest reply time, read the thread at the Slack Thread Link of every row in the batched read that isn't Rejected.
+**The window.** Read from the Team row's Last Orchestrator Sweep minus 1 hour. When Last Orchestrator Sweep is blank (an older base that never finished a sweep; setup now sets it), read the last 7 days. Never use a fixed 24 hours: a reply left on a day with no runs must still be found. Also read every thread whose parent is older than the window but whose latest reply is inside it. Reactions don't show up in a time window, so also read the reactions on the Slack Thread Link post, and on the bot's post for the same update (Sweep 1, never its question post), of every row that isn't Rejected and was updated in the last 7 days; a reaction added after an earlier decision is then still seen. When the channel read doesn't show a thread's latest reply time, read the thread at the Slack Thread Link of every row in the batched read that isn't Rejected.
 
 From approvers only (see "Whose feedback counts"), collect every message, thread reply, and reaction that could be feedback on a brief or blog. Match each one to an item by, in this order:
 
@@ -292,7 +292,7 @@ In this run's own output in chat, always report what was checked: how many items
 ## Self-check before finishing
 
 - All three sweeps ran, for every product, even when Sweep 1 found nothing waiting
-- Slack was read directly (each channel's history and its threads), not only the messages linked from Airtable, from Last Orchestrator Sweep minus 1 hour (7 days on a first run)
+- Slack was read directly (each channel's history and its threads), not only the messages linked from Airtable, from Last Orchestrator Sweep minus 1 hour (7 days when it was blank)
 - Document comments were read for every item waiting on a person, and for recent items in progress
 - Only Active approvers for the piece's product counted; bot messages and pipeline posts (anything ending with the `(Content Machine)` line) were ignored, even when sent from an approver's own account, while approvers' replies and reactions on the Airtable bot's posts were read
 - In a shared channel, only items in this base were acted on, and other pipelines' messages were skipped silently
