@@ -1,8 +1,13 @@
 # Changelog
 
-## 0.1.1
+## 0.2.0
 
-Fixes found by testing 0.1.0. No database change (still version 1), so nothing to migrate.
+Fixes found by testing 0.1.0, including a live test on Codex. Database version 2: one new Team field, added on its own by the next run (safe unattended), so existing setups keep working.
+
+- Setup now starts with a critical connections checklist, before any other question: Airtable, Slack, Google Drive or Notion, web search, and scheduled tasks, each marked as working or missing, with the exact steps to connect what's missing. Setup doesn't go on until every required one works.
+- Setup now asks for your reference files plainly (brand guide, style guide, product knowledge, plus the optional ones), waits for them, and won't go past that step without them. You can still type 'draft them' to get drafts from your website.
+- Choose how often the agents run: 1 to 6 times a day, or every 2, 3, 4, 6, 8, or 12 hours. Each time, the Orchestrator, Brief Agent, and Blog Writer each run once. Setup shows what each choice costs on Airtable's free plan. The chosen hours are saved in a new Team field, Round Hours (migration 2).
+- On Codex, setup now creates the three schedules itself with Codex's automation tool, instead of only showing entries to paste.
 
 - Learned rules and product rules are now saved with their rule text (Content), and product rules with their Product. Before, rules approved from feedback were skipped as incomplete, and product rules from setup could fail to load.
 - The "Possible repeat" question for a live post now asks for "go" or "drop", the same answers the Orchestrator reads. Before, an answer like "new angle" left the piece waiting forever.

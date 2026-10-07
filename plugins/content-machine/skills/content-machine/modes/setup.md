@@ -5,7 +5,7 @@ Setup builds a person's content machine inside their own accounts, or joins them
 ## Rules for setup
 
 - **Setup only runs in a chat a person started.** A scheduled run never enters setup (shared/run-start.md). If this mode was reached from a schedule's prompt, stop and output only: "Setup can't run from a schedule. Open a chat and type 'set up content machine'."
-- **One step at a time.** Each step must pass before the next starts. Say which step you're on in one short line ("Step 3 of 10: building your Airtable base").
+- **One step at a time.** Each step must pass before the next starts. Say which step you're on in one short line ("Step 3: building your Airtable base").
 - **A clear yes before every change.** Before creating or changing anything (a base, a folder, a page, a schedule, an automation, a row), say exactly what you'll create and wait for a yes. Silence is not approval. A yes to a step covers everything that step lists, not later steps.
 - **Check before creating, every time.** Every step first looks for what already exists and reuses it, so setup can be run again at any time, picks up where it stopped, and never makes a second copy.
 - **Plain words.** Short sentences, no pipeline jargon, no em dashes. Read every name back (people, channels) for a yes, since two people can share a name.
@@ -19,56 +19,76 @@ Work out which job this is from the person's words:
 
 | They said | Go to |
 |---|---|
-| "set up content machine" (and no base exists yet for them) | Step 0 |
-| "join a teammate's content machine", or they pasted a base link | Join a teammate's base |
+| "set up content machine" | Step 0 |
+| "join a teammate's content machine", or they pasted a base link | Step 0, then Join a teammate's base |
 | "add a product" | Add a product |
 | "add a teammate" | Add a teammate |
 | "update reference files" | Update reference files |
 | "repair the base", "update the base" | Repair the base |
-| "repair schedules" | Repair schedules |
+| "repair schedules", "change how often it runs" | Repair schedules |
 | "move host" | Move host |
 | "pause content machine", "resume content machine" | Pause and resume |
 
-If they said "set up content machine" but a base already exists for them (Step 0 finds it), say so and offer: finish a setup that stopped partway, add a product, or repair.
+If they said "set up content machine" but a base already exists for them (Step 1 finds it), say so and offer: finish a setup that stopped partway, add a product, or repair.
 
-## Step 0: Own setup or join?
+## Step 0: Connections first (critical)
 
-First run `search_bases` for bases this account can open whose name ends with "Content Machine". If one exists, say so and offer to finish setup, add a product, or repair. If Airtable isn't connected yet, skip this search; Step 3 looks again.
+For "set up content machine" and for joining a teammate's base, this is always the first thing setup shows, before any other question, even a greeting question. Nothing else happens until every required connection works. (The upkeep jobs, like pause, add a teammate, or repair, check only the connections they use, at their first real call, with the messages in shared/run-start.md.)
+
+1. **Check every line in the table below** with one small real read, not just "is it listed," because a connection can be listed and still signed out. Run every check before saying anything.
+2. **Show one checklist** in exactly this shape. Put the real result in place of each [mark]: ✅ when the check passed, ❌ when it failed. After a ❌, add a few words on what's wrong ("Not connected," "Signed out"). On the Drive or Notion line, say which of the two works.
+
+```
+⚠️ CRITICAL: connect these before we start. Setup can't go on until every Required line has a ✅.
+
+Required
+[mark] Airtable: your tracker, settings, and rules live here
+[mark] Slack: approvals and updates happen here
+[mark] Google Drive or Notion (at least one): where briefs and blogs are saved
+[mark] Web search: research for every brief
+[mark] Scheduled tasks: so the agents run on their own
+
+Recommended
+[mark] Running code: QA's measuring script
+```
+
+3. **For every ❌,** give the exact connect steps for this platform right under the checklist (shared/platform-tools.md, Connecting a server), then say: "Connect these, then type 'done' and I'll check everything again." Wait. Don't ask anything else, and don't go on, while any Required line is ❌. After "done," run every check again and show the whole checklist again. On Codex, a server added in settings may only show up in a new chat, so also say: "If you added it in Codex's settings, open a new chat and type 'set up content machine' there."
+4. **When every Required line is ✅,** say "All the connections setup needs are working." Then say what the person needs (below).
+5. **Check for another skill with the same job** (below). Then go to Step 1.
+
+| Connection | Required? | The check | If it fails |
+|---|---|---|---|
+| Airtable | Required | `list_workspaces` | ❌ with connect steps |
+| Slack | Required | `slack_search_channels` for any one word | ❌ with connect steps |
+| Google Drive | Required unless Notion works | `list_recent_files` (or search for one file) | ❌ on its line; the line passes if Notion works |
+| Notion | Required unless Drive works | `notion-get-users` for their own user | ❌ on its line; the line passes if Drive works |
+| Web search and page reading | Required | search one word, then open one result | ❌: briefs can't be researched without it |
+| Scheduled tasks | Required for runs on their own | Claude: `list_triggers` or `list_scheduled_tasks`. Codex: the `automation_update` tool is in this session (shared/platform-tools.md) | ❌ with: "Without this, the agents only run when you ask. Turn it on, or type 'go on without it' and setup will show you how to add the schedules by hand in Step 8." This is the only Required line a person may waive, and only with those words. |
+| Running code | Recommended | run a one-line script | ❌ under Recommended: QA will measure by careful reading instead, which is less exact. Never blocks. |
+
+Slack inside Airtable (for the optional bot) is checked in Step 7. Google Calendar is optional and never checked.
+
+**How a person connects something that's missing** (the exact lines are in shared/platform-tools.md, Connecting a server):
+
+- In the Claude app or Cowork: show the connector's connect card if the app offers one; otherwise "Open Settings, then Connectors, find [name], and click Connect."
+- In Claude Code: print the `claude mcp add` lines for what's missing, then "type /mcp and sign in to each."
+- In Codex: name each server and its address to add in Codex's MCP settings, then the sign-in step (`codex mcp login [name]` in a terminal, or the sign-in button in Codex's settings). Slack on Codex needs a Slack workspace admin to approve it once for the company; Google Drive on Codex needs an admin to make a Google Cloud OAuth client once (that's a beta, so suggest Notion on Codex).
+- The same line still fails after two "done" replies: name the likely cause (signed out, an admin approval, the wrong account), then stop cleanly with: "Setup has stopped here, and nothing was created. Once [name] is connected, open a new chat and type 'set up content machine'." Never half-set things up.
+
+**What a person needs, said plainly once the checklist passes:** "You'll need: a Claude plan that includes connectors and scheduled tasks, so the agents can run on their own (or the Codex app left open on a computer that stays on); free Airtable, Slack, and Google Drive or Notion accounts. Airtable's free plan allows 5 editors per base and 1,000 automated reads and writes a month per workspace, which is enough for about 7 blog posts a month at 3 rounds a day, or about 12 at 2 rounds a day."
+
+**Another skill with the same job.** If this session's tools can list installed skills, look for another skill whose description says it writes briefs or blogs, or another skill named content-machine whose description lacks "github.com/arupc-alt/content-machine". Name what you find and ask whether to switch the others off. If another skill already has the name content-machine and isn't this one, tell the person to install this repo's `content-machine-pipeline.zip` instead (it's the same skill under another name), and save that name in the Team row's Skill Name in Step 3.
+
+## Step 1: Own setup or join?
+
+Run `search_bases` for bases this account can open whose name ends with "Content Machine". If one exists, say so and offer to finish setup, add a product, or repair.
 
 Otherwise, ask one question, with own setup as the default:
 
 "Do you want your own content machine, built in your own Airtable, Slack, and Google Drive or Notion? Or do you want to join a teammate's? To join, paste their base link. (Most people pick their own.)"
 
 - A pasted base link, or "join": go to Join a teammate's base.
-- Otherwise: own setup, from Step 1.
-
-## Step 1: Preflight, before any question about the company
-
-Check every connection with one small real read, not just "is it listed," because a connection can be listed and still signed out. Run every check in the table before stopping, then name everything that failed in one message, so the person can connect them all at once. Don't ask anything else until the required ones pass.
-
-| Connection | Needed when | The check | If it fails |
-|---|---|---|---|
-| Airtable | Always | `list_workspaces` | Stop. Show how to connect it (below), then check again. |
-| Slack | Always | `slack_search_channels` for any one word | Stop. Show how to connect it, then check again. |
-| Web search and page reading | Always | search one word, then open one result | Stop. Briefs can't be researched without it. |
-| Running code | Always (QA measures drafts with a script) | run a one-line script | Go on, but say QA will measure by careful reading instead, which is less exact. |
-| Google Drive | The person picks Drive | `list_recent_files` (or search for one file) | Stop if Drive is their choice; otherwise offer Notion. |
-| Notion | The person picks Notion | `notion-get-users` for their own user | Stop if Notion is their choice; otherwise offer Drive. |
-| Scheduled tasks (Claude) | Claude only | `list_triggers` (or `list_scheduled_tasks`, shared/platform-tools.md) | Go on, but say schedules will need a few manual steps. |
-| Slack inside Airtable | Optional | `list_external_accounts` shows a Slack account | Don't stop. Offer the one-click step (Step 7). |
-| Google Calendar | Optional | none | Never checked. It's only used for reminders. |
-
-Drive and Notion are checked right after Step 4 item 7, once the person has picked one.
-
-**How a person connects something that's missing:**
-
-- In the Claude app or Cowork: show the connector's connect card if the app offers one; otherwise say "Open Settings, then Connectors, find [name], and click Connect." They sign in, then type "done," and setup checks again.
-- In Claude Code or Codex: print the exact lines to add (shared/platform-tools.md, Connecting a server, has the commands and addresses), then the sign-in step. Codex users add the Airtable, Slack, and Notion servers in Codex's MCP settings. Slack on Codex needs a Slack workspace admin to approve it once for the company; Google Drive on Codex needs an admin to make a Google Cloud OAuth client once (that's a beta, so suggest Notion on Codex).
-- The same check fails twice: name the likely cause (signed out, an admin approval, the wrong account), then stop cleanly. Never half-set things up.
-
-**What a person needs, said plainly before going on:** "You'll need: a Claude plan that includes connectors and scheduled tasks, so the agents can run on their own (or the Codex app left open on a computer that stays on); free Airtable, Slack, and Google Drive or Notion accounts. Airtable's free plan allows 5 editors per base and 1,000 automated reads and writes a month per workspace, which is enough for about 7 blog posts a month at 3 rounds a day, or about 12 at 2 rounds a day."
-
-**Another skill with the same job.** If this session's tools can list installed skills, look for another skill whose description says it writes briefs or blogs, or another skill named content-machine whose description lacks "github.com/arupc-alt/content-machine". Name what you find and ask whether to switch the others off. If another skill already has the name content-machine and isn't this one, tell the person to install this repo's `content-machine-pipeline.zip` instead (it's the same skill under another name), and save that name in the Team row's Skill Name in Step 3.
+- Otherwise: own setup, from Step 2.
 
 ## Step 2: Company and product
 
@@ -91,7 +111,7 @@ Read the answers back. Wait for a yes. Nothing is saved yet; it's saved in Step 
 5. **Add the fields that need the tables to exist,** from `addAfterCreate`: the two link fields on Content Items (`create_field`, type `multipleRecordLinks`, linked to Rework History and Feedback Log), then rename the matching fields Airtable adds on those tables to "Item" and "Related Item" (`update_field`). Then the Heartbeat Late formula on Team. If the formula is rejected, read the error and fix it once; if it's still rejected, skip it and say the heartbeat alert won't be built.
 6. **Read the whole base back** (`list_tables_for_base`, `get_table_schema` for every table) and check every table, field, and choice against the template. Fix anything missing.
 7. **Write the Schema Map** (shared/airtable.md shows its shape): every table ID, every field ID, and every single-select choice ID, as JSON.
-8. **Create the Team row:** Company, Base ID, Skill Name (`content-machine` unless Step 1 said otherwise), Schema Map, Schema Version (from the template), Min Skill Version (this skill's version, from SKILL.md), Paused off, Bot Status Off, API Month (this month), API Calls This Month 0. Time Zone, Schedule Host, Rounds Per Day, and Days are filled in Step 4.
+8. **Create the Team row:** Company, Base ID, Skill Name (`content-machine` unless Step 0 said otherwise), Schema Map, Schema Version (from the template), Min Skill Version (this skill's version, from SKILL.md), Paused off, Bot Status Off, API Month (this month), API Calls This Month 0. Time Zone, Schedule Host, Rounds Per Day, Round Hours, and Days are filled in Step 4.
 9. **Create the Settings row** for the first product: Product, Company, Website URL, Docs URL, Language, Spelling, Set Up On today. The rest is filled in Step 4 and Step 6.
 
 If anything fails partway, say what was done and what wasn't. Running setup again picks up here, because every step checks what exists first.
@@ -105,26 +125,48 @@ Ask only what Settings, Team, and Members don't already have:
 3. **Who else runs it,** if anyone shares this base (most own setups: nobody). Runners need the skill, Airtable, Slack, and the document tool. Airtable's free plan allows 5 editors per base.
 4. **This person.** Their Slack ID and email (from their own Slack profile) and time zone (ask, and suggest the one their Slack profile shows).
 5. **Item ID prefix.** Suggest one from the product's initials plus the person's initials, like `ACME-AR-`, and check no row in this base already uses it. People sharing one Slack channel with other personal content machines need different prefixes, which the initials give them.
-6. **How often the agents run.** "The three agents run in rounds: by default 3 rounds a day (about 9 AM, 1 PM, and 5 PM your time), every day. You can pick 2 rounds a day, or weekdays only. 3 rounds every day leaves room for about 7 posts a month on free Airtable; 2 rounds, or weekdays only, about 12." Default: 3 rounds, every day.
+6. **How often the agents run.** Ask: "How often should the agents check for work? Pick a number of times a day (1 to 6, spread between about 9 AM and 6 PM your time), or every few hours (every 2, 3, 4, 6, 8, or 12 hours, around the clock). Each time, the Orchestrator, the Brief Agent, and the Blog Writer each run once, 20 minutes apart. Every day, or weekdays only?" Default: 3 times a day, every day. Work out Round Hours from the table in Step 8 and read the times back. Then show the cost on Airtable's free plan, which allows 1,000 calls a month per workspace: each round a day costs about 180 calls a month even when there's nothing to do, upkeep costs about 160, and each piece about 40. So 2 a day leaves room for about 12 posts a month, 3 a day about 7, 4 a day (or every 6 hours) about 3, and 5 or more a day (or every 4 hours or less) uses up the free plan before any posts. Weekdays only uses about a quarter less. For more than 3 a day, recommend Airtable's paid plan, and save the choice only after a yes. Rounds Per Day is the number of Round Hours (every N hours is 24 divided by N).
 7. **Google Drive or Notion** for the documents. Before they pick, show both:
 
    "**Google Drive.** Documents are Google Docs in one shared folder. Anyone on the team can open any piece. Limits: formatting can come out a little messy (lists, tables, spacing), each round of changes makes a new Doc, and every Doc must be shared so people can open it. On Codex, an admin must set up the Google connection once.
 
    **Notion.** Each piece gets clean pages with real tables, images, and sections you can open and close. Changes are made on the same page, so the link never changes. Limits: all pages live in one Notion workspace owned by the person who runs the schedules. To let reviewers read them, either publish the top page to the web (anyone with the link can read every draft under it, so keep confidential plans out), or invite reviewers as guests (each needs a Notion account, up to 10 free). Reviewers give feedback in Slack. Page history only goes back 7 days on the free plan, so the agent keeps a 'What changed' log. Don't add people as workspace members: 2 or more members turns on a 1,000-block limit."
 
-   Once they pick, check that tool now with Step 1's check (Drive: `list_recent_files`; Notion: `notion-get-users`). If it fails, help them connect it the same way, before going on: Step 5 may read reference files from it.
+   Say which of the two passed Step 0. If they pick one that didn't, connect it and run its Step 0 check before going on: Step 5 may read reference files from it.
 
 Read everything back in one short list. Wait for a yes. Then save:
 
 - Settings: Item ID Prefix, Slack Channel Name, Slack Channel ID, Doc Home.
-- Team: Time Zone, Schedule Host (this person's email), Rounds Per Day, Days, and the product's Slack Channel ID in Schema Map's `channels` (shared/airtable.md).
+- Team: Time Zone, Schedule Host (this person's email), Rounds Per Day (the number of rounds a day), Round Hours (like `9,13,17`), Days, and the product's Slack Channel ID in Schema Map's `channels` (shared/airtable.md).
 - Members: one row per person (Name, Slack ID, Email, Time Zone, Role, Products blank, Active on, Joined On today). This person gets Role Host and Runner, plus Approver if they approve.
 
 ## Step 5: Reference files and product rules
 
-Follow shared/rule-extraction.md from start to finish: collect the files (asking for all of them in one message, with the table of which are required), save the content as Reference rows after a yes, pull out the product rules, show them grouped with their source quotes, and save only what the person approves. Update the Team row's Reference Row Count.
+This step is never skipped. The agents write nothing for a product without its brand guide, style guide, and product knowledge (shared/run-start.md, Loading the rules).
 
-If they have no files yet, offer to draft starting files from the website and docs URL, marked "Draft, please review." Nothing drafted goes live until it's approved.
+1. **Ask for the files, in one message, exactly like this** (fill in the product name):
+
+```
+Step 5: your reference files for [Product]. These teach the agents your brand, so please upload or share them now.
+
+Required
+1. Brand guide: voice, tone, words to use and avoid
+2. Writing style guide: reading level, sentence rules, formatting
+3. Product knowledge: features, plans, limits, and your docs link
+
+Optional
+4. Quality checks
+5. Internal links and calls to action
+6. Competitors: who they are and what may be said about them
+7. Best past posts: 2 or 3 links to match for tone
+
+You can upload files (PDF, Word, Markdown, or text), paste text, or share Google Doc, Notion, or web page links. Mix them however you like.
+No files yet? Type 'draft them' and I'll draft starting files from [website] for you to review.
+```
+
+2. **Wait for the files.** Don't go on until all three required files are in. If some are missing, name them and ask again. If they type 'draft them', draft only the missing required files from the website and docs URL, marked "Draft, please review," and show them for a yes.
+3. **Then follow shared/rule-extraction.md** from Saving the content to the end: save the content as Reference rows after a yes, pull out the product rules, show them grouped with their source quotes, and save only what the person approves. Update the Team row's Reference Row Count.
+4. **Gate.** Go on to Step 6 only when the product has Active Reference rows of Type Brand guide, Style guide, and Product knowledge. If the person wants to stop here, stop, and say: "Type 'set up content machine' when you have the files. I'll pick up at this step." Nothing drafted goes live until it's approved.
 
 ## Step 6: Document home
 
@@ -163,15 +205,19 @@ If the person skips the bot, or anything here fails, show the fallback message f
 
 **Make them last,** after every connector the runs need is connected: a schedule only gets the connectors that existed when it was made, and they can't be added later.
 
-**Times,** in the Team row's Time Zone, a few minutes off the hour:
+**Times.** Every round runs all three agents, 20 minutes apart, a few minutes off the hour, in the Team row's Time Zone: the Orchestrator at :07, the Brief Agent at :27, and the Blog Writer at :47 of each hour in the Team row's Round Hours. Round Hours come from the person's choice in Step 4:
 
-| Round | Orchestrator | Brief Agent | Blog Writer |
-|---|---|---|---|
-| Morning | 9:07 | 9:27 | 9:47 |
-| Midday (3 rounds only) | 13:07 | 13:27 | 13:47 |
-| Afternoon (2 rounds: 15:07, 15:27, 15:47) | 17:07 | 17:27 | 17:47 |
+| Choice | Round Hours | Example: the Orchestrator runs at |
+|---|---|---|
+| 1 a day | 9 | 9:07 |
+| 2 a day | 9, 15 | 9:07, 15:07 |
+| 3 a day (default) | 9, 13, 17 | 9:07, 13:07, 17:07 |
+| 4 a day | 9, 12, 15, 18 | 9:07, 12:07, 15:07, 18:07 |
+| 5 a day | 9, 11, 13, 15, 17 | 9:07 and every 2 hours to 17:07 |
+| 6 a day | 8, 10, 12, 14, 16, 18 | 8:07 and every 2 hours to 18:07 |
+| Every N hours (2, 3, 4, 6, 8, or 12) | 9, then every N hours around the clock (every 4 hours: 1, 5, 9, 13, 17, 21) | each of those hours, at :07 |
 
-Each agent has one schedule that fires once per round. Every day uses all 7 days; Weekdays uses Monday to Friday.
+Each agent has one schedule that fires once per round, so the Orchestrator, the Brief Agent, and the Blog Writer each run as many times a day as there are rounds. Every day uses all 7 days; Weekdays uses Monday to Friday.
 
 **The prompts** are one line each, so they always run the installed skill and never go stale:
 
@@ -179,17 +225,30 @@ Each agent has one schedule that fires once per round. Every day uses all 7 days
 - `Use the [Skill Name] skill. Mode: Brief. Base: [base ID]. Unattended run.`
 - `Use the [Skill Name] skill. Mode: Blog Writer. Base: [base ID]. Unattended run.`
 
+On Codex, name the skill the way Codex calls one, with a `$`: `Use the $[Skill Name] skill. Mode: Brief. Base: [base ID]. Unattended run.`
+
 **On Claude:**
 
 1. `list_triggers`. If schedules with these names already exist for this base, update their time and prompt (`update_trigger`) instead of adding more.
 2. Say the three names, times, and prompts, and wait for a yes.
-3. Create each with `create_trigger`: name "Content Machine: [mode] ([Company])", the cron line with `CRON_TZ=[Time Zone]` (for example `CRON_TZ=America/New_York 7 9,13,17 * * *`, or `1-5` in the last field for weekdays), the one-line prompt, `requires_local_device` false, and initiation `human_request`. Don't pin a model.
+3. Create each with `create_trigger`: name "Content Machine: [mode] ([Company])", the cron line with `CRON_TZ=[Time Zone]` (the minute is 7, 27, or 47 by agent, and the hours are Round Hours: for example `CRON_TZ=America/New_York 7 9,13,17 * * *` for the Orchestrator at 3 a day, or `1-5` in the last field for weekdays), the one-line prompt, `requires_local_device` false, and initiation `human_request`. Don't pin a model.
 4. Read each result. Check its connector list includes Airtable, Slack, and the document tool. If one is missing, say which connector to connect, then "repair schedules."
 5. **Approvals.** A scheduled run that hits an approval prompt waits forever. Read each schedule's approval setting from the result. If runs will ask before acting, tell the person how to switch the schedule to automatic approval in its settings, and wait for "done." If their organization doesn't allow it, say so plainly: runs may stall until someone approves.
 6. If the platform refuses to create a schedule, don't work around it. Show the exact name, time, and prompt to add by hand.
-7. **Desktop scheduled tasks.** If this session has the Claude desktop app's scheduled-task tools instead (shared/platform-tools.md), do steps 1 to 6 with them: `taskId` `content-machine-[mode]-[prefix]`, the same prompt, and the cron line without `CRON_TZ`, because these run in the computer's own time zone (adjust the hours if that differs from the Team row's Time Zone). Tell the person these run only while the Claude app is open; a run that was due while it was closed runs when it next opens.
+7. **Desktop scheduled tasks.** If this session has the Claude desktop app's scheduled-task tools instead (shared/platform-tools.md), do steps 1 to 6 with them: `taskId` `content-machine-[mode]-[prefix]`, the same prompt, and the cron line without `CRON_TZ`, because these run on the computer's own clock (see Time zones on this computer, below). Tell the person these run only while the Claude app is open; a run that was due while it was closed runs when it next opens.
 
-**On Codex:** schedules are added in the Codex app's Automations tab. Show three ready-to-paste entries (name, schedule, prompt), with: "Set each one to run in this project, with network access on and approvals set so it can use your connected tools without asking. Codex runs scheduled tasks only while the app is open on a computer that stays on." Wait for "done."
+**On Codex:** create the schedules with the Codex app's `automation_update` tool (part of Codex's built-in app tools; read its parameters in this session and fill them as below). Don't just show entries to paste when the tool is there.
+
+1. Look for automations this base already has (their prompts name the base ID). Update those instead of adding more.
+2. Say the three names, times, and prompts, and wait for a yes.
+3. Create each one: name "Content Machine: [mode] ([Company])"; kind `cron`; the Codex prompt (with `$[Skill Name]`); run locally, not tied to one chat; notify on failed runs only; and the schedule as a repeat rule, which runs on the computer's own clock (see Time zones on this computer, below):
+   - Every day: `RRULE:FREQ=DAILY;BYHOUR=[Round Hours];BYMINUTE=[7, 27, or 47]`, for example `RRULE:FREQ=DAILY;BYHOUR=9,13,17;BYMINUTE=27` for the Brief Agent at 3 a day.
+   - Weekdays: `RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;BYHOUR=[Round Hours];BYMINUTE=[7, 27, or 47]`.
+   Codex asks the person to approve each one.
+4. Read each one back and check its name, prompt, and schedule. Then tell the person: "Codex runs these only while the app is open on a computer that stays on. Make sure Codex can use Airtable, Slack, and [Drive or Notion] in these runs without asking."
+5. If this session has no automation tool, or creating one fails, show three ready-to-paste entries for the Automations tab (name, schedule, prompt), with: "Set each one to run locally, with network access on and approvals set so it can use your connected tools without asking." Wait for "done."
+
+**Time zones on this computer.** Desktop scheduled tasks and Codex automations run on the computer's clock, not on a set time zone. Before creating them, compare the computer's time zone (run a one-line script, or ask) with the Team row's Time Zone. If they differ, say so and ask, after a yes, to set the Team row's Time Zone to the computer's, so the hours and the weekdays stay right all year. If the person says no, show the schedules to add by hand instead.
 
 ## Step 9: Dry run
 
@@ -200,7 +259,7 @@ Prove each part works before calling setup finished. Explain what's about to hap
 3. **A test row.** Create a Content Items row for the test (Product, Input "Setup test," Item ID `[prefix]TEST`, Brief Doc Link set to the test document), then set Slack Thread Link to the test post's link and Status to `Awaiting Brief Approval` in one update.
 4. **The bot test** (only if the bot was built and switched on): wait about a minute, then read the channel's newest messages for a post from "Content Machine" naming `[prefix]TEST`. Ask the host: "Did you get a Slack notification from Content Machine just now?" If the post arrived and they got the ping, set Bot Status On. If not, set Bot Status `Failed test`, show the automation link, and ask the person to switch it off in Airtable; wait for 'done' and check with `list_automations`. Then show the fallback message from shared/slack.md.
 5. **Clean up the test row:** set its Status `Rejected` and Notes "Setup test." (Rows are never deleted.) Leave the test document; say the person can delete it.
-6. **Fire each schedule once** (Claude: `fire_trigger`, or `run_scheduled_task`). Each run will find no real work. Wait a few minutes, then read the Team row: each agent's Last Run field should now be set. Check up to 3 times, about 3 minutes apart. Any agent that didn't run gets named, with the likely cause (approvals, a missing connector, or the account) and "repair schedules."
+6. **Fire each schedule once** (Claude: `fire_trigger`, or `run_scheduled_task`; Codex: ask the person to click Run now on each automation). Each run will find no real work. Wait a few minutes, then read the Team row: each agent's Last Run field should now be set. Check up to 3 times, about 3 minutes apart. Any agent that didn't run gets named, with the likely cause (approvals, a missing connector, or the account) and "repair schedules."
 
 If any step fails, name it, fix what can be fixed, and run that step again. Setup isn't finished until every step here passes or the person chooses to go on without the bot.
 
@@ -213,7 +272,7 @@ If any step fails, name it, fix what can be fixed, and run that step again. Setu
 
 For someone who wants to share a teammate's queue instead of running their own.
 
-1. Preflight (Step 1).
+1. Connections (Step 0) must pass first.
 2. Ask for the base link if they haven't pasted it. The teammate who owns the base must first add them as an editor in Airtable (Share, then invite by email). Open the base: read the Team row.
    - "Not found" or a permission error: "Ask [owner] to share the base with you as an editor. Then sign in to Airtable again in your connector settings so the connection includes this base, and type 'done'." Tell apart a base that isn't shared from one the connection wasn't granted: if the owner says it's shared, it's the sign-in.
 3. Check this copy of the skill isn't older than the Team row's Min Skill Version. If it is, say how to update, and stop.
@@ -240,22 +299,24 @@ shared/rule-extraction.md, "Keeping them right over time": read the new or chang
 
 ## Repair schedules
 
-1. `list_triggers` (or `list_scheduled_tasks`) and find this base's three schedules by their prompts' base ID.
-2. A schedule made before a connector was connected can't gain it. After a yes, delete those schedules (`delete_trigger`; desktop scheduled tasks are switched off with `update_scheduled_task` and enabled false) and create them again (Step 8). Others just get their time and prompt corrected (`update_trigger` or `update_scheduled_task`).
+For "change how often it runs": ask Step 4's question 6, show the cost, and after a yes save Rounds Per Day and Round Hours in the Team row. Then go on below, so every schedule moves to the new times.
+
+1. `list_triggers` (or `list_scheduled_tasks`; on Codex, the automations) and find this base's three schedules by their prompts' base ID. Their times must match Round Hours (Step 8).
+2. A schedule made before a connector was connected can't gain it. After a yes, delete those schedules (`delete_trigger`; desktop scheduled tasks are switched off with `update_scheduled_task` and enabled false) and create them again (Step 8). Others just get their time and prompt corrected (`update_trigger`, `update_scheduled_task`, or on Codex `automation_update`). A missing schedule is created as Step 8 says.
 3. Fire each once and check Last Run (Step 9, part 6).
 
 ## Move host
 
 Hands the schedules and documents to another account, for example when someone leaves. Run it from the new host's account:
 
-1. The new host runs preflight and is added to Members with Role Host.
+1. The new host runs the connections check (Step 0) and is added to Members with Role Host.
 2. Create the three schedules from this account (Step 8). Ask the old host (or an admin) to switch off the old ones.
 3. Drive: the old host transfers ownership of the folder (or it's already in a Shared Drive). Notion: duplicate the top page into the new host's workspace, then update every Notion link in Content Items and Settings.
 4. Update the Team row's Schedule Host, and the heartbeat email's recipients with `update_automation`. Changes to a live automation stay in draft until a person publishes them, so show the automation link (`https://airtable.com/[base ID]/[automation ID]`) and ask the person to open it and click Update, then type 'done'.
 
 ## Pause and resume
 
-First find the base, as Step 0 does: `search_bases` for a name ending in "Content Machine" (more than one: ask which). If Airtable isn't connected, say: "Airtable isn't connected in this session. Connect it, then type the same words again." If no base is found, say: "I can't find a content machine base on this account. If a teammate hosts it, ask them to pause it." Then:
+First find the base, as Step 1 does: `search_bases` for a name ending in "Content Machine" (more than one: ask which). If Airtable isn't connected, say: "Airtable isn't connected in this session. Connect it, then type the same words again." If no base is found, say: "I can't find a content machine base on this account. If a teammate hosts it, ask them to pause it." Then:
 
 - "pause content machine": after a yes, set Paused on in the Team row. Every run stops at run-start step 2 until resumed.
 - "resume content machine": after a yes, set Paused off.

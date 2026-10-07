@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "baseNamePattern": "[Company] Content Machine",
   "notes": [
     "This file is passed to create_base almost as is. Setup creates the 7 tables below in one call, then adds every field listed under addAfterCreate (link fields and formulas need the tables to exist first).",
@@ -524,6 +524,11 @@
           "options": {
             "precision": 0
           }
+        },
+        {
+          "name": "Round Hours",
+          "type": "singleLineText",
+          "description": "Hours each round starts, in Time Zone, comma-separated, like 9,13,17 (setup Step 8)."
         },
         {
           "name": "Days",

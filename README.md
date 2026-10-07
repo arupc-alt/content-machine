@@ -54,7 +54,7 @@ Pick one. Each one installs the same skill.
 $skill-installer install https://github.com/arupc-alt/content-machine/tree/main/skills/content-machine
 ```
 
-Then restart Codex.
+Then restart Codex. The skill shows up as `$content-machine`. If Codex says the skill isn't found, check that the folder `~/.codex/skills/content-machine` exists, then restart Codex again. To update an older copy, run the same line again.
 
 **Already have a different skill called content-machine?** On Claude, upload `content-machine-pipeline.zip` from the release instead. It's the same skill under another name.
 
@@ -70,9 +70,9 @@ Then restart Codex.
   ```
 
   Then type `/mcp` in Claude Code and sign in to each. For Google Drive, connect it in the Claude app.
-- **Codex:** add the same three addresses in Codex's MCP settings and sign in (for Notion, `codex mcp login notion`).
+- **Codex:** add the same three addresses in Codex's MCP settings (named airtable, slack, and notion), then sign in to each with `codex mcp login [name]` or the sign-in button in Codex's settings. Open a new chat afterwards so Codex picks them up.
 
-Setup checks every connection and tells you exactly what's missing, all in one message.
+Setup's first message is a connections checklist marked **critical**: Airtable, Slack, Google Drive or Notion, web search, and scheduled tasks, each shown as working or missing, with the steps to connect what's missing. Setup doesn't go on until every required one works.
 
 ## Set up
 
@@ -84,15 +84,15 @@ set up content machine
 
 Setup goes step by step, and every change waits for your yes:
 
-1. Asks whether you want your own content machine or want to join a teammate's.
-2. Checks your connections.
+1. Checks your connections and shows the critical checklist. Nothing else happens until the required ones work.
+2. Asks whether you want your own content machine or want to join a teammate's.
 3. Asks about your company and products.
 4. Builds your Airtable base.
-5. Picks your Slack channel, approvers, item ID prefix, rounds per day, and Google Drive or Notion.
-6. Collects your reference files and pulls out your rules for you to approve.
+5. Picks your Slack channel, approvers, item ID prefix, how often the agents run, and Google Drive or Notion.
+6. Asks you to upload your reference files (brand guide, writing style guide, product knowledge, plus any optional ones), then pulls out your rules for you to approve. Setup won't go past this step without the three required files; type 'draft them' to get drafts from your website instead.
 7. Builds your document folder or Notion pages.
 8. Builds the Airtable automations: a heartbeat email if the agents stop running, and the optional notification bot.
-9. Creates the schedules.
+9. Creates the schedules: one each for the Orchestrator, the Brief Agent, and the Blog Writer. On Codex, setup creates them as Codex automations and Codex asks you to approve each one.
 10. Runs a short test: a test post, document, and row, then fires each schedule once.
 
 Expect it to take a while (roughly 30 to 45 minutes). You can stop at any point and type `set up content machine` again later; it picks up where it stopped and never makes a second copy.
@@ -118,9 +118,19 @@ Only people set up as **approvers** can approve, send back, or drop a piece. Onl
 | Add a product or a teammate | "add a product", "add a teammate" |
 | Pause everything | "pause content machine" ("resume content machine" to start again) |
 | Fix a broken base or schedule | "repair the base", "repair schedules" |
+| Run more or less often | "change how often it runs" |
 | Hand the schedules to someone else | "move host", from the new host's account |
 
-The agents run on their own 3 times a day by default (just after 9 AM, 1 PM, and 5 PM your time; at 2 rounds a day, 9 AM and 3 PM). In each round the Orchestrator reads your Slack replies and document comments first, then the Brief Agent runs, then the Blog Writer.
+The agents run on their own in rounds. In each round the Orchestrator reads your Slack replies and document comments first, then the Brief Agent runs, then the Blog Writer, 20 minutes apart. You choose how often in setup:
+
+| Choice | Rounds start at (your time) | Room on Airtable's free plan |
+|---|---|---|
+| 2 a day | 9 AM, 3 PM | about 12 posts a month |
+| 3 a day (default) | 9 AM, 1 PM, 5 PM | about 7 posts a month |
+| 4 a day, or every 6 hours | 9 AM, 12, 3 PM, 6 PM (every 6 hours: 3 AM, 9 AM, 3 PM, 9 PM) | about 3 posts a month |
+| 5 or 6 a day, or every 2 to 4 hours | spread through the day, or around the clock | needs Airtable's paid plan |
+
+Weekdays only uses about a quarter fewer calls. To change it later, type "change how often it runs".
 
 ## Notifications
 

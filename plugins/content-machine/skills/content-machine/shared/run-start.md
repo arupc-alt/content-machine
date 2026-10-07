@@ -42,7 +42,7 @@ From the Team row:
 
 - Every table, field, and status choice in Schema Map still exists. Missing one: stop with the repair message.
 - Each Settings row has Product, Company, Website URL, Item ID Prefix, Slack Channel ID, and Doc Home filled in, and the folder or page for its Doc Home.
-- The Team row has Base ID, Time Zone, Schedule Host, Rounds Per Day, and Days.
+- The Team row has Base ID, Time Zone, Schedule Host, Rounds Per Day, Round Hours, and Days.
 - Reference has, for each product, Active rows of Type Brand guide, Style guide, and Product knowledge. The Active row count is checked against Reference Row Count the same way as the batched read (shared/airtable.md): more rows means set Reference Row Count to the new number and note it in the run summary; fewer rows means post one alert.
 - Schema Map's `channels` match each Settings row's Slack Channel ID. If not, rewrite them from Settings.
 - The document home opens (one read). For a product whose Doc Sharing is Notion web link, open its public link (pasted at setup and saved in Settings, Notion Home) with the web fetch tool; if it no longer opens, post one alert: "The public Notion link for [Product] no longer opens. Publish the top page to the web again from Notion's Share menu."

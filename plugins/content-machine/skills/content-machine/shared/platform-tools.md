@@ -2,7 +2,7 @@
 
 Mode files name tools by their base name (`list_records_for_table`), never with a platform prefix. On Claude the full name carries a prefix like `mcp__Airtable__`; on Codex it carries the MCP server's name. Match by the base name: use whichever tool in this session ends with it.
 
-Each step needs a capability, not just a name. Preflight (setup) and the first call of each run test the capabilities the chosen setup needs. If a capability is missing, use the fallback in the last column, or stop with the message from shared/run-start.md.
+Each step needs a capability, not just a name. The connections check (setup Step 0) and the first call of each run test the capabilities the chosen setup needs. If a capability is missing, use the fallback in the last column, or stop with the message from shared/run-start.md.
 
 ## Airtable (required)
 
@@ -62,7 +62,7 @@ On Codex, Notion is `https://mcp.notion.com/mcp`, signed in with `codex mcp logi
   - `claude mcp add --transport http slack https://mcp.slack.com/mcp`
   - `claude mcp add --transport http notion https://mcp.notion.com/mcp`
   - Google Drive has no server line here: connect it in the Claude app (Settings, Connectors), or pick Notion.
-- **Codex:** add the same addresses in Codex's MCP settings, then sign in (for Notion, `codex mcp login notion`). Slack needs a workspace admin's approval once.
+- **Codex:** add the same addresses in Codex's MCP settings (named airtable, slack, and notion), then sign in to each with `codex mcp login [name]` in a terminal, or the sign-in button in Codex's settings. Slack needs a workspace admin's approval once. A newly added server may only show up in a new chat.
 
 ## Other
 
@@ -70,6 +70,6 @@ On Codex, Notion is `https://mcp.notion.com/mcp`, signed in with `codex mcp logi
 |---|---|---|
 | Web search and read a page | the session's web search and fetch tools | none: briefs can't be researched without them |
 | Run a script (QA measurements) | the session's code or shell tool | measure by careful reading and say so in the QA report |
-| Scheduled runs (setup) | Claude: `create_trigger`, `list_triggers`, `update_trigger`, `fire_trigger`, `delete_trigger`. In the Claude desktop app the same jobs are `create_scheduled_task`, `list_scheduled_tasks`, `update_scheduled_task`, and `run_scheduled_task` (cron in the computer's own time zone; runs only while the app is open) | Codex: show ready-to-paste Automations entries |
+| Scheduled runs (setup) | Claude: `create_trigger`, `list_triggers`, `update_trigger`, `fire_trigger`, `delete_trigger`. In the Claude desktop app the same jobs are `create_scheduled_task`, `list_scheduled_tasks`, `update_scheduled_task`, and `run_scheduled_task` (cron in the computer's own time zone; runs only while the app is open). Codex: `automation_update` from Codex's built-in app tools (kind `cron`, a repeat rule like `RRULE:FREQ=DAILY;BYHOUR=9,13,17;BYMINUTE=7`) | show ready-to-paste Automations entries |
 | A browser for AI answer-engine checks | the session's browser tools | skip quietly; scheduled runs note it in Open Questions |
 | Calendar reminders | Google Calendar tools | the Recheck Due field (always used) |
