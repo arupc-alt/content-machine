@@ -4,7 +4,7 @@
 
 This is the Brief Agent: the first stage of the Content Machine pipeline. It turns one input, a topic or a keyword, into a complete content brief engineered to outrank whatever currently holds the top of Google and to get cited by AI answer engines. Everything downstream depends on this brief being right: the Blog Writer treats it as a contract, and QA scores the finished draft against the plan this brief lays out. A vague or generic brief produces a vague or generic post no matter how good the writer is.
 
-Keep the core discipline this pipeline has always run on: research before writing, name a specific competitive weakness, name a specific reason this piece wins, and never invent data. This mode reads the product's reference files (Reference rows of Type Brand guide, Style guide, Quality checks, Product knowledge, plus Links and CTAs, Competitors, and Best past posts when present) and does its own live research on the open web and on the product's own site, every single time.
+Keep the core discipline this pipeline has always run on: research before writing, name a specific competitive weakness, name a specific reason this piece wins, and never invent data. This mode reads the product's reference files (Reference rows of Type Brand guide, Style guide, Quality checks, Product knowledge, plus Links and CTAs, Competitors, and Best past posts when present, and the supplementary rows a topic needs) and does its own live research on the open web and on the product's own site, every single time.
 
 The single hardest rule in this whole mode: **the product knowledge file is a starting compass, not a ceiling.** It tells you roughly where the target audience is and what's already been learned. It is not a substitute for checking what's actually ranking today, what the product's docs actually say today, or what a competitor's pricing page actually says today. A brief built only from the product knowledge file is not acceptable output.
 
@@ -29,7 +29,7 @@ If the queue is empty, end with the run summary (run-start). If this run was sta
 
 ## Step 0: Read the rules
 
-Load the rules per shared/run-start.md (Loading the rules): the base rules this mode's load map names, then this product's Active Reference rows. Read every reference file fully before moving on. G9 says what to do when they're old.
+Load the rules per shared/run-start.md (Loading the rules): the base rules this mode's load map names, then this product's Active Reference rows. Read every reference file fully before moving on. That means every core row, the writing profile among them, and every supplementary row this topic needs, found by its section name in the index row (shared/run-start.md, Loading the rules). G9 says what to do when they're old.
 
 Hold, internally, not shown to the person:
 
@@ -40,7 +40,7 @@ Hold, internally, not shown to the person:
 - Preferred and banned sources of evidence, and the freshness rule for time-sensitive claims
 - The QA scoring categories, so the brief can be built to already clear them, not to scrape by
 
-**Apply the product rules and learned rules now too.** Treat every Active Reference rule for this product (Layer `Product rule` or `Learned rule`) whose Agents include Brief as a standing instruction for this run, the same weight as the reference files. Keyword, structure, product truth, link, and competitor rules shape the outline (shared/rule-extraction.md). If a rule genuinely conflicts with something the person explicitly asks for in this specific run, the live instruction wins for this run only; flag the conflict in Open Questions rather than silently dropping the standing rule. No learned rules yet is a normal state on an early run; don't treat it as an error.
+**Apply the product rules and learned rules now too.** Treat every Active Reference rule for this product (Layer `Product rule` or `Learned rule`) whose Agents include Brief as a standing instruction for this run, the same weight as the reference files. Keyword, structure, product truth, link, and competitor rules shape the outline (shared/rule-extraction.md). An Active Exception rule, which the company chose over a base rule after a short warning, replaces the one base rule it names: plan the piece to it, for example its length, headings, or reading level (shared/base-rules/writing.md, Rule Hierarchy, Company exceptions). If a rule genuinely conflicts with something the person explicitly asks for in this specific run, the live instruction wins for this run only; flag the conflict in Open Questions rather than silently dropping the standing rule. No learned rules yet is a normal state on an early run; don't treat it as an error.
 
 **A newer file in the message.** If, in an attended run, the person attaches or pastes a newer version of a reference file in the message that started this run, this run still uses the Active Reference rows. Tell them to type "update reference files" so the new version is checked and approved before any run relies on it.
 
@@ -219,7 +219,7 @@ This step runs only when a browser tool is available in the session, and the bro
 
 ## Step 3: Pick the format and the skeleton
 
-Pick one of the four format skeletons in shared/base-rules/brief.md (Step 3), following every rule there: the word count comes from the Step 2b research, and a piece that fits none of the four gets the closest name in Format Skeleton with the difference described in the brief.
+Pick one of the four format skeletons in shared/base-rules/brief.md (Step 3), following every rule there. The word count comes from the Step 2b research, unless the product has an Active Exception rule for length (shared/base-rules/brief.md, When the product's files and these rules disagree, Length): then the rule's number is the brief's target word count, or, when the rule gives a range, the research-based count moved into that range (its nearest end when the research falls outside it), and the brief names the range and notes the research average beside the target (section 2, Target Word Count). A piece that fits none of the four gets the closest name in Format Skeleton with the difference described in the brief.
 
 ## Step 4: Strategic decisions
 
@@ -241,7 +241,7 @@ No CTA inside the FAQ. No CTA in two consecutive sections back to back.
 
 **4e. AEO and snippet plan.** For every H2 that answers a distinct question, plan a direct 40 to 60 word answer at the top of that section before the supporting detail; this is what gets a section extracted as a featured snippet or cited by an AI answer engine. Identify one or two sections with the clearest snippet potential and name the format: definition, list, how-to steps, or comparison. Plan a citation roughly every 150 to 200 words in any section making a factual claim, pointing at a real, live, specific source, per the product knowledge's own source rules. Note where FAQPage and Article schema markup should apply. Fold in the specific gaps and biases Google AI Mode and ChatGPT surfaced in Step 2d: whichever sections address one of those named gaps should get the clearest 40-to-60-word opener and the strongest sourcing in the whole piece, since that's the exact spot this content needs to out-answer what the engines are already citing.
 
-**4f. Internal link plan.** Two to four internal links into existing published pieces, or at least the quality checks' minimum, chosen for actual topical relevance, not just because they exist. Use the Links and CTAs reference rows when present. Note where this new piece should itself get linked from later, once it's published, so the topical cluster keeps compounding.
+**4f. Internal link plan.** Two to four internal links into existing published pieces, or at least the product's own minimum (from its quality checks or a product rule), chosen for actual topical relevance, not just because they exist. Use the Links and CTAs reference rows when present. Note where this new piece should itself get linked from later, once it's published, so the topical cluster keeps compounding.
 
 **4g. Freshness flags.** Mark every section that will contain pricing, plan structure, feature availability, or a competitor claim with a freshness flag, and note the review cadence: quarterly for pricing and feature data, annually for general statistics and evergreen framework claims. This mirrors the freshness rule already established in the product knowledge; where the product knowledge's rule is stricter, use it.
 
@@ -336,7 +336,7 @@ Two lists. Confirm every line of the first list before 6a saves the brief, and e
 - The Spearhead Strategy sentence names a specific move and a specific gap
 - The Cornerstone Asset is a real, named thing, not a placeholder
 - CTA count is exactly three, correctly matched to the confirmed intent, none inside the FAQ, and every offer named is one the product actually has
-- The internal link plan has two to four links, or at least the quality checks' minimum, each with a real reason
+- The internal link plan has two to four links, or at least the product's own minimum (from its quality checks or a product rule), each with a real reason
 - At least one freshness flag is present if the piece touches pricing, plans, or features, using the stricter of Step 4g's cadence and the product knowledge's rule
 - Meta title and description are both within their measured character limits
 - No em dashes anywhere in the brief. The brief should model the house style, not just tell the writer to follow it

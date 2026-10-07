@@ -20,6 +20,10 @@ Options:
   --site https://example.com    the product's Website URL, to split internal links
   --banned FILE                 extra words or phrases banned outright, one per
                                 line (the style guide's list, Script product rules)
+  --grade-target N              the top of the target reading grade, default 6
+                                (Dimension 18; a reading-level Exception rule sets it)
+  --grade-ceiling N             a reading grade above this is a Blocker, default 7
+                                (the top of the target range plus 1)
   --check-links                 fetch every link and report its HTTP status
   --self-test                   run on a built-in sample and exit 0 if it works
 
@@ -727,7 +731,7 @@ def clean_body(body):
     return body
 
 
-def readability(body):
+def readability(body, grade_target=6, grade_ceiling=7):
     words = words_of(body)
     sents = sentences_of(body)
     lens = [len(s.split()) for s in sents]
@@ -749,8 +753,10 @@ def readability(body):
             pass
     out["grade_used"] = out["flesch_kincaid_grade_textstat"] if out["flesch_kincaid_grade_textstat"] is not None else out["flesch_kincaid_grade_script"]
     out["grade_source"] = "textstat" if out["flesch_kincaid_grade_textstat"] is not None else "script formula"
-    out["grade_over_6"] = out["grade_used"] > 6
-    out["grade_over_7_blocker"] = out["grade_used"] > 7
+    out["grade_target"] = grade_target
+    out["grade_ceiling"] = grade_ceiling
+    out["grade_over_target"] = out["grade_used"] > grade_target
+    out["grade_over_ceiling_blocker"] = out["grade_used"] > grade_ceiling
     out["long_sentences"] = [{"words": l, "sentence": s} for s, l in zip(sents, lens) if l > 20]
     # repeated openings
     firsts = [re.sub(r"[^\w']", "", s.split()[0]).lower() for s in sents if s.split()]
@@ -1082,7 +1088,7 @@ def keyword_report(kw, t, body, blocks, sections, seo, words_total):
 
 
 def measure(text=None, html_src=None, md_src=None, keyword=None, target_words=None, spelling="US",
-            site=None, banned=None, check_links=False):
+            site=None, banned=None, check_links=False, grade_target=6, grade_ceiling=7):
     if text is None and md_src is not None:
         text = text_from_markdown(md_src)
         text_source = "derived from the Markdown"
@@ -1152,7 +1158,7 @@ def measure(text=None, html_src=None, md_src=None, keyword=None, target_words=No
     report["spacing"] = spacing_report(blocks, source)
 
     # 4. Words, sentences, reading level (Dimensions 17, 18)
-    rd = readability(body)
+    rd = readability(body, grade_target, grade_ceiling)
     report["reading"] = rd
     if target_words:
         pct = round(100 * rd["words"] / target_words, 1)
@@ -1268,8 +1274,8 @@ def measure(text=None, html_src=None, md_src=None, keyword=None, target_words=No
         cands.append("em dash: %d found" % counts["em dash"])
     if report["length"].get("more_than_10_percent_under"):
         cands.append("word count more than 10 percent under the target (check the writer notes for a reason)")
-    if rd["grade_over_7_blocker"]:
-        cands.append("reading level above grade 7")
+    if rd["grade_over_ceiling_blocker"]:
+        cands.append("reading level above the grade ceiling: grade %g, ceiling %g" % (rd["grade_used"], grade_ceiling))
     if keyword and report["keyword"] and (not report["keyword"]["in_h1"] or not report["keyword"]["in_first_paragraph"]):
         cands.append("primary keyword missing from the H1 or the first paragraph")
     garbled = counts.get("garbled character (encoding)", 0) + counts.get("replacement character (garbled text)", 0)
@@ -1283,6 +1289,7 @@ def measure(text=None, html_src=None, md_src=None, keyword=None, target_words=No
     report["blocker_candidates"] = cands
     report["summary"] = {
         "words": rd["words"], "target_words": target_words, "reading_grade": rd["grade_used"],
+        "grade_target": grade_target, "grade_ceiling": grade_ceiling,
         "average_sentence_words": rd["average_sentence_words"], "em_dashes": counts.get("em dash", 0),
         "ai_tell_hits": total_hits, "open_verify_tags": report["tags"]["verify_count"],
         "spacing_and_rendering_problems": report["spacing"].get("problem_count", 0) + report["raw_markup_in_text"]["count"] + garbled,
@@ -1369,6 +1376,15 @@ def self_test():
     assert m["tags"]["verify_count"] == 1
     assert m["keyword"]["in_h1"] and m["keyword"]["in_conclusion"]
     assert m["structure"]["sections"][1]["lists_where_every_item_starts_with_a_bold_label"] == 1
+
+    # the grade target and ceiling follow the options (a reading-level Exception rule)
+    assert r["reading"]["grade_target"] == 6 and r["reading"]["grade_ceiling"] == 7
+    low = measure(md_src=SAMPLE_MD, grade_target=-50, grade_ceiling=-49)
+    assert low["reading"]["grade_over_target"] and low["reading"]["grade_over_ceiling_blocker"], low["reading"]
+    assert any(c.startswith("reading level above the grade ceiling") for c in low["blocker_candidates"])
+    high = measure(md_src=SAMPLE_MD, grade_target=50, grade_ceiling=51)
+    assert not high["reading"]["grade_over_target"] and not high["reading"]["grade_over_ceiling_blocker"]
+    assert not any(c.startswith("reading level") for c in high["blocker_candidates"])
     print(json.dumps({"self_test": "passed", "drive_sample_words": r["reading"]["words"],
                       "notion_sample_words": m["reading"]["words"], "textstat": textstat is not None}))
     return 0
@@ -1391,6 +1407,10 @@ def main(argv=None):
     ap.add_argument("--spelling", choices=["US", "UK", "us", "uk"], default="US")
     ap.add_argument("--site", help="the product's Website URL, to split internal and external links")
     ap.add_argument("--banned", help="file of words or phrases banned outright, one per line")
+    ap.add_argument("--grade-target", type=float, default=6,
+                    help="the top of the target reading grade (default 6; a reading-level Exception rule sets it)")
+    ap.add_argument("--grade-ceiling", type=float, default=7,
+                    help="a reading grade above this is a Blocker (default 7; the top of the target range plus 1)")
     ap.add_argument("--check-links", action="store_true", help="fetch every link and report its status")
     ap.add_argument("--self-test", action="store_true", help="run on a built-in sample and exit")
     a = ap.parse_args(argv)
@@ -1398,6 +1418,8 @@ def main(argv=None):
         return self_test()
     if not a.text and not a.markdown:
         ap.error("give the plain-text export, or --markdown for a Notion page")
+    if a.grade_ceiling < a.grade_target:
+        ap.error("--grade-ceiling must be at least --grade-target")
     banned = None
     if a.banned:
         banned = [l.strip() for l in read(a.banned).splitlines() if l.strip() and not l.startswith("#")]
@@ -1405,7 +1427,8 @@ def main(argv=None):
                 html_src=read(a.html) if a.html else None,
                 md_src=read(a.markdown) if a.markdown else None,
                 keyword=a.keyword, target_words=a.target_words, spelling=a.spelling.upper(),
-                site=a.site, banned=banned, check_links=a.check_links)
+                site=a.site, banned=banned, check_links=a.check_links,
+                grade_target=a.grade_target, grade_ceiling=a.grade_ceiling)
     json.dump(r, sys.stdout, indent=2, ensure_ascii=False)
     sys.stdout.write("\n")
     return 0

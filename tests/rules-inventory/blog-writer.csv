@@ -247,7 +247,7 @@ BW-0245,blog-writer-agent-installer.md,Step 2b,No automatic rhetorical-question 
 BW-0246,blog-writer-agent-installer.md,Step 2b,No long bullet list without lead-in,shared/base-rules/writing.md,No bullet list longer than six items without a prose lead-in
 BW-0247,blog-writer-agent-installer.md,Step 2b,No three bullet lists in a row,shared/base-rules/writing.md,no three consecutive bullet lists with no paragraph text between them
 BW-0248,blog-writer-agent-installer.md,Step 2b,No three sentences starting with same word,shared/base-rules/writing.md,no three consecutive sentences starting with the same word
-BW-0249,blog-writer-agent-installer.md,Step 2b,No em dashes ever,shared/base-rules/writing.md,"Punctuation: no em dashes anywhere, ever"
+BW-0249,blog-writer-agent-installer.md,Step 2b,No em dashes unless an Exception rule allows them,shared/base-rules/writing.md,"Punctuation: no em dashes anywhere, unless the product's Exception rule allows them"
 BW-0250,blog-writer-agent-installer.md,Step 2b,No semicolons in explanatory prose,shared/base-rules/writing.md,"No semicolons in explanatory prose, use two sentences instead."
 BW-0251,blog-writer-agent-installer.md,Step 2b,No dramatic ellipses,shared/base-rules/writing.md,No ellipses for dramatic effect.
 BW-0252,blog-writer-agent-installer.md,Step 2c,Talk to the reader as you,shared/base-rules/writing.md,"Talk to the reader as ""you."""

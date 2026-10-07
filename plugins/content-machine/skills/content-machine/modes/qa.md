@@ -52,7 +52,7 @@ Do shared/run-start.md steps 1 to 6.
 
 In the loop, use what the Blog Writer loaded. On its own, load per shared/run-start.md (Loading the rules): the base rules this mode's load map names (shared/base-rules/qa.md), then this product's Active Reference rows (files, product rules, learned rules). Print the Rules Loaded line and save it in the row's Rules Loaded field, with Reference Version, in the claim update.
 
-Read all of the product's reference files fully: the Reference rows of Type Brand guide, Style guide, Quality checks, and Product knowledge, plus Links and CTAs, Competitors, and Best past posts when present. This mode leans on the quality checks more heavily than any other mode in the pipeline, since they are the actual rubric this audit is built to enforce. How the product's own quality checks combine with the base dimensions (senior authority, added dimensions, the exceptions for reading level and for lines that clash with a base rule, and their own score bands or retry limits) is in shared/base-rules/qa.md, The product's own quality checks.
+Read all of the product's reference files fully: the Reference rows of Type Brand guide, Style guide (the writing profile included), Quality checks, and Product knowledge, plus Links and CTAs, Competitors, and Best past posts when present, leaving out the supplementary rows (Section starting with `Supplementary:`). Then read every supplementary row the piece's topic needs, found by its section name in the index row (shared/run-start.md, Loading the rules). This mode leans on the quality checks more heavily than any other mode in the pipeline, since they are the actual rubric this audit is built to enforce. How the product's own quality checks combine with the base dimensions (senior authority, added dimensions, the exceptions for reading level and for lines that are looser than a base rule or different in kind from it, and their own score bands or retry limits) is in shared/base-rules/qa.md, The product's own quality checks. How an Active Exception rule replaces a base rule is in shared/base-rules/qa.md, Company exceptions.
 
 If a stale-file notice applies (G9), say it once in the run output and carry on.
 
@@ -70,7 +70,7 @@ If a stale-file notice applies (G9), say it once in the run output and carry on.
 
 **The round number.** This audit's QA round `[n]` is the one the Blog Writer hands over. In a standalone run it is the draft pass count plus 1. The report and its title call round 1 "v1" and later rounds "rework [N]", where N is the draft pass count.
 
-**Apply the product and learned rules.** Read every Active product rule and learned rule for this product before auditing anything. If a rule directly bears on one of the dimensions in shared/base-rules/qa.md (a past correction about CTA copy, keyword placement, tone, or anything else this audit checks), hold it as part of that dimension's standard for this audit, not just as something the Blog Writer was supposed to apply. A draft that violates a standing rule fails the matching dimension, even if it would otherwise pass, except a Should rule whose miss the writer notes explain, which is a Polish item (shared/base-rules/qa.md, Product and learned rule checks). Then add one check per Active product rule and learned rule whose Agents include QA (shared/base-rules/qa.md, Product and learned rule checks). A failed Must rule sends the draft back, whatever the score (shared/rule-extraction.md). Learned rules apply only to their own product (G4).
+**Apply the product and learned rules.** Read every Active product rule and learned rule for this product before auditing anything. If a rule directly bears on one of the dimensions in shared/base-rules/qa.md (a past correction about CTA copy, keyword placement, tone, or anything else this audit checks), hold it as part of that dimension's standard for this audit, not just as something the Blog Writer was supposed to apply. A draft that violates a standing rule fails the matching dimension, even if it would otherwise pass, except a Should rule whose miss the writer notes explain, which is a Polish item (shared/base-rules/qa.md, Product and learned rule checks). Then add one check per Active product rule and learned rule whose Agents include QA, other than Exception rules (shared/base-rules/qa.md, Product and learned rule checks). A failed Must rule sends the draft back, whatever the score (shared/rule-extraction.md). An Active Exception rule, which the company chose over a base rule after a short warning, is the bar in place of the one base rule it names, in every dimension and blocker that checks it (shared/base-rules/qa.md, Company exceptions). It's applied only there: the per-rule checks skip rows with Category Exception, so an Exception rule is never also checked or scored as a standalone Must rule, and it isn't counted in Product Rules Result. Learned rules apply only to their own product (G4).
 
 ---
 
@@ -105,6 +105,7 @@ Options, filled from the brief and the base:
 - `--spelling US` or `UK` from the product's Settings row (Spelling).
 - `--site [Website URL]` from the product's Settings row, so links split into internal and external.
 - `--banned [file]`: a file with one word or phrase per line: the Blog Writer's Step 2b banned words and constructions, the style guide's own never-use list, and the words any Script product rule bans. A hit on this list is a failure on any use.
+- `--grade-target [N]` and `--grade-ceiling [N]`, only when the product has an Active Exception rule for reading level: the top of its target range, and its ceiling (the top of the range plus 1), from the rule's Content. Without one, leave both out; the defaults are grade 6 and grade 7 (shared/base-rules/writing.md, Step 2a).
 - `--check-links` to fetch every link and report its status. If the session's network can't reach the web from the shell, check each link with the session's web fetch tool instead. A dead citation link is a Blocker.
 
 The script prints one JSON report. The numbers it prints are evidence for the report, and every hit it lists goes into the matching dimension with its location. What it measures, and where each part goes:
@@ -115,7 +116,7 @@ The script prints one JSON report. The numbers it prints are evidence for the re
 | `punctuation` (semicolons, "...", exclamation marks, arrows) | 14 |
 | `raw_markup_in_text` (raw Markdown links, `**`, `#`, dividers, `>`, backslash escapes, HTML entities or tags shown as text) | 19 |
 | `spacing` (Drive: blocks back to back with no empty paragraph, two empty paragraphs in a row; Notion: two empty blocks in a row) | 19 |
-| `reading` (words, sentences, average sentence, share over 20 words, spread, Flesch-Kincaid grade, long sentences, repeated openings) | 17 and 18 |
+| `reading` (words, sentences, average sentence, share over 20 words, spread, Flesch-Kincaid grade, the grade target and ceiling used, `grade_over_target` and `grade_over_ceiling_blocker`, long sentences, repeated openings) | 17 and 18 |
 | `length` (words against the brief's target, within 10%) | 17 |
 | `structure` (headings, Title Case, words per H2 section and share, sections far shorter than the rest, visual elements per section, the longest stretch with no list, table, bolded key line, or callout, long paragraphs, FAQ questions and answer lengths, tables with header rows and borders) | 9, 12, 17, 19, 20 |
 | `tags` (`[VERIFY]` and `[FRESHNESS_FLAG]` tags with locations, image suggestions) | 10 and 15 |
@@ -125,15 +126,15 @@ The script prints one JSON report. The numbers it prints are evidence for the re
 | `spelling` (the other spelling's forms) | 14 |
 | `links` (every link's URL and anchor text, internal or external, weak anchors, bare URLs that aren't clickable, status when checked) | 2, 15, 19 |
 | `keyword` (H1, first paragraph, first 100 words, H2s, body count, density, conclusion, SEO title, meta description, slug) | 1 |
-| `blocker_candidates` | a list to confirm by reading, never a verdict on its own |
+| `blocker_candidates` (em dashes, a word count more than 10 percent under the target, a reading level above the grade ceiling, the keyword missing from the H1 or first paragraph, rendering problems, dead links) | a list to confirm by reading, never a verdict on its own |
 
-Adapt as needed: if a dimension needs a count the script doesn't make, measure it with a short extra script and keep its output with the rest. The script finds candidates; judging them is still QA's job (an AI-tell hit is a flag to review in context, and a bare year may be reader-useful). A hit that conflicts only with an Active Exception rule is ignored for that rule, for example `headings_not_in_title_case` when the product's Exception rule asks for sentence-case headings (shared/base-rules/qa.md, Style exceptions).
+Adapt as needed: if a dimension needs a count the script doesn't make, measure it with a short extra script and keep its output with the rest. The script finds candidates; judging them is still QA's job (an AI-tell hit is a flag to review in context, and a bare year may be reader-useful). A hit that conflicts only with an Active Exception rule is ignored for that rule, for example `headings_not_in_title_case` when the product's Exception rule asks for sentence-case headings, or the em dash count when it allows em dashes (shared/base-rules/qa.md, Company exceptions).
 
 ---
 
 ## Step 2: The audit, each dimension a clear pass or fail, with a severity
 
-Audit the draft against every dimension in shared/base-rules/qa.md, plus any dimension the product's quality checks add, plus one check per Active product rule and learned rule for QA. Follow that file exactly: how every dimension is judged, the severities (Blocker, Standard, Polish), the blocker list, and each dimension's bar. Every dimension gets a clear pass or fail; every failure gets a severity, its exact location, what's wrong, and the concrete fix; repeated instances are listed one per line.
+Audit the draft against every dimension in shared/base-rules/qa.md, plus any dimension the product's quality checks add, plus one check per Active product rule and learned rule for QA, other than Exception rules, which are judged only inside the dimension or blocker they move (shared/base-rules/qa.md, Product and learned rule checks). Follow that file exactly: how every dimension is judged, the severities (Blocker, Standard, Polish), the blocker list, and each dimension's bar. Every dimension gets a clear pass or fail; every failure gets a severity, its exact location, what's wrong, and the concrete fix; repeated instances are listed one per line.
 
 On a rework, check every issue from the previous QA report and mark it fixed or not fixed.
 
@@ -178,7 +179,7 @@ One or two lines on the draft's real strengths, briefly. A rework pass that only
 ```
 
 - If measurements were taken by hand, or from `read_file_content` instead of an export, add one line under Measurements saying so.
-- Leave out "Earlier issues" on v1, and leave out the product rules lines when no product or learned rule applies to QA.
+- Leave out "Earlier issues" on v1, and leave out the product rules lines when no product or learned rule other than an Exception rule applies to QA.
 - The QA Score written to Airtable is the passed count over the total, for example `21/23`, not a percentage (shared/base-rules/qa.md, Scoring).
 - The report itself follows the house rules it checks: plain words, no em dashes, no AI-tell phrasing.
 - In the saved document, the headings are real headings and the lists are real lists, in both document homes (the storage files say how).
@@ -209,7 +210,7 @@ Otherwise, route normally per Step 5.
 **5b. Update the record.** One `update_records_for_table` call on Content Items, per shared/airtable.md (Writing rules):
 
 - QA Score: the passed count over the total, as text, like `21/23`. Use this audit's real total.
-- Product Rules Result: passed of checked, as text, like `11 of 12`. Leave it blank when no product or learned rule applies to QA.
+- Product Rules Result: passed of checked, as text, like `11 of 12`, leaving out Exception rules (they're judged inside the dimensions they move). Leave it blank when no product or learned rule other than an Exception rule applies to QA.
 - QA Report Link: the report's link.
 - QA Round: `[n]`.
 - Last Saved Step: `QA round [n] verdict saved: [verdict]` (Approved, Needs Rework, or Escalated).
@@ -258,7 +259,7 @@ First check it isn't already there (shared/rule-extraction.md, Approving learned
 1. A Reference row: Entry and Rule ID (the product's next free learned-rule ID (shared/rule-extraction.md, Rule IDs), like `ACME-L03`), Product, Type `Rule`, Layer `Learned rule`, Content (the rule, one testable line), Category, Agents, Level (Must or Should), Check Method (Script or Judged), Source Quote (the person's exact words, or the pattern's evidence), Status `Suggested`, Version 1.
 2. A Feedback Log row: Date, Product, Stage `QA`, What Happened, The Rule, Reference Rule ID, Status `Suggested`, and Related Item linked to this row.
 
-Never make a rule Active. Only a person's yes does that (shared/rule-extraction.md); when a rule was saved, tell the person in chat that it is saved as a suggestion and goes live only after an approver says yes. A rule the person's correction would use to lower a quality bar or an honesty rule isn't saved; say why. An unattended run logs only cross-item patterns, since no one corrects it in chat.
+Never make a rule Active. Only a person's yes does that (shared/rule-extraction.md); when a rule was saved, tell the person in chat that it is saved as a suggestion and goes live only after an approver says yes. A correction that would change a rule that never changes (shared/rule-extraction.md, Rules that never change) isn't saved; say why. One that would replace another base rule isn't saved as a learned rule either: say that the company can choose its own guideline for that rule, after a short warning, by adding it to its reference files and typing 'update reference files'. An unattended run logs only cross-item patterns, since no one corrects it in chat.
 
 ---
 
@@ -268,13 +269,13 @@ Never make a rule Active. Only a person's yes does that (shared/rule-extraction.
 - The Step 1.5 measurements were taken with scripts/measure.py where a shell was available, and the numbers in the report came from it
 - Every dimension was actually checked, not assumed; each has a clear pass or fail and a severity for every failure, no split calls
 - Every failure has a specific location, a specific problem, and a specific fix, none vague enough to need a follow-up question
-- Every em dash found in the draft is listed by exact location; the QA report itself contains zero em dashes
-- Word count, reading level, and sentence length were checked against the brief's target and the grade 5 to 6 standard
+- Every em dash found in the draft is listed by exact location (unless an Active Exception rule allows them); the QA report itself contains zero em dashes
+- Word count, reading level, and sentence length were checked against the brief's target and the grade 5 to 6 standard, or the range and ceiling of the product's reading-level Exception rule, passed to the script as `--grade-target` and `--grade-ceiling`; sentence length was checked against Step 2a's bars either way, unless a separate Exception rule replaces them
 - The saved document was checked for spacing, garbled characters, raw Markdown, and emoji
 - AI-tell word, phrase, and structure hits from Dimensions 13 and 23 were judged for whether they're doing real work in context, not auto-failed on sight, except words the Blog Writer or style guide ban outright
 - No claim about a feature, price, or capability is anchored to a date or version number without a reader-useful reason, per Dimension 16
 - On a rework, every issue from the previous QA report was checked and marked fixed or not fixed
-- Every Active product rule and learned rule for this product was applied while auditing, not just read and set aside; each one for QA has its own check, and a failed Must rule sent the draft back whatever the score
+- Every Active product rule and learned rule for this product was applied while auditing, not just read and set aside; each one for QA, other than an Exception rule, has its own check, and a failed Must rule sent the draft back whatever the score
 - The escalation check in Step 4 ran before Status was set, and G13's send-back exception was applied only for that one rework pass
 - The escalation check used the draft pass count (G6), never Brief Rework Count and never the two counts added together
 - The QA report was saved per the piece's storage file (a new Google Doc in the product's Drive Folder, or the piece's QA Report page with the newest round on top), passed the access check (G19), and is linked in QA Report Link

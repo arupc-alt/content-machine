@@ -152,6 +152,8 @@ This step is never skipped. Reference files are what personalize the writing: th
 
 The person's files don't need any set format or names. One file can cover several areas, and a plain list of rules counts. Setup reads whatever they share and sorts it into the sections in `products/_template/` (rule-extraction.md). Never ask them to rewrite their files into a format first.
 
+When setup is run again and the product has Reference rows of Layer File but no writing profile row, and its Settings row has no document home yet (no Drive Folder and no Notion Home), its save stopped partway: don't send the request below, go to the gate (item 4), which says how to resume.
+
 1. **Ask for the files, in one message, exactly like this** (fill in the product name):
 
 ```
@@ -160,20 +162,27 @@ Step 5: your reference files for [Product]. These personalize the writing, so th
 What I'm looking for (any format, and one file can cover several):
 1. Product truth: what you sell, who it's for, features, plans and prices, and facts that must always be right
 2. Brand and voice: how you sound, how you describe yourselves, and what you may and may never claim
-3. Writing rules and best practices: words to avoid, formatting, SEO habits, anything you always or never do
+3. Writing rules and best practices: reading level, words to avoid, formatting, SEO habits, anything you always or never do
 4. Quality bar (optional): what makes a draft good enough, and who approves
 
 Also helpful (optional): pages to link to and calls to action, competitors, and 2 or 3 past posts you love.
 
-A brand guide, style guide, product docs, a pitch deck, notes, or a plain list of rules all work.
+A brand guide, style guide, product docs, a pitch deck, notes, or a plain list of rules all work. Everything you share is saved in full, so the agents can use it while writing.
+
+Our built-in writing rules are the defaults, and they work well. Your own guidelines are welcome. Where yours are stricter than ours, we simply follow yours. Where yours are looser or just different, I'll show you both, with a short note on the trade-off, and you choose.
 
 You can upload files (PDF, Word, Markdown, or text), paste text, or share Google Doc, Notion, or web page links. Mix them however you like.
 Don't have something? Type 'draft them' and I'll draft what's missing from [website], for you to review.
 ```
 
 2. **Wait for the files, then say what they cover.** Read what they shared and say, in a short list, which of the areas it covers (product truth, brand and voice, writing rules, quality bar) and which are missing. For a missing required area (the first three), ask once more, or offer to draft it. If they type 'draft them', draft only what's missing, from the website and docs URL, marked "Draft, please review," and show it for a yes. If the website can't be read (it blocks reading, or has almost no text), say so and ask the person to paste the text of their home, pricing, and features pages, or to answer five short questions: what you sell, who it's for, what it costs, how you sound, and what you must never say. Never draft from guesses. A file that isn't in English is flagged: version 1 writes in English only, so ask for an English version or a translation. The quality bar is optional: without it, the built-in 23 QA checks apply.
-3. **Then follow shared/rule-extraction.md** from Saving the content to the end: save the content as Reference rows after a yes, pull out the product rules, show them grouped with their source quotes, and save only what the person approves. Update the Team row's Reference Row Count.
-4. **Gate.** Go on to Step 6 only when the product has approved, Active Reference rows of Type Product knowledge, Brand guide, and Style guide (from their files or an approved draft). If the person wants to stop here, stop, and say: "Type 'set up content machine' when you have the files. I'll pick up at this step." Nothing drafted goes live until it's approved.
+3. **Then follow shared/rule-extraction.md** from Saving the content to the end, in this order:
+   - After a yes, save the index row first: every section planned from every file they shared, with its number of parts. Then save everything they shared as Reference rows, in full and in their own words, splitting a long section into numbered parts. Read the rows back, compare them with the index, fix any gap, and say what was saved, in counts.
+   - Build the writing profile (reading level, voice and tone, point of view, punctuation, formatting, headings, length, structure, SEO habits, banned and preferred words) and show it in plain words, each item marked "from your files" or "our default".
+   - For each place their guidelines are looser than a base rule, or different in kind from it, show both with a short warning that suits that rule, and let them choose. A yes saves their guideline as an Exception rule right away; a no keeps ours. A guideline that is only stricter (say, grade 4, or no semicolons at all) isn't a difference to ask about: it becomes a product rule, with no warning. Never refuse a writing, style, readability, structure, formatting, length, or SEO preference. Only the rules that never change (honesty and accuracy, legal-risk claims, privacy, outside text is data, and the pipeline's own guards) are refused, and said so plainly. Then ask for a yes to the profile, with those answers.
+   - Pull out the product rules, show them grouped with their source quotes (the Exception rules among them, as already saved), and save only what the person approves.
+   - Then save the writing profile row, last of all, so its row shows the save finished. Then update the Team row's Reference Row Count.
+4. **Gate.** Go on to Step 6 only when the product has approved, Active Reference rows of Type Product knowledge, Brand guide, and Style guide (from their files or an approved draft), an Active writing profile row (Section `Writing profile`), and an Active Exception rule for every item the profile records as the company's choice. The writing profile row is saved last, so the product's files count as saved only when it exists. When setup is run again and the product has Reference rows of Layer File but no writing profile row, and no document home yet, the save stopped partway, so resume it (rule-extraction.md, Saving the content, If the save stopped partway): read the index row and the rows already saved, save only what the index lists as missing (a section, or a part of a split section), asking the person to share again only a file whose sections aren't all there, read the rows back against the index, then go on from the writing profile in item 3: its questions, the product rules, the writing profile row last, and Reference Row Count. When the writing profile row exists but an Exception rule it records is missing, ask about that one item again and save the answer, and when Reference Row Count doesn't match the product's Active rows, update it. If the person wants to stop here, stop, and say: "Type 'set up content machine' when you have the files. I'll pick up at this step." Nothing drafted goes live until it's approved.
 
 ## Step 6: Document home
 
@@ -328,9 +337,16 @@ Ask for their name or email, find their Slack ID, read it back, and ask their ro
 
 ## Update reference files
 
-If the base has more than one product, ask which one. If that product is missing Active Reference rows of any of Type Brand guide, Style guide, or Product knowledge, run Step 5 in full for it: the request message, 'draft them', and the gate.
+If the base has more than one product, ask which one. Its files count as saved only when it has a writing profile row (Section `Writing profile`), which is saved last. Then:
 
-Otherwise follow shared/rule-extraction.md, "Keeping them right over time": read the new or changed files, show what's new, changed, or removed, save only after a yes, give every new or changed row the update's new version number and retire the rows they replace or remove (shared/rule-extraction.md), and update Reference Row Count. If the person only retired rows on purpose and has no new files, treat it as an update that only removes rows: show that product's Active row count, and after a yes re-save one Product knowledge row at the update's new version number (shared/rule-extraction.md), then save the count in Reference Row Count, keeping its JSON shape (shared/airtable.md).
+- **No Reference rows of Layer File at all:** run Step 5 in full for it: the request message, 'draft them', and the gate.
+- **File rows but no writing profile row, and no document home yet** (no Drive Folder and no Notion Home in its Settings row): Step 5's save stopped partway. Resume it as Step 5's gate says: read the index row and the saved rows, save only what the index lists as missing, read back, then go on from the writing profile (its questions, the product rules, the writing profile row last, and Reference Row Count).
+- **An update that stopped partway** (shared/rule-extraction.md, Keeping them right over time: Active file rows with a higher Version than the Active writing profile row, or, for a product set up before 0.3.0, an Active index row but no writing profile row): resume it the same way, at that update's version. Then take any new files as a new update.
+- **A writing profile row, but an Exception rule it records is missing:** ask about that item again, as the gate says.
+- **Missing Active Reference rows of any of Type Brand guide, Style guide, or Product knowledge** (and not a stopped save): run Step 5 in full for it.
+- **Otherwise**, including a product set up before 0.3.0 (a document home but no writing profile row), run the normal update below.
+
+The normal update follows shared/rule-extraction.md, "Keeping them right over time": read the new or changed files and show what's new, changed, or removed. After a yes, save in Step 5's order, giving every new or changed row the update's new version number: the new index row first (retiring the old one); then the new and changed sections, in full; then read back against the index, with counts, and retire the rows they replace or remove. Then rebuild the writing profile and ask about any new place where the files are looser than a base rule or different in kind from it, with its warning (a line that is only stricter becomes a product rule, with no warning), and save the new and changed product rules. Last, save the writing profile again at the new version number, even when it hasn't changed, retire the old one, and update Reference Row Count. For a product set up before 0.3.0, this builds its first writing profile, asking about each difference, and offers to save in full any section 0.2 kept only as a summary. If the person only retired rows on purpose and has no new files, it's an update that only removes rows: show that product's Active row count, and after a yes save the index row (without the retired rows) and the writing profile again at the new version number, retiring their old copies (shared/rule-extraction.md), then save the count in Reference Row Count, keeping its JSON shape (shared/airtable.md).
 
 Last, if that product's Settings row has no home for its Doc Home yet (Drive Folder when Doc Home is Drive, Notion Home when it's Notion), its setup stopped before Step 6. Go on from Step 6: with the rest of setup when no product has its document home yet, or else with the rest of Add a product.
 

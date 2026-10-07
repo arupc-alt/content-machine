@@ -134,7 +134,7 @@ QA-0132,qa-agent.md,Step 2 severities,Blocker: broken or dead citation link,shar
 QA-0133,qa-agent.md,Step 2 severities,Blocker: keyword missing from H1 or first paragraph,shared/base-rules/qa.md,the primary keyword missing from the H1 or the first paragraph;
 QA-0134,qa-agent.md,Step 2 severities,Blocker: any em dash,shared/base-rules/qa.md,a single em dash is a Blocker on its own
 QA-0135,qa-agent.md,Step 2 severities,Blocker: word count over 10% under target without reason,shared/base-rules/qa.md,a total word count more than 10% under the brief's target
-QA-0136,qa-agent.md,Step 2 severities,Blocker: reading level above grade 7,shared/base-rules/qa.md,a measured reading level above grade 7;
+QA-0136,qa-agent.md,Step 2 severities,Blocker: reading level above grade 7,shared/base-rules/qa.md,"a measured reading level above grade 7, or, when the product has a reading-level Exception rule"
 QA-0137,qa-agent.md,Step 2 severities,Blocker: saved doc renders broken,shared/base-rules/qa.md,"a saved document that renders broken (garbled characters, raw Markdown, missing spacing"
 QA-0138,qa-agent.md,Step 2 severities,Standard: real failure of a dimension's bar,shared/base-rules/qa.md,A real failure of a dimension's bar.
 QA-0139,qa-agent.md,Step 2 severities,Polish: one or two isolated minor slips,shared/base-rules/qa.md,"One or two isolated, minor slips that don't undermine the dimension"
@@ -150,10 +150,10 @@ QA-0148,qa-agent.md,Dimension 1,Title 50 to 60 chars; meta 140 to 155,shared/bas
 QA-0149,qa-agent.md,Dimension 1,Fail on weak placement or density over 3%,shared/base-rules/qa.md,"Fail if body placement is weak or absent, if density crosses 3%"
 QA-0150,qa-agent.md,Dimension 1,"Fail if title, meta, slug miss or bury keyword or length",shared/base-rules/qa.md,"buries it past where it does any good, or runs outside its"
 QA-0151,qa-agent.md,Dimension 2,Two to four relevant internal links,shared/base-rules/qa.md,Are there two to four internal links to genuinely relevant existing pages
-QA-0152,qa-agent.md,Dimension 2,Quality checks minimum applies if higher,shared/base-rules/qa.md,"or at least the quality checks' minimum, if it sets a higher"
+QA-0152,qa-agent.md,Dimension 2,Product's minimum (quality checks or a product rule) applies if higher,shared/base-rules/qa.md,"or at least the product's own minimum, from the quality checks or a product rule, if it sets a higher"
 QA-0153,qa-agent.md,Dimension 2,"Descriptive anchor text, not click here",shared/base-rules/qa.md,"with descriptive anchor text, not ""click here"""
 QA-0154,qa-agent.md,Dimension 2,Include brief's Internal Link Plan targets where they fit,shared/base-rules/qa.md,Do they include the brief's Internal Link Plan targets where those fit?
-QA-0155,qa-agent.md,Dimension 2,"Fail on zero, under minimum, over five, or non-resolving",shared/base-rules/qa.md,"Fail on zero links, fewer than the quality checks' minimum, more than"
+QA-0155,qa-agent.md,Dimension 2,"Fail on zero, under minimum, over five (or over a higher minimum plus one), or non-resolving",shared/base-rules/qa.md,"Fail on zero links, fewer than the product's minimum, more than five"
 QA-0156,qa-agent.md,Dimension 3,Free tool mentions earned and contextual,shared/base-rules/qa.md,do the mentions feel earned and contextual rather than forced or repeated?
 QA-0157,qa-agent.md,Dimension 3,"Fail irrelevant, four or more, or sales-pitch mentions",shared/base-rules/qa.md,"Fail on irrelevant mentions, four or more mentions where one to three"
 QA-0158,qa-agent.md,Dimension 3,Zero mentions fine if nothing relevant,shared/base-rules/qa.md,Zero mentions is fine if nothing in the knowledge base was actually
