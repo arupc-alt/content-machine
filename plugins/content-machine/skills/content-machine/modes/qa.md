@@ -104,7 +104,7 @@ Options, filled from the brief and the base:
 - `--target-words [N]` from the brief's target word count.
 - `--spelling US` or `UK` from the product's Settings row (Spelling).
 - `--site [Website URL]` from the product's Settings row, so links split into internal and external.
-- `--banned [file]`: a file with one word or phrase per line: the Blog Writer's Step 2b banned words and constructions, the style guide's own never-use list, and the words any Script product rule bans. A hit on this list is a failure on any use.
+- `--banned [file]`: a file with one word or phrase per line: only the words and phrases Step 2b (shared/base-rules/writing.md) bans outright (its transitions, filler, and the openers it bans in any use), the style guide's own never-use list, and the words any Script product rule bans. A hit on this list is a failure on any use, so leave out Step 2b's conditional words, the ones banned only in some uses ("just," "simply," "obviously," "clearly," "explore," "discover," "learn," an unsupported "best" or "fastest"): those are judged by reading, in their dimension.
 - `--grade-target [N]` and `--grade-ceiling [N]`, only when the product has an Active Exception rule for reading level: the top of its target range, and its ceiling (the top of the range plus 1), from the rule's Content. Without one, leave both out; the defaults are grade 6 and grade 7 (shared/base-rules/writing.md, Step 2a).
 - `--check-links` to fetch every link and report its status. If the session's network can't reach the web from the shell, check each link with the session's web fetch tool instead. A dead citation link is a Blocker.
 

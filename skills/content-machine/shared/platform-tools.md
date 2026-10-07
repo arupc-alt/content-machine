@@ -40,7 +40,7 @@ On Codex, Slack is the official server at `https://mcp.slack.com/mcp`. A Slack w
 | Check and share access | `get_file_permissions`, `share_file` | name the people who couldn't be shared with |
 | Create a folder | `create_file` with `contentMimeType: "application/vnd.google-apps.folder"` | none |
 
-On Codex, Drive uses Google's own Drive and Docs servers, which need a one-time Google Cloud project and OAuth client made by an admin. Their tool names and abilities differ: the Codex entries in this file are confirmed during testing, and until then Codex plus Drive is a beta, and setup suggests Notion on Codex.
+On Codex, Drive uses Google's own Drive and Docs servers, which need a one-time Google Cloud project and OAuth client made by an admin. Their tool names and abilities differ: the Codex entries in this file are confirmed during testing, and until then Codex plus Drive is a beta, and setup suggests Notion on Codex. When a person on Codex picks Google Drive, setup checks before Step 5 that this session has tools that create a Google Doc or folder and share it (`create_file` and `share_file`, or tools that do the same jobs); if not, it says Drive on Codex is a beta and offers Notion (modes/setup.md, Step 0 and Step 4).
 
 ## Notion (when Doc Home is Notion)
 

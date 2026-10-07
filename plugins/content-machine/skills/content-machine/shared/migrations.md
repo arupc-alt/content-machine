@@ -10,7 +10,7 @@ Each skill release that changes the database ships a numbered migration here. A 
 4. "update the base" (setup mode) says what it's adding and waits for a yes. A normal agent run, attended or not, applies only migrations marked "safe unattended" and posts one line saying so; anything else waits for "update the base", and the run stops with one alert: "A database update is waiting. Type 'update the base'."
 5. Adding a table, field, or choice needs creator access to the base, and a teammate who joined as an editor doesn't have it. If an add fails with a permission error, change nothing more, leave Schema Version as it is, and stop with one alert instead: "A database update is waiting that only the base's host can apply. Ask the host ([Schedule Host]) to update their copy of the content machine skill (their next round applies it), or to type 'update the base'."
 
-If a step fails halfway, the next run starts the same migration again. Every step checks before it adds, so nothing is added twice.
+If a step fails halfway, the next run starts the same migration again. Every step checks before it adds, so nothing is added twice. If an add still fails because the field, table, or choice already exists (a duplicate-field error, from another run that added it in between), read the schema again (`get_table_schema`), take the existing ID, and go on with the next step.
 
 ## Migrations
 

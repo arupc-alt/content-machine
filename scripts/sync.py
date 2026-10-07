@@ -2,7 +2,7 @@
 """Copy the skill from plugins/content-machine/skills/content-machine/ to skills/content-machine/.
 
 People edit only the copy under plugins/. This script makes the top-level copy that
-Codex's $skill-installer reads. Run it before every commit. `--check` only compares.
+tools installing a bare skill folder read. Run it before every commit. `--check` only compares.
 """
 import filecmp
 import os

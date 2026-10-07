@@ -882,7 +882,7 @@
         {
           "name": "Source URL",
           "type": "url",
-          "description": "For facts that change (prices, limits, plan names): the live page to read fresh."
+          "description": "For facts that change (prices, limits, plan names): the live page to read fresh. Not the link a file was read from: the index row records that per section as 'Shared from:'."
         },
         {
           "name": "Status",
