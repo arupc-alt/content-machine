@@ -69,7 +69,7 @@ QA-0067,qa-agent.md,Step 0,QA leans on quality checks file more than any agent,m
 QA-0068,qa-agent.md,Step 0,Product quality-checks file is the senior authority,shared/base-rules/qa.md,treat that file as the senior authority
 QA-0069,qa-agent.md,Step 0,"Where they overlap, product rubric wins",shared/base-rules/qa.md,"Where the two overlap, the product's own rubric wins."
 QA-0070,qa-agent.md,Step 0,Uncovered product criteria become their own dimension,shared/base-rules/qa.md,add it as its own dimension in the audit rather than skipping
-QA-0071,qa-agent.md,Step 0,Reading level grade 5 to 6 applies over style guide,shared/base-rules/qa.md,The one exception is reading level: the Blog Writer's grade 5 to
+QA-0071,qa-agent.md,Step 0,Reading level grade 5 to 6 applies over style guide,shared/base-rules/qa.md,Reading level: the Blog Writer's grade 5 to
 QA-0072,qa-agent.md,Step 0,Own score bands or retry limits don't override verdict rules,shared/base-rules/qa.md,"QA's verdict rules (modes/qa.md, Step 4) still decide the outcome"
 QA-0073,qa-agent.md,Step 0,Any Blocker or Standard means Needs Rework; cap stays three,shared/base-rules/qa.md,the retry cap stays at three passes
 QA-0074,qa-agent.md,Step 0,Reworker Agent means Blog Writer's rework step,shared/base-rules/qa.md,"""Reworker Agent"" means the Blog Writer's own rework step"

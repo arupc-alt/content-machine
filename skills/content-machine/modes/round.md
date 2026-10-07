@@ -20,7 +20,7 @@ Each part does shared/run-start.md steps 4 to 6 for its own mode (recovery, row 
 
 **Between parts:** if an earlier part changed any Content Items row, read Content Items again before the next part builds its queue (one call), so it sees the new statuses. If nothing changed, reuse the batched read.
 
-**Load each part's files only when that part has work,** from the load map in SKILL.md. A round with nothing to do loads only this file, shared/run-start.md, shared/guards.md, shared/airtable.md, shared/slack.md, and modes/orchestrator.md, and costs 2 Airtable calls (4 on the first round of each run day, which also reads suggested rules and writes the Team row).
+**Load each part's files only when that part has work,** from the load map in SKILL.md. A round with nothing to do loads only this file, shared/run-start.md, shared/guards.md, shared/airtable.md, shared/slack.md, and modes/orchestrator.md, and costs 2 Airtable calls (4 on the first round of each run day, which also reads the learned rules and writes the Team row).
 
 **If one part fails,** say why in the run summary and go on to the next part, unless the failure is one that stops every run (shared/run-start.md, steps 1 and 2). A part that runs out of time or room ends cleanly at its next saved step (Last Saved Step), and the next round picks it up.
 

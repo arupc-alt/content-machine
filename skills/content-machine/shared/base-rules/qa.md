@@ -11,7 +11,7 @@ Every product gets these rules, always. QA audits every draft against them (mode
 - "The saved document" means the draft as saved in the product's document home: a Google Doc in Drive, or the Blog page in Notion (shared/storage-drive.md or shared/storage-notion.md).
 - "Step 1.5's measurements" means the numbers and hits from scripts/measure.py (modes/qa.md, Step 1.5).
 
-**Product rules and learned rules add to these.** A product's Active Reference rows of Type Rule (Layer Product rule or Learned rule) add new checks on top of these, or make one stricter. They never remove or loosen a base rule (shared/rule-extraction.md).
+**Product rules and learned rules add to these.** A product's Active Reference rows of Type Rule (Layer Product rule or Learned rule) add new checks on top of these, or make one stricter. They never remove or loosen a base rule (shared/rule-extraction.md), except an Active Exception rule for a pure style choice (Style exceptions, below).
 
 **Style exceptions.** One kind of product rule may replace a base rule: an Active product rule with Category Exception, approved by a person for a pure style choice. It names one base style rule (for example Title Case headings or the Oxford comma) and what to use instead, as the Blog Writer's Rule Hierarchy says (Style exceptions). Judge the draft against the Exception rule in place of that base rule, in whichever dimension checks it. Ignore any of Step 1.5's measurements that conflict only with the Exception rule, for example `headings_not_in_title_case` when it asks for sentence-case headings. Any other line in the product's files that clashes with a base rule is not applied: the base rule is the bar.
 
@@ -19,7 +19,7 @@ Every product gets these rules, always. QA audits every draft against them (mode
 
 ## The product's own quality checks
 
-If the product has its own quality-checks file with specific pass/fail criteria beyond what's listed in the dimensions below, treat that file as the senior authority. Where the two overlap, the product's own rubric wins. Where the product's rubric covers something the checklist below doesn't, add it as its own dimension in the audit rather than skipping it. The one exception is reading level: the Blog Writer's grade 5 to 6 target applies even if the style guide names a higher grade, per the Blog Writer's own Rule Hierarchy.
+If the product has its own quality-checks file with specific pass/fail criteria beyond what's listed in the dimensions below, treat that file as the senior authority. Where the two overlap, the product's own rubric wins. Where the product's rubric covers something the checklist below doesn't, add it as its own dimension in the audit rather than skipping it. There are two exceptions. Reading level: the Blog Writer's grade 5 to 6 target applies even if the style guide names a higher grade, per the Blog Writer's own Rule Hierarchy. And a line that clashes with a base rule: the base rule is the bar unless an Active Exception rule replaces it (Style exceptions, above).
 
 Apart from an Exception rule (above), product rules can only add a check or make one stricter, so "the product's own rubric wins" means its stricter bar applies. A product criterion that would loosen a base bar was refused at extraction (shared/rule-extraction.md) and is never applied.
 

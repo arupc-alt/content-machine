@@ -36,7 +36,7 @@ Keys are the table key, a dot, and the field name exactly as in the template. Ch
 | Table | Rows | Read by | Written by |
 |---|---|---|---|
 | Team | exactly 1 | every run | setup; every agent writes its own Last Run field and the API counter fields; the Orchestrator also writes Last Orchestrator Sweep, and Reference Row Count when a learned rule goes Active or Retired; any run that loads more Active Reference rows than Reference Row Count expects sets that product's number to the new count |
-| Settings | 1 per product | every run with work (the Orchestrator: only when it has something to act on) | setup only |
+| Settings | 1 per product | every run with work (the Orchestrator: only when it has something to act on) | setup only, apart from migration 3's one-time copy of the bot fields (shared/migrations.md) |
 | Members | 1 per person | runs that post or decide | setup, and "add a teammate" |
 | Reference | files and rules | runs with real work, filtered to one product and Status Active | setup and "update reference files"; any agent may add a learned rule, only as Suggested; only the Orchestrator sets one Active or Retired, and only on an approver's yes or no, or Retired when it repeats another learned rule (modes/orchestrator.md, Learned rules, step 6) |
 | Content Items | 1 per piece | every run | the agent that holds the claim; the Orchestrator for its own fields |

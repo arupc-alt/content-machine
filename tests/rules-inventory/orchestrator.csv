@@ -36,11 +36,11 @@ OR-0034,orchestrator-agent.md,Stage,"Brief stage when Blog Doc Link is empty, el
 OR-0035,orchestrator-agent.md,Stage,Current Doc is Brief Doc or Blog Doc by stage,modes/orchestrator.md,is the Brief Doc for the brief stage and the Blog Doc
 OR-0036,orchestrator-agent.md,Sweep 1,List items in Awaiting Brief Approval or QA Passed,modes/orchestrator.md,list every product's Content Items with Status `Awaiting Brief Approval`
 OR-0037,orchestrator-agent.md,Sweep 1,Collect reviewer feedback from all three places,modes/orchestrator.md,collect its approvers' feedback from all three places
-OR-0038,orchestrator-agent.md,Sweep 1,Read reactions on the Slack Thread Link message,modes/orchestrator.md,on the message at its Slack Thread Link (`slack_get_reactions`)
+OR-0038,orchestrator-agent.md,Sweep 1,Read reactions on the Slack Thread Link message,modes/orchestrator.md,on the message at its Slack Thread Link
 OR-0039,orchestrator-agent.md,Sweep 1,Affirmative emoji list,modes/orchestrator.md,"Affirmative: white_check_mark, heavy_check_mark, +1, thumbsup"
 OR-0040,orchestrator-agent.md,Sweep 1,Negative emoji list,modes/orchestrator.md,"Negative: x, heavy_multiplication_x, negative_squared_cross_mark"
 OR-0041,orchestrator-agent.md,Sweep 1,Other emoji are not a decision,modes/orchestrator.md,"Any other emoji (eyes, thinking, and so on) is not a decision."
-OR-0042,orchestrator-agent.md,Sweep 1,Read thread replies with slack_read_thread,modes/orchestrator.md,on that message (`slack_read_thread`)
+OR-0042,orchestrator-agent.md,Sweep 1,Read thread replies with slack_read_thread,modes/orchestrator.md,on those two messages (`slack_read_thread`)
 OR-0043,orchestrator-agent.md,Sweep 1,Read comments in the item's current Doc,modes/orchestrator.md,Comments in the item's current document.
 OR-0044,orchestrator-agent.md,Sweep 1,Take file ID from link; read_file_content with includeComments,shared/storage-drive.md,call `read_file_content` with `includeComments: true`
 OR-0045,orchestrator-agent.md,Sweep 1,Only unresolved reviewer comments after Doc creation count,modes/orchestrator.md,"Only unresolved comments from an approver, left after the document was created, count."
@@ -82,7 +82,7 @@ OR-0080,orchestrator-agent.md,Deciding,Escalated: change request is human send-b
 OR-0081,orchestrator-agent.md,Deciding,Needs Rework: keep status and add new feedback,modes/orchestrator.md,Needs Rework | Nothing to do | Keep the status
 OR-0082,orchestrator-agent.md,Deciding,Working statuses: don't change status while an agent works,modes/orchestrator.md,since an agent is working on it right now
 OR-0083,orchestrator-agent.md,Deciding,Working statuses: record feedback as Pending human feedback,modes/orchestrator.md,"as `Pending human feedback`, so the agent's next rework reads it"
-OR-0084,orchestrator-agent.md,Deciding,Working statuses: reject is noted and flagged,modes/orchestrator.md,Don't change; note it and flag it in the run summary |
+OR-0084,orchestrator-agent.md,Deciding,Working statuses: reject is noted and flagged,modes/orchestrator.md,Don't change; note it and flag it in the run summary. A row held on a question
 OR-0085,orchestrator-agent.md,Deciding,Rejected: change request flagged for a person,modes/orchestrator.md,Rejected | Reply that it was dropped and a person must reopen it
 OR-0086,orchestrator-agent.md,Deciding,Every status write sets Last Updated At,modes/orchestrator.md,Every status write also sets Last Updated At to now.
 OR-0087,orchestrator-agent.md,Deciding,Never touch Rework Count,modes/orchestrator.md,Never touch Brief Rework Count or Draft Rework Count

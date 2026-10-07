@@ -6,7 +6,7 @@ One section per release. For each row in release-checklist.md: pass or fail, the
 
 Automatic checks, 2026-10-07: pass (scripts/check.py, measure.py self-test, run_fixture_checks.py).
 
-Live checks: not run yet, including the rows new in 0.3.0 (the one Round schedule, the update from 0.2, ask before guessing, lean and Slack-only mode, style exceptions, and the bot built by default).
+Live checks: not run yet, including every row new in 0.3.0 (such as the one Round schedule, the update from 0.2, ask before guessing, lean and Slack-only mode, style exceptions, stuck pieces and rechecks, and one bot per product, built by default).
 
 ## 0.2.0
 

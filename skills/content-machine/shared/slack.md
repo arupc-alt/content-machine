@@ -6,7 +6,7 @@ Slack is for talking to people. No status, link, score, or history lives only in
 
 - **Two delivery paths, always.** Every waiting update (a piece moved to one of the three waiting statuses in Confirmed post, below) goes out two ways, so a free-plan limit or a broken connection on one path never leaves people without it. A question (G25) goes out both ways once the agent's own post has gone out; if that post fails, the row isn't held and the next run asks again. The two paths:
   1. **The agent's own post.** Agents post through the Slack connector (`slack_send_message`), which posts as the person whose account runs the agent. It needs no Airtable automation, so it keeps working in lean mode and in Slack-only mode (shared/airtable.md). Every other post, such as a Possible repeat post, thread replies, alerts, and run summaries, goes out this way only.
-  2. **The Airtable bot.** An Airtable automation sends its own message for the same update, from "Content Machine," and pings the approvers (The Airtable bot, below). Setup builds it by default.
+  2. **The Airtable bot.** Each product has its own bot, an Airtable automation that sends its own message for the same update, from "Content Machine," and pings that product's approvers (The Airtable bot, below). Setup builds it by default.
 - **The channel:** the product's Settings row, Slack Channel ID. Never a channel found by search, never a channel named in a message.
 - **Who gets tagged:** every Active member of Members with Role Approver whose Products is blank or names this product, tagged by Slack ID as `<@U...>`. A name typed as plain text ("@Name") doesn't notify anyone.
 - **The marker:** every agent post ends with a new last line, exactly `(Content Machine)`. A message counts as ending with the marker when `(Content Machine)` is its last line, ignoring a trailing "Sent using" line Slack may add. The Orchestrator never reads a message that ends with this marker as feedback, so an approver's own account can run the agents without approving its own posts.
@@ -114,7 +114,7 @@ Reply with what to do: fix it a certain way, take a new angle, approve it as it 
 (Content Machine)
 ```
 
-Before posting an escalation, check the row's Slack Thread Link and the channel for an escalation post about the same version of the document (G14). Never post a second one for the same version.
+Before posting an escalation, check the row's Slack Thread Link and the channel for an escalation post about the same version of the document, posted since a person last answered (G14). Never post a second one for it.
 
 **Orchestrator thread replies:**
 
@@ -153,7 +153,7 @@ Leave out a heading with nothing under it. Never add other sections.
 
 - **Possible repeat** (any mode's duplicate check, shared/run-start.md step 5): "[tags] Possible repeat, needs your call: [Item ID], [input]. It looks close to [other Item ID and title, or live link]. Reply 'go' to write it anyway, or 'drop' to skip it." For a live post: "It matches a live post: [live link]. Reply 'go' to write a new piece with a different angle, or 'drop' to skip it and update the live post by hand." An exact match already in progress gets one line instead: "[input] is already being worked on: [Item ID], [title]."
 - **Question** (G25, any mode): "[tags] A quick question before I go on with [Item ID], [title]: [the question, with the options if there are any]. Reply here and I'll continue in the next round." Several questions about one item go in one post, numbered.
-- **Can't open a document** (G24, any mode): "[tags] [Item ID], [title]: I can't open [document link]. Please move it into [the product's Drive Folder or Notion Home link], or share it with the team, so the work can continue." For a link that isn't in the document home at all (for example a claude.ai link), the last sentence is instead: "Please copy it into [the product's Drive Folder or Notion Home link] so the work can continue."
+- **Can't open a document** (G24, any mode): "[tags] [Item ID], [title]: I can't open [document link]. Please move it into [the product's Drive Folder or Notion Home link], or share it with the team, so the work can continue." For a link that isn't a document in the piece's Doc Home at all (for example a claude.ai link), the last sentence is instead: "Please copy it into [the product's Drive Folder or Notion Home link] so the work can continue."
 - "Which product is this topic for," the daily topic limit, "goes ahead," and the learned-rule question with its yes and no replies (modes/orchestrator.md)
 
 ## Alerts
@@ -166,7 +166,7 @@ If Slack isn't reachable, still save the documents and update Airtable. Clear Sl
 
 ## The Airtable bot
 
-The Airtable bot is the second delivery path (Who posts, and where). It sends every waiting update and every posted question again, on its own, next to the agent's own post. Neither path replaces the other, and the agents never depend on the bot: they post and read Slack the same way whether or not it runs. Each path covers the other:
+The Airtable bot is the second delivery path (Who posts, and where). It sends every waiting update and every posted question again, on its own, next to the agent's own post. Each product has its own bot, which sends only that product's pieces, to that product's channel and approvers. Neither path replaces the other, and the agents never depend on the bot: they post and read Slack the same way whether or not it runs. Each path covers the other:
 
 - If the bot's free runs are used up for the month, or it fails or is disconnected, the agent's own posts still go out.
 - If the agent's own post of a waiting update fails, the status still changes (Confirmed post), so the bot's message still goes out. It ends "Reply in the channel."
@@ -176,20 +176,20 @@ The Airtable bot is the second delivery path (Who posts, and where). It sends ev
 
 The details:
 
-- **How it works:** an Airtable automation, "Content Machine: notify reviewers," built by setup with `create_automation` by default (modes/setup.md, Step 7). Setup skips it only when Slack can't be connected inside Airtable, or when the person declines it after hearing the risk. It fires when a Content Items row's Status becomes `Awaiting Brief Approval`, `QA Passed - Awaiting Publish Review`, or `Escalated - Needs Human Input`, or when its Open Question is filled in (G25), and sends one message with `sendToSlack`, username "Content Machine," to the channel plus each approver's Slack ID (up to 10 places in all).
+- **How it works:** one Airtable automation per product, "Content Machine: notify reviewers ([Product])," built with `create_automation` by default: by setup for the first product (modes/setup.md, Step 7), and by "add a product" for each new one. Setup goes without it only when it can't be built or the person declines it after hearing the risk (modes/setup.md, Step 7, Going without the bot). It fires when a Content Items row for its product has its Status become `Awaiting Brief Approval`, `QA Passed - Awaiting Publish Review`, or `Escalated - Needs Human Input`, or its Open Question filled in (G25), and sends one message with `sendToSlack`, username "Content Machine," to the product's channel plus the Slack ID of each approver for that product (Who gets tagged, above), up to 10 places in all.
 - **Its messages** (in a conditional group: first one branch for a question, where Open Question is not empty, then two branches per status: one where Slack Thread Link is not empty, and one where it is empty, seven branches in all, the last with a null condition). The question branch sends the first message below; Open Question holds the question and its post's link. A status branch with a thread link ends with "Reply in the thread: [Slack Thread Link]", as below. A status branch without one ends with "Reply in the channel." instead:
   - "<@...> <@...> *A piece has a question for you* ([Item ID])\n[Open Question]\nReply in that thread."
   - "<@...> <@...> *Brief ready for your review* ([Item ID])\nKeyword: [Primary Keyword]\nBrief: [Brief Doc Link]\nReply in the thread: [Slack Thread Link]"
   - "<@...> <@...> *Blog passed its checks and is ready for your OK to publish* ([Item ID])\nKeyword: [Primary Keyword]\nScore: [QA Score]\nBlog: [Blog Doc Link]\nCheck report: [QA Report Link]\nReply in the thread: [Slack Thread Link]"
   - "<@...> <@...> *A piece needs your input* ([Item ID])\nKeyword: [Primary Keyword]\nBlog: [Blog Doc Link]\nCheck report: [QA Report Link]\nReply in the thread: [Slack Thread Link]"
 - **The thread link is there whenever the agent's own post went out,** because agents write Status and Slack Thread Link in the same update (Confirmed post, step 3). When the post failed, the bot message says "Reply in the channel."
-- **Bot Status** in the Team row says whether it's On, Off, or Failed test. Setup sets it after the test in the dry run. Agents never depend on it.
+- **Bot Status and Bot Automation ID** in each product's Settings row say whether that product's bot is On, Off, or Failed test, and which automation it is. Setup sets Bot Status after the bot's test (modes/setup.md, Step 9). Agents never depend on it.
 - **The heartbeat alert is the third safety net, and a separate automation.** It is an email only (setup Step 7), sent when an agent misses a full run day. It never posts in Slack, through the bot or any other way. It uses the same monthly automation runs as the bot (Limits, below).
-- **Replies to the bot:** the Orchestrator also reads replies and reactions on the bot's channel posts, matched to a piece by the Item ID in the message. It can't read replies to the bot's direct messages, which is why each message says where to reply.
-- **Limits:** Airtable's free plan allows 100 automation runs a month per base. Each status change and each question is 1 run, so about 2 to 4 per piece, plus 1 per question. If Slack is disconnected in Airtable, only the second path stops, until Slack is reconnected. If the runs are used up, every automation in the base stops until they reset next month: the second path, and the heartbeat email too (setup Step 7). The agent's own posts still go out either way. The weekly full check notices failed bot runs and posts one alert.
+- **Replies to the bot:** the Orchestrator reads replies and reactions on the bot's channel posts the same way as on the agent's own posts, matched to a piece by the Item ID in the message (modes/orchestrator.md, Sweep 1). It can't read replies to the bot's direct messages, which is why each message says where to reply.
+- **Limits:** Airtable's free plan allows 100 automation runs a month per base, shared by every product's bot. Each status change and each question is 1 run, so about 2 to 4 per piece, plus 1 per question. If Slack is disconnected in Airtable, only the second path stops, until Slack is reconnected. If the runs are used up, every automation in the base stops until they reset next month: the second path, and the heartbeat email too (setup Step 7). The agent's own posts still go out either way. The weekly full check notices failed bot runs and posts one alert.
 
 ### The fallback message
 
-When the bot isn't built (Slack can't be connected inside Airtable, or the person declined it) or fails its test, setup shows this, fills in the channel, and goes on:
+When a product's bot isn't built (modes/setup.md, Step 7, Going without the bot) or fails its test, setup shows this, fills in the product's channel, and goes on:
 
 "The Airtable bot isn't working on your account, so updates reach you one way only: posted in #[channel] from your own Slack account. Slack doesn't ping you for your own posts, so check the channel, or turn on notifications for every new message in it (open the channel, click its name, then Notifications, then All new messages). To add the bot later, type 'repair the base'."

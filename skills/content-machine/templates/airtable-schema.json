@@ -299,7 +299,7 @@
         {
           "name": "Open Question",
           "type": "multilineText",
-          "description": "A question a run asked before going on, with its Slack link (G25). Rows with this filled in are skipped until the Orchestrator records an answer and clears it."
+          "description": "A question a run asked before going on, with its Slack link (G25). Rows with this filled in are skipped until the Orchestrator records an answer and clears it, or drops the piece."
         },
         {
           "name": "Health Flag",
@@ -478,6 +478,29 @@
               }
             ]
           }
+        },
+        {
+          "name": "Bot Status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "On"
+              },
+              {
+                "name": "Off"
+              },
+              {
+                "name": "Failed test"
+              }
+            ]
+          },
+          "description": "This product's notification bot (shared/slack.md, The Airtable bot): On, Off, or Failed test. Setup sets it after the bot's test."
+        },
+        {
+          "name": "Bot Automation ID",
+          "type": "singleLineText",
+          "description": "The automation ID of this product's bot, \"Content Machine: notify reviewers ([Product])\"."
         },
         {
           "name": "Set Up On",
@@ -668,27 +691,6 @@
           "name": "Reference Row Count",
           "type": "multilineText",
           "description": "JSON: product name to the number of Active Reference rows it should load."
-        },
-        {
-          "name": "Bot Status",
-          "type": "singleSelect",
-          "options": {
-            "choices": [
-              {
-                "name": "On"
-              },
-              {
-                "name": "Off"
-              },
-              {
-                "name": "Failed test"
-              }
-            ]
-          }
-        },
-        {
-          "name": "Bot Automation ID",
-          "type": "singleLineText"
         },
         {
           "name": "Heartbeat Automation ID",
@@ -1202,13 +1204,13 @@
     },
     {
       "key": "bot",
-      "name": "Content Machine: notify reviewers",
+      "name": "Content Machine: notify reviewers ([Product])",
       "always": true,
-      "purpose": "The second delivery path: every waiting update and every posted question also goes out from this bot, next to the agent's own post (shared/slack.md, Who posts, and where)",
-      "skippedOnlyIf": "Slack can't be connected inside Airtable (list_external_accounts still shows no Slack account after the one-click step), or the person declines it after hearing the risk (modes/setup.md, Step 7)",
-      "trigger": "Content Items row whose Status is any of Awaiting Brief Approval, QA Passed - Awaiting Publish Review, Escalated - Needs Human Input, or whose Open Question is not empty",
+      "purpose": "The second delivery path, one bot per product: every waiting update and every posted question for that product also goes out from its bot, next to the agent's own post (shared/slack.md, Who posts, and where). Its ID and Bot Status are in the product's Settings row",
+      "skippedOnlyIf": "the bot can't be built (Slack can't be connected inside Airtable, the session has no Airtable automation tools, or a step still fails after one fix and retry), or the person declines it after hearing the risk (modes/setup.md, Step 7, Going without the bot)",
+      "trigger": "Content Items row whose Product is this product, and whose Status is any of Awaiting Brief Approval, QA Passed - Awaiting Publish Review, Escalated - Needs Human Input, or whose Open Question is not empty",
       "actions": [
-        "sendToSlack, username 'Content Machine', to the channel plus up to 9 approvers by Slack ID: first one branch for a question (Open Question not empty), then two branches per status, by whether Slack Thread Link is empty (see shared/slack.md, The Airtable bot)"
+        "sendToSlack, username 'Content Machine', to the product's channel plus up to 9 of the product's approvers by Slack ID: first one branch for a question (Open Question not empty), then two branches per status, by whether Slack Thread Link is empty (see shared/slack.md, The Airtable bot)"
       ]
     }
   ]

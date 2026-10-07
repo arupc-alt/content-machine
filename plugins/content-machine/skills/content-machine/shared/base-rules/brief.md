@@ -6,7 +6,7 @@ Product rules and learned rules (shared/rule-extraction.md) add to these rules o
 
 ## When the product's files and these rules disagree
 
-The product's reference files are the product's own house rules, so they win on anything about the product: facts, claims, terminology, audience, sources, and who approves what. On style and structure, where the two differ, follow whichever rule is stricter, and where a file adds a requirement these rules don't have, add it to the brief's plan. In practice:
+The product's reference files are the product's own house rules, so they win on anything about the product: facts, claims, terminology, audience, sources, and who approves what. On style and structure, where the two differ, follow whichever rule is stricter (a clash that is neither stricter nor looser, like heading case, follows the base rule unless an Active Exception rule replaces it), and where a file adds a requirement these rules don't have, add it to the brief's plan. In practice:
 
 - **Freshness:** if the product knowledge requires a fresher source than Step 4g's cadence (for example, pricing checked the same week as publish), the stricter rule goes into the Freshness Log.
 - **Link minimums:** if the quality checks require a minimum number of internal or external links, the Internal Link Plan in Step 4f meets that minimum, so the writer isn't set up to fail QA.

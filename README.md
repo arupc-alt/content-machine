@@ -76,7 +76,7 @@ Then quit and reopen Codex, and start a new chat. Check it worked with `codex pl
   Then type `/mcp` in Claude Code and sign in to each. For Google Drive, connect it in the Claude app.
 - **Codex:** add the same three addresses in Codex's MCP settings (named airtable, slack, and notion), then sign in to each with `codex mcp login [name]` or the sign-in button in Codex's settings. Open a new chat afterwards so Codex picks them up.
 
-Setup's first message is a connections checklist marked **critical**: Airtable, Slack, Google Drive or Notion, web search, and scheduled tasks, each shown as working or missing, with the steps to connect what's missing. Setup doesn't go on until every required one works. The one exception is scheduled tasks: type "go on without it" and setup carries on without a schedule. The agents then run only when you ask, and setup shows you the schedule to add by hand later. Once you've added it, or turned scheduled tasks on, type "repair schedules" so the schedule is checked and tested and the heartbeat email is built.
+Setup's first message is a connections checklist marked **critical**: Airtable, Slack, Google Drive or Notion, web search, and scheduled tasks, each shown as working or missing, with the steps to connect what's missing. Setup doesn't go on until every required one works. The one exception is scheduled tasks: type "go on without it" and setup carries on without a schedule. The agents then run only when you ask, and setup shows you the schedule to add by hand later. Once you've added it, or turned scheduled tasks on, type "repair schedules" in the app that holds the schedule, so it's checked and tested and the heartbeat email is built. In Claude Code, the scheduled tasks line passes only with the Claude desktop app's scheduled tasks. Joining a teammate's base skips that line, since only the host's account runs the schedule.
 
 ## Set up
 
@@ -95,13 +95,13 @@ Setup goes step by step, and every change waits for your yes:
 5. Picks your Slack channel, approvers, item ID prefix, how often the agents run, your Airtable plan (free or paid), and Google Drive or Notion.
 6. Asks you to share your [reference files](#reference-files), in any format, then tells you which areas they cover, drafts anything missing if you want, and pulls out your rules for you to approve. Setup won't go past this step until product truth, brand and voice, and writing rules are covered.
 7. Builds your document folder or Notion pages.
-8. Builds the Airtable automations: a heartbeat email if the agents stop running (not when you skipped scheduled tasks), and the notification bot, the second way approval requests and questions reach you. It skips the bot only if Slack can't be connected inside Airtable, or you say no after hearing what you'd miss.
+8. Builds the Airtable automations: a heartbeat email if the agents stop running (not when you skipped scheduled tasks), and the notification bot, the second way approval requests and questions reach you. Each product gets its own bot, for its own channel and approvers. It skips the bot only if it can't be built on your account (for example, Slack can't be connected inside Airtable), or you say no after hearing what you'd miss.
 9. Creates **one** schedule. Each time it fires, one run does the whole round in order: the Orchestrator, then the Brief Agent, then the Blog Writer. It never touches schedules it didn't make. On Codex, setup creates it as a Codex automation and Codex asks you to approve it. Then it lists your schedules again to prove it's there. If you skipped scheduled tasks, it shows you the schedule to add by hand instead.
 10. Runs a short test: a test post, document, and row, checks that the bot pinged you (when it was built), then fires the schedule once and checks the round ran (not when you skipped scheduled tasks).
 
 Expect it to take a while (roughly 30 to 45 minutes). You can stop at any point and type `set up content machine` again later; it picks up where it stopped and never makes a second copy.
 
-**Teammates.** Each person can set up their own Content Machine in their own accounts. To share one queue instead: first add your teammate as an editor on your Airtable base, then they type "join a teammate's content machine" and paste the base link. If they approve, type "add a teammate" and name them, so the notification bot and the heartbeat email reach them too. In a shared base, your scheduled runs write the documents; their own chat requests add topics to the queue.
+**Teammates.** Each person can set up their own Content Machine in their own accounts. To share one queue instead: first add your teammate as an editor on your Airtable base, then they type "join a teammate's content machine" and paste the base link. If they approve, type "add a teammate" and name them, so the notification bots and the heartbeat email reach them too. In a shared base, your scheduled runs write the documents and their own chat requests add topics to the queue, unless your Drive folder is in a Shared Drive.
 
 ## Reference files
 
@@ -119,7 +119,7 @@ Reference files are what personalize the writing. Without them the agents write 
 | **Quality bar** | What makes a draft good enough, what should fail it, who approves | Optional: the built-in checks apply anyway |
 | **Extras** | Pages to link to and calls to action, competitors and what may be said about them, 2 or 3 past posts you love | Optional |
 
-**What setup does with them.** It reads everything, tells you which areas your files cover and which are missing, shows conflicts (say, two files disagree on title case), and pulls out the rules ("never call it 'cheapest' without a source") for you to approve. Your rules add to the built-in ones. Where your files want a different pure style choice (say, sentence-case headings or no Oxford comma), setup shows both and you can approve it as an exception; quality bars, honesty rules, the reading level, and the em dash ban never get one. Nothing goes live without your yes. Missing an area? Type "draft them" and setup drafts it from your website for you to review. Keep one set of files per product, since positioning and claims don't carry over between products.
+**What setup does with them.** It reads everything, tells you which areas your files cover and which are missing, shows conflicts (say, one file says Pro plan and another says Professional plan), and pulls out the rules ("never call it 'cheapest' without a source") for you to approve. Your rules add to the built-in ones. Where your files want a different pure style choice (say, sentence-case headings or no Oxford comma), setup shows both and you can approve it as an exception; quality bars, honesty rules, the reading level, and the em dash ban never get one. Nothing goes live without your yes. Missing an area? Type "draft them" and setup drafts it from your website for you to review. Keep one set of files per product, since positioning and claims don't carry over between products.
 
 **Tips that make the output better:** write rules that can be checked ("no em dashes" can; "be engaging" can't), give the live page for any fact that changes, like prices, and note who settles facts. When reviewers turn something down, add it to your files, or just tell the agents in Slack: repeated feedback becomes a suggested rule you can approve.
 
@@ -150,10 +150,10 @@ Only people set up as **approvers** can approve, send back, or drop a piece. Onl
 | Fix a broken base or schedule | "repair the base", "repair schedules" |
 | Run more or less often | "change how often it runs" |
 | Tell it your Airtable plan changed (say, after upgrading) | "change Airtable plan" |
-| Free up Airtable records (the free plan holds 1,000 per base) | "archive old pieces" (pieces with a fact recheck still due stay) |
+| Free up Airtable records (the free plan holds 1,000 per base) | "archive old pieces" (published pieces with a recheck date stay, since their reminders come from this base) |
 | Hand the schedules to someone else | "move host", from the new host's account |
 
-Only the host, whose account runs the schedule, can use "repair schedules" and "change how often it runs". Anyone else is told to ask the host, or to type "move host" to take it over.
+Only the host, whose account runs the schedule, can make the schedule or use "repair schedules" and "change how often it runs". Anyone else is told to ask the host, or to type "move host" to take it over.
 
 The content machine runs on **one schedule**. Each time it fires, one run does the whole round in a fixed order:
 
@@ -172,7 +172,7 @@ A part with nothing to do is skipped, so a quiet round is quick and cheap. You c
 
 Weekdays only uses about a quarter fewer calls. To change it later, type "change how often it runs".
 
-**When something is unclear, it asks.** If an agent needs an answer to get a piece right (which product it's for, what an ambiguous topic means, two approvers asking for opposite things, a key fact it can't confirm), it asks in that piece's Slack thread and waits for an approver's reply. Only that piece waits; the rest keep moving. In a chat, it asks all its questions up front, before it starts. Small calls that can't make a piece wrong are listed under "Needs your call" instead of asked.
+**When something is unclear, it asks.** If an agent needs an answer to get a piece right (which product it's for, what an ambiguous topic means, two approvers asking for opposite things, a key fact it can't confirm), it asks in that piece's Slack thread and waits for an approver's reply. Only that piece waits; the rest keep moving. In a chat, it asks all its questions up front, before it starts. Small calls that can't make a piece wrong are made and noted where you'll see them, like a brief's "Needs your call" list, instead of asked.
 
 ## Airtable limits
 
@@ -180,17 +180,17 @@ Airtable's free plan allows about 1,000 automated reads and writes a month per w
 
 - **Lean mode.** Every run checks how many calls are left for the month. If they're running short, approvals, reworks, and pieces already in progress keep moving, and new pieces wait until next month. You get one Slack message when this starts.
 - **If the limit is hit anyway** (for example, another base in the same workspace used it up), it still answers in Slack: replies on its posts (approvals, change requests, answers) are acknowledged as saved, and everything, new topics included, is handled by the first round after the limit resets at the start of next month (or by the next round, after upgrading and typing "change Airtable plan"). Nothing is lost. A "stopped running" email that month or early next month means this limit, not a broken schedule.
-- **Approvals and questions go out two ways.** Each brief or blog waiting for your OK, each stuck piece, and each question is posted from your own Slack account and sent again by the notification bot (see [Notifications](#notifications)). If the bot uses up its 100 free automation runs a month, or fails, your own Slack posts still go. If the monthly call limit is hit, the bot can't fire, but the content machine still answers in Slack from your account (above). And if the agents stop running, the heartbeat email tells you. The heartbeat email uses the same 100 runs as the bot, so if the bot uses them all up, the heartbeat email stops too until they reset next month.
+- **Approvals and questions go out two ways.** Each brief or blog waiting for your OK, each stuck piece, and each question an agent asks before going on is posted from your own Slack account and sent again by the notification bot (see [Notifications](#notifications)). If the bots use up the base's 100 free automation runs a month, or one fails, your own Slack posts still go. If the monthly call limit is hit, the bot can't fire, but the content machine still answers in Slack from your account (above). And if the agents stop running, the heartbeat email tells you. The heartbeat email uses the same 100 runs as the bots, so if they use them all up, the heartbeat email stops too until they reset next month.
 - **To lift the limits,** move the workspace to an Airtable paid plan, then type "change Airtable plan" so the content machine knows the new limit.
 
 ## Notifications
 
-Every brief or blog waiting for your OK, every stuck piece that needs your help, and every question an agent asks goes out two ways, so a free-plan limit on one never leaves you without it:
+Every brief or blog waiting for your OK, every stuck piece that needs your help, and every question an agent asks before going on goes out two ways, so a free-plan limit on one never leaves you without it:
 
 1. **From your own Slack account.** The agents post it in your channel. This needs no Airtable automation, so it keeps working in lean mode and when the monthly call limit is hit.
-2. **From the notification bot.** An Airtable bot named "Content Machine" sends it again and pings your approvers, in the channel and by direct message. Slack doesn't notify you about your own posts, so this is the message that pings you. Setup builds it by default.
+2. **From the notification bot.** Each product has its own Airtable bot, named "Content Machine." It sends it again and pings that product's approvers, in the channel and by direct message. A tick or a reply on the bot's post counts the same as one on your own. Slack doesn't notify you about your own posts, so this is the message that pings you. Setup builds it by default.
 
-If the bot's runs are used up or it fails, your own Slack posts still go. A question goes out the second way only once your own post is up; if that post fails, the piece doesn't wait, and the next round asks again. Everything else, like "Possible repeat", comes from your own account only. If the agents stop running altogether, the heartbeat email is a third safety net. It shares the bot's 100 free runs a month, so once the bot uses them up, the heartbeat email can't go out either until next month. If the bot can't be set up on your account, or you skip it, updates arrive one way only: check the channel, or turn on notifications for every new message in it. Type "repair the base" to add the bot later.
+If the bot's runs are used up or it fails, your own Slack posts still go. A question goes out the second way only once your own post is up; if that post fails, the piece goes back to where it was, and the next round asks again. Everything else, like a "Possible repeat" check, thread replies, and summaries, comes from your own account only. If the agents stop running altogether, the heartbeat email is a third safety net. It shares the base's 100 free automation runs a month with the bots, so once they're used up, the heartbeat email can't go out either until next month. If the bot can't be set up on your account, or you skip it, updates arrive one way only: check the channel, or turn on notifications for every new message in it. Type "repair the base" to add the bot later.
 
 ## Notion sharing
 
@@ -204,7 +204,7 @@ If you pick Notion and share drafts by publishing the top page to the web, anyon
 
 If your copy is older than your base needs, the agents stop and say so, so an old copy never runs the wrong rules. In a shared base, the host updates first: a new version can add database fields, and only an account with creator access to the base can add them.
 
-Updating from 0.2? Afterwards, the host types "repair schedules" once to replace the three per-agent schedules with the one Round schedule. Until then, each round costs about three times the Airtable calls and can't answer in Slack when the monthly limit is used up. A reminder is posted in Slack after the update, and once a week until then. If the workspace is on a paid Airtable plan, also type "change Airtable plan" once, or new pieces may wait.
+Updating from 0.2? Afterwards, the host types "repair schedules" once to replace the three per-agent schedules with the one Round schedule. Until then, each round costs about three times the Airtable calls and can't answer in Slack when the monthly limit is used up. A reminder is posted in Slack after the update, and once a week until then. If the workspace is on a paid Airtable plan, also type "change Airtable plan" once, or new pieces may wait. If you had the notification bot, the host also types "repair the base" once, so it pings for questions too and each product gets its own bot.
 
 ## What's in this repo
 
