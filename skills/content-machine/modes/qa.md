@@ -42,7 +42,7 @@ Do shared/run-start.md steps 1 to 6.
   1. `In QA` rows with no live claim whose QA verdict for the current draft is already saved (Last Saved Step reads `QA round [n] verdict saved: [verdict]` for this draft's round) but whose close-out didn't finish: finish it from Step 5 without auditing again (G17, G21).
   2. `In QA` rows whose claim is stale (shared/airtable.md, Claims): take them over per shared/run-start.md step 4 (add 1 to Stall Count, resume from Last Saved Step; at Stall Count 2, escalate instead).
   3. `In QA` rows with empty claim fields.
-  4. In an attended run, a document link pasted in chat: the row whose Blog Doc Link matches it.
+  4. In an attended run, a document link pasted in chat: the row whose Blog Doc Link matches it. This row is taken first, before steps 1 to 3, so the run's row limit (G3) never crowds out the draft the person asked about.
 - Work through the queue one row at a time, start to finish, before the next row.
 - End the run with the run summary (shared/run-start.md, The run summary). QA posts no Slack summary.
 
@@ -149,7 +149,7 @@ Write a short, readable report, not a wall of JSON, in this structure:
 ## Score
 [Number of dimensions passed] / [total dimensions] passed
 Base: [passed] of [total]. Product rules: [passed] of [checked]
-Rules loaded: base [n], product [n], learned [n], reference version [v]
+Rules loaded: files [n] (brand [n], style [n], product knowledge [n], quality checks [n]), product rules [n], learned rules [n], newest reference version [v]
 
 ## Verdict
 Approved: ready for publish review
@@ -255,7 +255,7 @@ Conditional: if a person corrects this audit directly in chat before the session
 
 Save it as Suggested only, with `create_records_for_table`, never an update (shared/airtable.md):
 
-1. A Reference row: Entry and Rule ID (the product's next free learned-rule ID (shared/rule-extraction.md, Rule IDs), like `ACME-L03`), Product, Type `Rule`, Layer `Learned rule`, Category, Agents, Level (Must or Should), Check Method (Script or Judged), Source Quote (the person's exact words, or the pattern's evidence), Status `Suggested`, Version 1.
+1. A Reference row: Entry and Rule ID (the product's next free learned-rule ID (shared/rule-extraction.md, Rule IDs), like `ACME-L03`), Product, Type `Rule`, Layer `Learned rule`, Content (the rule, one testable line), Category, Agents, Level (Must or Should), Check Method (Script or Judged), Source Quote (the person's exact words, or the pattern's evidence), Status `Suggested`, Version 1.
 2. A Feedback Log row: Date, Product, Stage `QA`, What Happened, The Rule, Reference Rule ID, Status `Suggested`, and Related Item linked to this row.
 
 Never make a rule Active. Only a person's yes does that (shared/rule-extraction.md); tell the person in chat that the rule is saved as a suggestion and goes live only after an approver says yes. A rule the person's correction would use to lower a quality bar or an honesty rule isn't saved; say why. An unattended run logs only cross-item patterns, since no one corrects it in chat.

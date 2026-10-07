@@ -72,7 +72,7 @@ Two people, or a person and a schedule, can run the same mode at once. Before wo
 1. Make a token: the mode name, the current UTC time to the second, and 4 random letters, like `blog-20261006T091502-kqzm`.
 2. Write Claimed By (mode, and "scheduled" or the person's name), Claimed At (now), Claim Token, the working Status for this step, and Last Updated At, in one `update_records_for_table` call.
 3. Read the row back. If Claim Token is your token, go ahead. If not, another run has it: drop the row and move to the next one.
-4. A claim is stale when Claimed At is more than 2 rounds old (8 hours with 3 rounds a day, 12 hours with 2) and Last Updated At hasn't moved since. A stale claim may be taken over by the owning agent's next run (run-start step 4).
+4. A claim is stale when Claimed At is more than 2 rounds old and Last Updated At hasn't moved since. Two rounds means twice the longest gap between the Team row's Round Hours within a day, and never less than 4 hours (8 hours at 3 a day, 12 hours at 2 a day, 8 hours every 4 hours). A stale claim may be taken over by the owning agent's next run (run-start step 4).
 
 When the work for a step is done, clear Claimed By, Claimed At, and Claim Token in the same update that sets the next Status.
 
@@ -109,14 +109,14 @@ Every run starts with as few reads as possible (each table read is 1 API call, a
 
 - Team row (1 call).
 - Content Items, filtered to rows that are not Published and not Rejected, with only the fields this mode needs (1 call, more pages only for a big backlog). The Orchestrator reads every row, Published and Rejected included, because feedback can arrive on any of them. The duplicate check (run-start step 5) also needs every row's Primary Keyword, Input, and Status, so a run that creates a row reads them too.
-- Settings, Members, and Reference only when the queue has real work. Reference is filtered to one product and Status Active, and its row count is checked against Team's Reference Row Count for that product. If fewer rows come back than Reference Row Count, read the next page; if still fewer, stop with one alert: "Reference rows for [product] didn't all load." If more come back, use them all, set Reference Row Count for that product to the new number, and note it in the run summary.
+- Settings, Members, and Reference only when the queue has real work. Reference is filtered to one product and Status Active, and its row count is checked against Team's Reference Row Count for that product (a JSON object of product name to number, like `{"Acme Writer": 42}`; always write it back in that shape). If fewer rows come back than Reference Row Count, read the next page; if still fewer, stop with one alert: "Reference rows for [product] didn't all load." If more come back, use them all, set Reference Row Count for that product to the new number, and note it in the run summary.
 - The Orchestrator reads Settings and Members only when its Content Items read or its Slack window shows something to act on, and reads Reference only on its first run of each run day, or when a learned rule is in play (modes/orchestrator.md).
 
 ## The API budget
 
 Airtable's free plan allows 1,000 API calls a month for each workspace, shared by every base in it.
 
-How the calls add up. A run with nothing to do costs 2 calls (the Team row and Content Items). Each mode also writes the Team row once per run day (its Last Run field and the API counter). The Orchestrator reads Reference once per run day, and the weekly full check costs about 10 calls. One piece, from topic to live link, costs about 40 more calls in all. So 3 rounds a day, every day, uses about 700 calls a month before any real work, which leaves room for about 7 pieces a month. 2 rounds a day, or weekdays only, leaves room for about 12.
+How the calls add up. A run with nothing to do costs 2 calls (the Team row and Content Items). Each mode also writes the Team row once per run day (its Last Run field and the API counter). The Orchestrator reads Reference once per run day, and the weekly full check costs about 10 calls. One piece, from topic to live link, costs about 40 more calls in all. Each round a day adds about 180 calls a month on its own (3 agents, 2 calls each, 30 days). So 3 rounds a day, every day, uses about 700 calls a month before any real work, which leaves room for about 7 pieces a month. 2 rounds a day, or weekdays only, leaves room for about 12.
 
 - Each run keeps a count of the Airtable calls it made.
 - At the end of a run that already writes the Team row (its Last Run field, once per run day), add this run's count, plus 2 for every run since the last write, to API Calls This Month. If API Month isn't this month (UTC), reset the count to this run's count, set API Month, and turn Limit Reached off, in the same update.

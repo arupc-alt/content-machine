@@ -1,6 +1,6 @@
 {
   "name": "content-machine",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Researched SEO briefs, drafts with a built-in quality check and rework loop, Slack approvals, and an Airtable tracker, in your own accounts.",
   "author": {
     "name": "arupc-alt",

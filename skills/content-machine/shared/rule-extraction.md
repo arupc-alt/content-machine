@@ -14,15 +14,15 @@ Every draft must pass all three layers.
 
 | File | Required | What it holds | Reference Type |
 |---|---|---|---|
-| Brand guide | Yes | Voice, tone, words to use and avoid, how to name the product | Brand guide |
-| Writing style guide | Yes | Reading level, sentence rules, formatting, punctuation | Style guide |
-| Product knowledge | Yes | Features, plans, limits, and the public docs URL the agents may cite | Product knowledge |
-| Quality checks | No. The base QA rules apply either way. | What QA scores against | Quality checks |
+| Product truth (knowledge base) | Yes | Audience, what the product does, plans and prices with live sources, trusted sources, proof points, facts that go stale | Product knowledge |
+| Brand and voice | Yes | What the product is, positioning, exact names, claims allowed and prohibited, voice in a few words | Brand guide |
+| Writing rules and best practices | Yes | Voice, point of view, reading level, punctuation, words to avoid, formatting, SEO habits | Style guide |
+| Quality bar | No. The base QA rules apply either way. | What makes a draft good enough, what fails it, who approves | Quality checks |
 | Internal links and CTAs | No | Pages to link to, and the calls to action to use | Links and CTAs |
 | Competitors | No | Who they are, and what may and may not be said about them | Competitors |
 | Best past posts | No | 2 or 3 links the writer can match for tone | Best past posts |
 
-Any of these work, mixed freely: an uploaded file (PDF, Word, Markdown, or text), pasted text, a Google Doc or Notion link, or a public web page. If a company has no files yet, setup can draft starting files from its website and docs URL, marked "Draft, please review." Nothing drafted goes live until a person approves it.
+These are areas, not file names: a company's files rarely match them one to one. One file can cover several areas, and one area can come from several files. Any of these work, mixed freely: an uploaded file (PDF, Word, Markdown, or text), pasted text, a Google Doc or Notion link, or a public web page. If a company has no files yet, setup can draft starting files from its website and docs URL, marked "Draft, please review." Nothing drafted goes live until a person approves it.
 
 ## Saving the content
 
@@ -45,7 +45,7 @@ Any of these work, mixed freely: an uploaded file (PDF, Word, Markdown, or text)
    - Lowering a quality bar or an honesty rule: refuse it, and say why.
 4. A rule only seen in examples, never stated, is added as Suggested and stays off until someone approves it.
 5. Show the list grouped by Category, each rule with the quote it came from. The person approves, edits, or drops each one. Nothing goes live without an explicit yes.
-6. Save each as a Reference row: Type `Rule`, Layer `Product rule`, Rule ID (the product's prefix plus R and a number, like `ACME-R07`), Category, Agents, Level, Check Method, Source Quote, Status, Version.
+6. Save each as a Reference row: Entry (the Rule ID), Product, Type `Rule`, Layer `Product rule`, Rule ID (the product's prefix plus R and a number, like `ACME-R07`), Content (the testable line from item 2), Category, Agents, Level, Check Method, Source Quote, Status, Version.
 7. If one agent would load more than about 60 rules for a product, ask the team to merge or drop overlapping ones, because a long list makes each rule easier to miss.
 
 ## Rule IDs

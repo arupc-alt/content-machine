@@ -80,7 +80,7 @@ Skip anything already recorded (see "Already processed," under Sweep 2). Then de
 
 ## Sweep 2: Slack next, anything posted anywhere in each channel
 
-For each distinct Slack Channel ID in Settings, read the channel's history (`slack_read_channel`), including the replies inside each thread.
+For each channel in Schema Map's `channels` (shared/airtable.md), read the channel's history (`slack_read_channel`), including the replies inside each thread.
 
 **The window.** Read from the Team row's Last Orchestrator Sweep minus 1 hour. When Last Orchestrator Sweep is blank (a first run), read the last 7 days. Never use a fixed 24 hours: a reply left on a day with no runs must still be found. Also read every thread whose parent is older than the window but whose latest reply is inside it. When the channel read doesn't show a thread's latest reply time, read the thread at the Slack Thread Link of every row in the batched read that isn't Rejected.
 
@@ -118,8 +118,8 @@ The Brief Agent picks the row up from its queue. The Orchestrator never writes t
 
 For a row with Duplicate Decision `Pending`, an approver's reply on the duplicate question (the "Duplicate decision" thread reply, or a brief post or channel post that asks whether the angle is different enough):
 
-- "go" (or a plain yes to writing it anyway): set Duplicate Decision `Go`.
-- "drop" (or a plain yes to skipping it): set Duplicate Decision `Drop` and Status `Rejected`, in the same update.
+- "go" (or a plain yes to writing it anyway, or "new angle"): set Duplicate Decision `Go`.
+- "drop" (or a plain yes to skipping it, or "update the live post"): set Duplicate Decision `Drop` and Status `Rejected`, in the same update.
 - Anything else: Unclear (see "Deciding").
 
 When the row is at `Awaiting Brief Approval`, its brief post asked the approvers to confirm the angle. An approve on that post sets `Brief Approved` and Duplicate Decision `Go` in one update; a reject sets `Rejected` and Duplicate Decision `Drop`; a change request sets `Needs Rework` and leaves `Pending` for the reworked brief.
@@ -131,6 +131,8 @@ If no question about a `Pending` row can be found anywhere (no thread, no channe
 ### Live links
 
 After an approve sets a piece `Published`, the acknowledgment asks for the live link. A later approver reply that contains a URL, in that piece's thread or naming its Item ID, on a `Published` row with an empty Live URL: in one update set Live URL to that URL and Published At to the reply's time. Record it in Human Feedback, and reply with the "Live link saved" thread reply in shared/slack.md. If the URL isn't on the product's Website URL domain, still save it, and say so in the run's chat output.
+
+**A live link sent with the approval.** This applies in Sweep 1 as well as Sweep 2. An approving reply that also contains a URL, on a `QA Passed - Awaiting Publish Review` row, is an Approve: in the same update that sets `Published`, also set Live URL and Published At, and reply with "Live link saved" instead of asking for the link. On a `Published` row with an empty Live URL, an approver's reply that is only a URL is a live link, never Unclear.
 
 ### Answers about learned rules
 
@@ -186,7 +188,7 @@ Every status write also sets Last Updated At to now. Never touch Brief Rework Co
 **Human Feedback is the Orchestrator's field, and it is only ever added to.** Earlier entries are the item's history, and the Brief Agent and Blog Writer read them (G12). Every processed decision or piece of feedback adds one new entry at the end, in the shape from shared/airtable.md:
 
 ```
-[ISO time] [reviewer's name] via [Slack reply / Slack reaction / Doc comment / chat]:
+[ISO time] [reviewer's name] via [Slack reply / Slack reaction :emoji_name: / Doc comment / chat]:
 [Approve / Change request / Reject / Pending human feedback / Duplicate go / Duplicate drop / Live link]: "[the reviewer's exact words, in full if short, otherwise quoted in part with a faithful summary]"
 Source: [link to the Slack message, or the document link plus the comment]
 [For a blog-stage change request after QA's approval, after publishing, or after an escalation:] Human send-back
@@ -216,7 +218,7 @@ When an approver gives the same kind of feedback twice for a product, it may be 
 3. **Never lower a bar.** A rule that would lower a quality bar or an honesty rule is never added (shared/rule-extraction.md). Note it in the run's chat output instead.
 4. **Create the rows** with `create_records_for_table`:
    - A Feedback Log row: Date (today), Product, Stage (`Brief` or `Draft`), What Happened (both pieces of feedback, each with its Item ID, the approver's exact words, and its source link), The Rule (one testable line), Reference Rule ID, Status `Suggested`, and Related Item linking both pieces when that field is in Schema Map.
-   - A Reference row: Entry (the Rule ID), Product, Type `Rule`, Layer `Learned rule`, Rule ID (the product's Item ID Prefix plus L and the next number, like `ACME-L03`), Category, Agents, Level (`Must` when the approver said always, never, or must; otherwise `Should`), Check Method (`Script` for things that can be counted; `Judged` for the rest), Source Quote (the approver's exact words, both times), Status `Suggested`, Version 1.
+   - A Reference row: Entry (the Rule ID), Product, Type `Rule`, Layer `Learned rule`, Rule ID (the product's Item ID Prefix plus L and the next number, like `ACME-L03`), Content (the rule, one testable line), Category, Agents, Level (`Must` when the approver said always, never, or must; otherwise `Should`), Check Method (`Script` for things that can be counted; `Judged` for the rest), Source Quote (the approver's exact words, both times), Status `Suggested`, Version 1.
    - Never set either row Active. Only a person's yes does that (see "Answers about learned rules").
 5. **Ask once.** Post one line to the product's channel, tagging every approver for the product: "<@...> You asked for the same kind of change twice on [Product] pieces: [the rule in plain words]. Should every [Product] piece follow this from now on? Reply yes or no here. (Rule [Rule ID])" with the marker line. Before posting, search the channel for a post naming the Rule ID; never ask twice.
 6. **Rules other modes suggested.** The Brief Agent, Blog Writer, and QA also save Suggested learned rules from corrections typed in chat. On the first run of each run day, read the product's Reference rows with Layer `Learned rule` and Status `Suggested`. For each one with no channel post naming its Rule ID, post the same question, worded from its Content and Source Quote: "<@...> A correction on [Product] could become a standing rule: [the rule in plain words]. Should every [Product] piece follow this from now on? Reply yes or no here. (Rule [Rule ID])" with the marker line. Answers are handled the same way (see "Answers about learned rules").

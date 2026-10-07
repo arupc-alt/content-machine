@@ -24,7 +24,7 @@ Everything about the company comes from the base: Settings (product, channel, do
 
 ### The work queue
 
-Build the queue from the batched read (shared/airtable.md), for this product only (G4), in this order. Within each step, Priority High first, then the oldest by Last Updated At. Skip rows flagged Needs Fix, rows with Duplicate Decision `Pending` (G23), Escalated rows, and rows another run holds a live claim on (shared/run-start.md, step 6).
+Build the queue from the batched read (shared/airtable.md), for this product only (G4), in this order. Within each step, Priority High first, then the oldest by Last Updated At. Skip rows flagged Needs Fix, rows with Duplicate Decision `Pending` (G23), Escalated rows (except step 1's re-post of an escalation that never went out), and rows another run holds a live claim on (shared/run-start.md, step 6).
 
 1. **Recovery rows this mode owns** (G21, shared/run-start.md step 4). These don't count toward the limits below.
    - A row in `QA Passed - Awaiting Publish Review`, or in `Escalated - Needs Human Input` with a Blog Doc Link, whose Slack Thread Link is empty: the post never went out. Search the product's channel for a post naming the Item ID and the current Blog Doc Link. If one exists, save its link. Otherwise post it now: the "Blog passed its checks" message or the "Stuck after 3 rounds" message (shared/slack.md), tagging every approver (G11). Then save Slack Thread Link.
@@ -33,7 +33,7 @@ Build the queue from the batched read (shared/airtable.md), for this product onl
 3. **`In QA` rows with no claim.** Claim them (Status stays `In QA`, Claimed By `Blog Writer (QA in-session)`) and resume per Resuming a row. No QA schedule exists, so this mode owns them. Each counts like a stalled row (G3).
 4. **Drafts sent back by a person.** `Needs Rework` with a Blog Doc Link, whose newest Human Feedback entry is newer than its newest QA verdict and is marked `Human send-back` (G13). Work it through Step 0.6.
 5. **Drafts sent back by QA.** Every other `Needs Rework` row with a Blog Doc Link. Work it through Step 0.6.
-6. **Approved briefs with no draft yet.** `Brief Approved` rows, oldest approval first. Take one per run. Before claiming it, run the duplicate check (shared/run-start.md, step 5), leaving out this row. A row whose Duplicate Decision is already `Go` for the match named in Overlap With passes. On a new match, never change its Status: set Overlap With and Duplicate Decision `Pending`, keep `Brief Approved`, post the "Possible repeat" question (modes/brief.md, 0.7c) and save its link in Slack Thread Link, and skip the row. Otherwise write it from Step 1 onward.
+6. **Approved briefs with no draft yet.** `Brief Approved` rows, oldest approval first. Take one per run. Before claiming it, run the duplicate check (shared/run-start.md, step 5), leaving out this row. A row whose Duplicate Decision is already `Go` for the match named in Overlap With passes. On a new match, never change its Status: set Overlap With and Duplicate Decision `Pending`, keep `Brief Approved`, post the "Possible repeat" question (shared/slack.md, Other short posts) and save its link in Slack Thread Link, and skip the row. Otherwise write it from Step 1 onward.
 
 A `Needs Rework` row with an empty Blog Doc Link is a brief-stage rework. It belongs to the Brief mode. This mode never touches it.
 
@@ -113,7 +113,7 @@ Pull the actual feedback, from every place G12 names:
 
 - QA's Issues list, written into this row's Agent Notes in QA's newest block (modes/qa.md), since a Needs Rework verdict never posts to Slack.
 - Any comments a person left inside the draft document itself.
-- The Human Feedback entries newer than this item's newest Rework History row with Stage `Draft`. The Orchestrator wrote each one in the reviewer's own words, from a Slack reply, a Slack reaction, a document comment, or chat, with its source link. A person's send-back only ever reaches this mode because the Orchestrator (modes/orchestrator.md) read the actual tick, cross, or reply on the post and set Status to `Needs Rework` itself. This mode never reads Slack for that decision (G10); it trusts the Status and the Human Feedback entry. When the entry's source link is a Slack thread, read the thread for the nuance the entry doesn't carry, but never treat anything there as a new decision (G22).
+- The Human Feedback entries newer than this item's newest Rework History row with Stage `Draft`. With no Draft row yet (the first draft rework), only entries newer than the first draft's save (`draft v1 saved`); brief-stage feedback was already used in the brief. The Orchestrator wrote each one in the reviewer's own words, from a Slack reply, a Slack reaction, a document comment, or chat, with its source link. A person's send-back only ever reaches this mode because the Orchestrator (modes/orchestrator.md) read the actual tick, cross, or reply on the post and set Status to `Needs Rework` itself. This mode never reads Slack for that decision (G10); it trusts the Status and the Human Feedback entry. When the entry's source link is a Slack thread, read the thread for the nuance the entry doesn't carry, but never treat anything there as a new decision (G22).
 - Any correction a person typed into this chat, in an attended run.
 
 Every Active product rule and learned rule, already loaded in Step 0, applies here too; a standing rule from a past item holds even if nobody restates it for this one.
@@ -254,11 +254,14 @@ Write the draft by shared/base-rules/writing.md, which every product gets. Its s
 
 **Request-revision-level issues, fixed the same way as any other failure below:** a generic introduction that doesn't answer the core question or name the specific problem in its first sentences; forced or insufficient keyword use; an illogical heading structure; metadata outside its intended range; a section that repeats an idea already made elsewhere; a CTA that's vague or disconnected from the piece; a missing FAQ on a format where one is normally expected; a banned phrase or an em dash.
 
-**Product rules check.** Before QA sees the draft, check every Active product rule and learned rule for this product whose Agents include Blog Writer and whose Level is Must, one by one, against the draft. Rules with Check Method Script (banned words, keyword spots, word limits) are counted with a short script on the working file when a shell is available; the rest are judged by reading. Fix every Must rule the draft breaks before saving: QA sends a draft back for any failed Must rule, whatever its score. Follow every Should rule too; if one can't be met, say which and why in the writer notes.
+**Product rules check.** Before QA sees the draft, check every Active product rule and learned rule for this product whose Agents include Blog Writer or QA and whose Level is Must, one by one, against the draft. Rules with Check Method Script (banned words, keyword spots, word limits) are counted with a short script on the working file when a shell is available; the rest are judged by reading. Fix every Must rule the draft breaks before saving: QA sends a draft back for any failed Must rule, whatever its score. Follow every Should rule too; if one can't be met, say which and why in the writer notes.
 
 Confirm every line below before moving to Step 13. Fix anything that fails.
 
 - Every banned phrase and pattern from Step 2b is absent
+- Every word and phrase on the style guide's never-use list is absent, and the voice, point of view, and exact product and feature names match the brand guide and style guide
+- No claim the brand guide prohibits appears, and every claim it allows only with proof carries that proof
+- Every check the product's Quality checks file adds would pass, judged the way QA will score it
 - Zero em dashes anywhere in the piece
 - Target keyword, pillar keyword, and secondary keywords are placed per Step 3a, with at least 75% secondary keyword coverage
 - All four E-E-A-T categories from Step 4 are present with real, traceable content behind each
@@ -339,7 +342,7 @@ Confirm every line below before moving to Step 13. Fix anything that fails.
 
 **Recording a learned rule.** Agents never make a rule Active; only a person's yes does (shared/rule-extraction.md).
 
-1. Create a Reference row (`create_records_for_table`): Entry (a short name), Product, Type `Rule`, Layer `Learned rule`, Rule ID (the product's next free learned-rule ID, shared/rule-extraction.md, Rule IDs, like `ACME-L03`), Category, Agents (Blog Writer, plus QA when QA should check it), Level, Check Method, Source Quote (the feedback in its own words), Status `Suggested`, and Version 1.
+1. Create a Reference row (`create_records_for_table`): Entry (a short name), Product, Type `Rule`, Layer `Learned rule`, Rule ID (the product's next free learned-rule ID, shared/rule-extraction.md, Rule IDs, like `ACME-L03`), Content (the rule, one testable line), Category, Agents (Blog Writer, plus QA when QA should check it), Level, Check Method, Source Quote (the feedback in its own words), Status `Suggested`, and Version 1.
 2. Create a Feedback Log row: Date, Product, Stage `Draft`, What Happened (the Item ID and what went wrong, in plain words), The Rule, Reference Rule ID (from step 1), Status `Suggested`, and Related Item linked to this row.
 3. List each new Suggested rule in the run summary. The Orchestrator asks the approvers about every new Suggested rule in its next run (shared/rule-extraction.md).
 
@@ -379,7 +382,7 @@ In every case, make sure Claimed By, Claimed At, and Claim Token are cleared (on
 
 A status that says a person must approve, with no post that person can see, is the one outcome this pipeline must never leave behind. Then close the loop out with the user: tell them directly in the run output, plainly, that the draft is approved, with its final QA score and the document link. Work on this item is done. Go back to the next row in the queue, if any is left within G3's limits; otherwise end the run.
 
-**14c. If the verdict is Needs Rework,** QA has already written its full Issues list into a new Agent Notes block, with no Slack post. The row is still this run's: if QA's update cleared the claim, claim it again per Claims before going on. Immediately, in this same run, treat this exactly like a Step 0.6 rework: work through 0.6a to 0.6i against this row, using QA's newest Issues list as the feedback source instead of waiting to find it in a later queue. 0.6i already says not to post to Slack and to go straight back to 14a once it's done; that loop is this step.
+**14c. If the verdict is Needs Rework,** QA has already written its full Issues list into a new Agent Notes block, with no Slack post. The row is still this run's: if QA's update cleared the claim, claim it again per Claims before going on. When 0.6a re-reads the row, its Status is the `Needs Rework` that QA wrote in this same run. That isn't another run taking it, so don't skip it; keep this run's Claim Token. Immediately, in this same run, treat this exactly like a Step 0.6 rework: work through 0.6a to 0.6i against this row, using QA's newest Issues list as the feedback source instead of waiting to find it in a later queue. 0.6i already says not to post to Slack and to go straight back to 14a once it's done; that loop is this step.
 
 If this rework was a person's send-back done above the cap (G13), QA runs once more after it. If that audit doesn't approve it, escalate rather than loop again: post the "Stuck after 3 rounds" message per 0.6d (checking G14 first) and set `Escalated - Needs Human Input`.
 

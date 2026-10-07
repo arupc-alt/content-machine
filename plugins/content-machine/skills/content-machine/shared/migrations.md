@@ -16,3 +16,9 @@ If a step fails halfway, the next run starts the same migration again. Every ste
 ### 1: the starting structure
 
 The structure in `templates/airtable-schema.json`, schema version 1. Setup builds it directly, so there's nothing to apply.
+
+### 2: Round Hours (safe unattended)
+
+Adds one field to the Team table: Round Hours (single line text), the hours each round starts in the Team row's Time Zone, comma-separated, like `9,13,17`. It lets a team run any number of rounds a day, or every few hours (setup Step 8).
+
+When it's added to an existing base, fill it from Rounds Per Day: 1 gives `9`, 2 gives `9,15`, 3 gives `9,13,17`, 4 gives `9,12,15,18`, 5 gives `9,11,13,15,17`, 6 gives `8,10,12,14,16,18`, and anything else `9,13,17`. Schedules don't change. Min Skill Version stays the same: older copies ignore the field and keep using Rounds Per Day.
